@@ -281,6 +281,24 @@ class Matrix {
 		return $matrix;
 	}
 	
+  /**
+   * Transpose the given matrix.
+   * 
+   * @param matrix  $a
+   * @return  matrix  $a transposed
+   */
+  public static function transpose($a) {
+    $transposed = $a->copy();
+    
+    for ($i = 0; $i < $a->rows(); $i++) {
+      for ($j = 0; $j < $a->columns(); $j++) {
+        $transposed->set($j, $i, $a->get($i, $j));
+      }
+    }
+    
+    return $transposed;
+  }
+  
 	/**
 	 * Generate LU decomposition of the matrix.
 	 * 
@@ -434,8 +452,7 @@ class Matrix {
 	 * 
 	 * @param	matrix	matrix to get the qr decomposition of
 	 */
-	public static function qrDecompositionGivens(&$matrix)
-	{
+	public static function qrDecompositionGivens(&$matrix) {
 		Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
 		
 		for ($j = 0; $j < $matrix->columns(); $j++) {
@@ -480,13 +497,14 @@ class Matrix {
 	 * @param	matrix	matrix to get the qr decomposition of
 	 * @param	array 	store the trace in here
 	 */
-	public static function qrDecompositionGivensWithTrace(&$matrix, &$trace)
-	{
+	public static function qrDecompositionGivensWithTrace(&$matrix, &$trace) {
 		Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
 		
 		for ($j = 0; $j < $matrix->columns(); $j++) {
+		  $trace[$j] = array();
+      
 			for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-				$r = sqrt(pow($matrix->get($j, $j), 2) + pow($matrix->get($i, $j), 2));
+			  $r = sqrt(pow($matrix->get($j, $j), 2) + pow($matrix->get($i, $j), 2));
 				
 				if ($matrix->get($i, $j) < 0) {
 					$r = -$r;
@@ -494,8 +512,8 @@ class Matrix {
 				
 				$s = $matrix->get($i, $j)/$r;
 				$c = $matrix->get($j, $j)/$r;
-				
-				for ($k = $j; $k < $Matrix->columns(); $k++) {
+        
+				for ($k = $j; $k < $matrix->columns(); $k++) {
 					$jk = $matrix->get($j ,$k);
 					$ik = $matrix->get($i, $k);
 					$matrix->set($j, $k, $c*$jk + $s*$ik);
@@ -516,6 +534,12 @@ class Matrix {
 				else {
 					$matrix->set($i, $j, 2./$c);
 				}
+        
+        $trace[$j][$i] = array(
+          'c' => $c,
+          's' => $s,
+          'matrix' => $matrix,
+        );
 			}
 		}
 	}

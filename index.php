@@ -65,7 +65,6 @@ $app->post('/lu-decomposition', function() use ($app) {
 	$input = $app->request()->post('matrix');
 	
 	$array = array();
-	
 	$i = 0;
 	foreach (explode("\n", $input) as $line) {
 		$j = 0;
@@ -79,14 +78,15 @@ $app->post('/lu-decomposition', function() use ($app) {
 	
 	$matrix = new \Libraries\Matrix($i, $j);
 	$matrix->fromArray($array);
-	
+	$original = $matrix->copy();
+  
 	$trace = array();
 	$permutation = \Libraries\Matrix::luDecompositionWithTrace($matrix, $trace);
-	
 	$determinant = \Libraries\Matrix::luDeterminant($matrix, $permutation);
 	
 	$l = $matrix->copy();
 	$u = $matrix->copy();
+	// Extract L and U.
 	for ($i = 0; $i < $matrix->rows(); $i++) {
 		for ($j = 0; $j < $matrix->columns(); $j++) {
 			if ($i > $j) {
@@ -101,7 +101,7 @@ $app->post('/lu-decomposition', function() use ($app) {
 		}
 	}
 	
-	$app->render('LU.php', array('app' => $app, 'matrix' => $matrix, 'l' => $l, 'u' => $u, 'trace' => $trace, 'permutation' => $permutation, 'determinant' => $determinant));
+	$app->render('LU.php', array('app' => $app, 'original' => $original, 'l' => $l, 'u' => $u, 'trace' => $trace, 'permutation' => $permutation, 'determinant' => $determinant));
 })->name('lu-decomposition');
 
 $app->get('/qr', function () use ($app) {
@@ -116,7 +116,6 @@ $app->post('/givens-decomposition', function() use ($app) {
 	$input = $app->request()->post('matrix');
 	
 	$array = array();
-	
 	$i = 0;
 	foreach (explode("\n", $input) as $line) {
 		$j = 0;
@@ -130,21 +129,46 @@ $app->post('/givens-decomposition', function() use ($app) {
 	
 	$matrix = new \Libraries\Matrix($i, $j);
 	$matrix->fromArray($array);
-	
+	$original = $matrix->copy();
+  
 	$trace = array();
-	$permutation = \Libraries\Matrix::qrDecompositionGivensWithTrace($matrix, $trace);
+	\Libraries\Matrix::qrDecompositionGivensWithTrace($matrix, $trace);
 	
-	$q = $matrix->copy();
 	$r = $matrix->copy();
+  
+	// Extract R.
 	for ($i = 0; $i < $matrix->rows(); $i++) {
-		for ($j = 0; $j < $matrix->columns(); $j++) {
-			if ($i > $j) {
-				$u->set($i, $j, 0.);
-			}
-		}
+	  for ($j = 0; $j < $matrix->columns(); $j++) {
+	    if ($j < $i) {
+	      $r->set($i, $j, 0.);
+	    }
+	  }
 	}
-	
-	$app->render('LU.php', array('app' => $app, 'matrix' => $matrix, 'q' => $q, 'r' => $r, 'trace' => $trace));
+  
+  // Q is the product of the single givens rotations.
+  for ($j = 0; $j < $matrix->columns(); $j++) {
+    for ($i = $j + 1; $i < $matrix->rows(); $i++) {
+      $roh = $matrix->get($i, $j);
+      
+      $s = 0.;
+      $c = 0.;
+      
+      if (abs($roh) < 1) {
+        $s = 2*$roh;
+        $c = sqrt(1 - pow($s, 2));
+        
+        if ($roh < 0) {
+          $c = -$c;
+        }
+      }
+      else {
+        $c = 2./$roh;
+        $s = sqrt(1 - pow($c, 2));
+      }
+    }
+  }
+  
+	$app->render('Givens.php', array('app' => $app, 'original' => $original, 'r' => $r, 'trace' => $trace));
 })->name('givens-decomposition');
 
 $app->get('/householder', function() use ($app) {

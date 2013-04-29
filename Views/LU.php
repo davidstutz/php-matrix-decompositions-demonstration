@@ -53,8 +53,8 @@
 				<ul class="nav nav-tabs">
 					<li><a href="#code" data-toggle="tab"><?php echo __('Code'); ?></a></li>
 					<li><a href="#algorithm" data-toggle="tab"><?php echo __('Algorithm'); ?></a></li>
-					<li <?php if (!isset($matrix)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
-					<?php if (isset($matrix)): ?>
+					<li <?php if (!isset($original)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
+					<?php if (isset($original)): ?>
 						<li class="active"><a href="#result" data-toggle="tab"><?php echo __('Result'); ?></a></li>
 					<?php endif; ?>
 				</ul>
@@ -234,7 +234,7 @@ public static function luDeterminant($matrix, $permutation) {
 						
 						<p><?php echo __('For solving $Ax = b$ $k$ need to be saved in each step, so the generated row permutation can be applied on the right hand vector $b$, too. In addition the number of swapped rows is important for calculating the determinant of $A$.'); ?></p>
 					</div>
-					<div class="tab-pane <?php if (!isset($matrix)): ?>active<?php endif; ?>" id="demo">
+					<div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
 						<form class="form-horizontal" method="POST" action="/matrix-decompositions<?php echo $app->router()->urlFor('lu-decomposition'); ?>">
 							<div class="control-group">
 								<label class="control-label"><?php echo __('Matrix'); ?></label>
@@ -247,12 +247,12 @@ public static function luDeterminant($matrix, $permutation) {
 							</div>
 						</form>
 					</div>
-					<?php if (isset($matrix)): ?>
+					<?php if (isset($original)): ?>
 						<div class="tab-pane active" id="result">
-							<?php if (isset($matrix)): ?>
+							<?php if (isset($original)): ?>
 								<p><b><?php echo __('Given matrix.'); ?></b></p>
 								
-								<p><?php echo $app->render('Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$</p>
+								<p><?php echo $app->render('Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
 								
 								<p><b><?php echo __('Algorithm.'); ?></b></p>
 								
@@ -287,7 +287,7 @@ public static function luDeterminant($matrix, $permutation) {
 								<?php endfor; ?>
 								
 								<p>
-									$(-1)^{\sharp swapped rows} \cdot \prod _{i=1} ^{n} u_{i,i} = (-1)^<?php echo $swapped; ?> <?php for ($i = 0; $i < $matrix->rows(); $i++): ?> \cdot <?php echo $matrix->get($i, $i); ?><?php endfor; ?> = <?php echo $determinant; ?>$
+									$(-1)^{\sharp swapped rows} \cdot \prod _{i=1} ^{n} u_{i,i} = (-1)^<?php echo $swapped; ?> <?php for ($i = 0; $i < $original->rows(); $i++): ?> \cdot <?php echo $original->get($i, $i); ?><?php endfor; ?> = <?php echo $determinant; ?>$
 								</p>
 							<?php endif; ?>
 						</div>
