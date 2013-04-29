@@ -26,7 +26,7 @@ $app = new \Slim\Slim(array(
 
 \Slim\I18n::setPath('I18n');
 
-if ( !function_exists('__') ) {
+if (!function_exists('__')) {
 	/**
 	 * Translation function
 	 * 
@@ -52,14 +52,32 @@ $app->get('/', function () use ($app) {
    $app->redirect('/matrix-decompositions' . $app->router()->urlFor('overview'));
 });
 
+/**
+ * Problem overview.
+ * Quick introduction into the topic.
+ */
 $app->get('/overview', function () use ($app) {
    	$app->render('Overview.php', array('app' => $app));
 })->name('overview');
 
+/**
+ * Basic operations on matrices: transpose, multiply, add.
+ */
+$app->get('/basics', function () use ($app) {
+    $app->render('Basics.php', array('app' => $app));
+})->name('basics');
+
+/**
+ * Overview of the LU decomposition: Theoretical basics and algorithm.
+ * Demo will call lu-decomposition.
+ */
 $app->get('/lu', function () use ($app) {
    	$app->render('LU.php', array('app' => $app));
 })->name('lu');
 
+/**
+ * Demonstrate the lu decomposition on the given matrix.
+ */
 $app->post('/lu-decomposition', function() use ($app) {
 	
 	$input = $app->request()->post('matrix');
@@ -104,14 +122,23 @@ $app->post('/lu-decomposition', function() use ($app) {
 	$app->render('LU.php', array('app' => $app, 'original' => $original, 'l' => $l, 'u' => $u, 'trace' => $trace, 'permutation' => $permutation, 'determinant' => $determinant));
 })->name('lu-decomposition');
 
+/**
+ * QR decomposition overview: theoretical background and introduction ot givens and householders.
+ */
 $app->get('/qr', function () use ($app) {
   	$app->redirect('/matrix-decompositions' . $app->router()->urlFor('givens'));
 })->name('qr');
 
+/**
+ * Overview of givens rotations: theoretical background and algorithm.
+ */
 $app->get('/givens', function() use ($app) {
 	$app->render('Givens.php', array('app' => $app));
 })->name('givens');
 
+/**
+ * Demonstrate the givens rotation on the given matrix.
+ */
 $app->post('/givens-decomposition', function() use ($app) {
 	$input = $app->request()->post('matrix');
 	
@@ -145,37 +172,48 @@ $app->post('/givens-decomposition', function() use ($app) {
 	  }
 	}
   
-  // Q is the product of the single givens rotations.
-  for ($j = 0; $j < $matrix->columns(); $j++) {
-    for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-      $roh = $matrix->get($i, $j);
-      
-      $s = 0.;
-      $c = 0.;
-      
-      if (abs($roh) < 1) {
-        $s = 2*$roh;
-        $c = sqrt(1 - pow($s, 2));
-        
-        if ($roh < 0) {
-          $c = -$c;
-        }
-      }
-      else {
-        $c = 2./$roh;
-        $s = sqrt(1 - pow($c, 2));
-      }
-    }
+  $q = new \Libraries\Matrix(max($matrix->columns(), $matrix->rows()), max($matrix->columns(), $matrix->rows()));
+  $q->setAll(0.);
+  
+  for ($i = 0; $i < $q->rows(); $i++) {
+    $q->set($i, $i, 1.);
   }
   
-	$app->render('Givens.php', array('app' => $app, 'original' => $original, 'r' => $r, 'trace' => $trace));
+  // Q is the product of the single givens rotations.
+  foreach ($trace as $j => $column) {
+    foreach ($column as $i => $array) {
+      $givens = new \Libraries\Matrix(max($matrix->columns(), $matrix->rows()), max($matrix->columns(), $matrix->rows()));
+      $givens->setAll(0);
+      
+      for ($k = 0; $k < $givens->rows(); $k++) {
+        $givens->set($k, $k, 1.);
+      }
+      
+      $givens->set($j, $j, $array['c']);
+      $givens->set($j, $i, - $array['s']);
+      $givens->set($i, $i, $array['c']);
+      $givens->set($i, $j, $array['s']);
+      
+      $q = \Libraries\Matrix::multiply($givens, $q);
+    }
+    
+    $q = \Libraries\Matrix::transpose($q);
+  }
+  
+	$app->render('Givens.php', array('app' => $app, 'original' => $original, 'r' => $r, 'q' => $q, 'trace' => $trace));
 })->name('givens-decomposition');
 
+/**
+ * Overview of householder transformations.
+ */
 $app->get('/householder', function() use ($app) {
 	$app->redirect('/matrix-decompositions' . $app->router()->urlFor('givens'));
 	$app->render('Householder.php', array('app' => $app));
 })->name('householder');
 
+/**
+ * Credits. About me, used literatur and used software.
+ */
 $app->get('/credits', function () use ($app) {
   	$app->render('Credits.php', array('app' => $app));
 })->name('credits');

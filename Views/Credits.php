@@ -27,6 +27,7 @@
 			
 		    <ul class="nav nav-pills">
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
+          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('basics'); ?>"><?php echo __('Basics'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
 			    <li class="active"><a href="#"><?php echo __('Credits'); ?></a></li>
@@ -41,7 +42,7 @@
 			<p><b><?php echo __('Code.'); ?></b></p>
 			
 			<p>
-				<?php echo __('Visit the project on GitHub:'); ?> <a href="https://github.com/davidstutz/experimental-matrix-decompositions" target="_blank">davidstutz/experimental-matrix-decompositions</a>
+				<?php echo __('Visit the project on GitHub:'); ?> <a href="https://github.com/davidstutz/matrix-decompositions" target="_blank">davidstutz/matrix-decompositions</a>
 			</p>
 			
 			<p><b><?php echo __('Sources.'); ?></b></p>
@@ -51,7 +52,7 @@
 					<li><a href="http://en.wikipedia.org/wiki/Triangular_matrix" target="_blank"><?php echo __('Wikipedia: Triangular Matrix'); ?></a> <span class="muted"><?php echo __(' - visited february 2013'); ?></span></li>
 					<li><a href="http://en.wikipedia.org/wiki/Lu_decomposition" target="_blank"><?php echo __('Wikipedia: LU Decomposition'); ?></a> <span class="muted"><?php echo __(' - visited february 2013'); ?></span></li>
 					<li><a href="http://en.wikipedia.org/wiki/Gaussian_elimination" target="_blank"><?php echo __('Wikipedia: Gaussian Elimination'); ?></a> <span class="muted"><?php echo __(' - visited february 2013'); ?></span></li>
-					<li><?php echo __('"Numerik fuer Ingeneure und Naturwissenschaftler", W. Dahmen, A.Resuken, Springer Verlag, 2. Auflage'); ?></li>
+					<li><?php echo __('"Numerik f&uuml;r Ingeneure und Naturwissenschaftler", W. Dahmen, A.Resuken, Springer Verlag, 2. Auflage'); ?></li>
 				</ul>
 			</p>
 			
@@ -72,5 +73,3 @@
 	</body>
 </html>
 </html>
-
-

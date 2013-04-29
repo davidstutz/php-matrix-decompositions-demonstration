@@ -27,6 +27,7 @@
 			
 		    <ul class="nav nav-pills">
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
+          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('basics'); ?>"><?php echo __('Basics'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
 			    <li class="active"><a href="#"><?php echo __('QR Decomposition'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
@@ -46,17 +47,17 @@
 		    </ul>
 		    
 		    <div class="tabbable">
-				<ul class="nav nav-tabs">
-					<li><a href="#code" data-toggle="tab"><?php echo __('Code'); ?></a></li>
-					<li><a href="#algorithm" data-toggle="tab"><?php echo __('Algorithm'); ?></a></li>
-					<li <?php if (!isset($original)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
-					<?php if (isset($original)): ?>
-						<li class="active"><a href="#result" data-toggle="tab"><?php echo __('Result'); ?></a></li>
-					<?php endif; ?>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane" id="code">
-						<pre class="prettyprint linenums">
+  				<ul class="nav nav-tabs">
+  					<li><a href="#code" data-toggle="tab"><?php echo __('Code'); ?></a></li>
+  					<li><a href="#algorithm" data-toggle="tab"><?php echo __('Algorithm'); ?></a></li>
+  					<li <?php if (!isset($original)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
+  					<?php if (isset($original)): ?>
+  						<li class="active"><a href="#result" data-toggle="tab"><?php echo __('Result'); ?></a></li>
+  					<?php endif; ?>
+  				</ul>
+          <div class="tab-content">
+  					<div class="tab-pane" id="code">
+  						<pre class="prettyprint linenums">
 /**
  * Get the qr decomposition of the given matrix using givens rotations.
  * 
@@ -101,58 +102,61 @@ public static function qrDecompositionGivens(&$original)
 		}
 	}
 }
-						</pre>
-					</div>
-					<div class="tab-pane" id="algorithm">
-						
-					</div>
-					<div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
-						<form class="form-horizontal" method="POST" action="/matrix-decompositions<?php echo $app->router()->urlFor('givens-decomposition'); ?>">
-							<div class="control-group">
-								<label class="control-label"><?php echo __('Matrix'); ?></label>
-								<div class="controls">
-									<textarea name="matrix" rows="10" class="span6"></textarea>
-								</div>
-							</div>
-							<div class="form-actions">
-								<button class="btn btn-primary type="submit"><?php echo __('Calculate QR Decomposition'); ?></button>
-							</div>
-						</form>
-					</div>
-				</div>
-				<?php if (isset($original)): ?>
-					<div class="tab-pane active" id="result">
-						<?php if (isset($original)): ?>
-							<p><b><?php echo __('Given matrix.'); ?></b></p>
-							
-							<p><?php echo $app->render('Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
-							
-							<p><b><?php echo __('Algorithm.'); ?></b></p>
-							
-							<?php foreach ($trace as $j => $column): ?>
-							  <p><?php echo __('Column'); ?> $<?php echo $j; ?>$</p>
-							  <?php foreach ($column as $i => $array): ?>
-							    <p><?php echo __('Row'); ?> $<?php echo $i; ?>$</p>
-							    <p>$c = <?php echo $array['c']; ?>$, $s = <?php echo $array['s']; ?>$</p>
-  								<p>
-  									$\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['matrix'])); ?>
-  								</p>
-  							<?php endforeach; ?>
-							<?php endforeach; ?>
-							
-							<p><b><?php echo __('Decomposition.'); ?></b></p>
-							
-							<p>
-								$Q = $ <?php echo $app->render('Matrix.php', array('matrix' => $q)); ?>
-							</p>
-							
-							<p>
-								$R = $ <?php echo $app->render('Matrix.php', array('matrix' => $r)); ?>
-							</p>
-							
-						<?php endif; ?>
-					</div>
-				<?php endif; ?>
+  						</pre>
+  					</div>
+  					<div class="tab-pane" id="algorithm">
+  						
+  					</div>
+  					<div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
+  						<form class="form-horizontal" method="POST" action="/matrix-decompositions<?php echo $app->router()->urlFor('givens-decomposition'); ?>">
+  							<div class="control-group">
+  								<label class="control-label"><?php echo __('Matrix'); ?></label>
+  								<div class="controls">
+  									<textarea name="matrix" rows="10" class="span6"></textarea>
+  								</div>
+  							</div>
+  							<div class="form-actions">
+  								<button class="btn btn-primary type="submit"><?php echo __('Calculate QR Decomposition'); ?></button>
+  							</div>
+  						</form>
+  					</div>
+            <?php if (isset($original)): ?>
+    					<div class="tab-pane active" id="result">
+    						<?php if (isset($original)): ?>
+    							<p><b><?php echo __('Given matrix.'); ?></b></p>
+    							
+    							<p><?php echo $app->render('Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
+    							
+    							<p><b><?php echo __('Algorithm.'); ?></b></p>
+    							
+    							<?php foreach ($trace as $j => $column): ?>
+    							  <?php foreach ($column as $i => $array): ?>
+    							    <p>$G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>}$: $c = <?php echo $array['c']; ?>$, $s = <?php echo $array['s']; ?>$</p>
+      								<p>
+      									$\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['matrix'])); ?>
+      								</p>
+      							<?php endforeach; ?>
+    							<?php endforeach; ?>
+    							
+    							<p><b><?php echo __('Decomposition.'); ?></b></p>
+    							
+    							<p>
+    							  $R = $ <?php echo $app->render('Matrix.php', array('matrix' => $r)); ?>
+    							</p>
+    							
+    							<p>
+    							  $Q = <?php foreach ($trace as $j => $column): ?>
+                      <?php foreach ($column as $i => $array): ?>
+                        G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} ^{T}
+                        <?php endforeach; ?>
+                      <?php endforeach; ?>
+                     = $ <?php echo $app->render('Matrix.php', array('matrix' => $q)); ?>
+    							</p>
+    							
+    						<?php endif; ?>
+    					</div>
+            <?php endif; ?>
+          </div>
 			</div>
 			<hr>
 			<p>

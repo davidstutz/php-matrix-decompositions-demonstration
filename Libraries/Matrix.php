@@ -264,8 +264,8 @@ class Matrix {
 	public static function add($a, $b) {
 		Matrix::_assert($a instanceof Matrix, 'Given first matrix not of class Matrix.');
 		Matrix::_assert($b instanceof Matrix, 'Given second matrix not of class Matrix.');
-		Matrix::_assert($a->rows() == $b->rows(), 'Given matrices do not have same dimensions');
-		Matrix::_assert($a->columns() == $b->columns(), 'Given matrices do not have same dimensions');
+		Matrix::_assert($a->rows() == $b->rows(), 'Given matrices do not have same dimensions.');
+		Matrix::_assert($a->columns() == $b->columns(), 'Given matrices do not have same dimensions.');
 		
 		$rows = $a->rows();
 		$columns = $a->columns();
@@ -297,6 +297,34 @@ class Matrix {
     }
     
     return $transposed;
+  }
+  
+  /**
+   * Multiply the given matrices.
+   * 
+   * @param matrix  $a
+   * @param matrix  $b
+   * @return  matrix $a*$b
+   */
+  public static function multiply($a, $b) {
+    // First check dimensions.
+    Matrix::_assert($a instanceof Matrix, 'Given first matrix not of class Matrix.');
+    Matrix::_assert($b instanceof Matrix, 'Given second matrix not of class Matrix.');
+    Matrix::_assert($a->rows() == $b->rows(), 'Given dimensions are not compatible.');
+    Matrix::_assert($a->columns() == $b->columns(), 'Given dimensions are not compatible.');
+    
+    $c = new Matrix($a->rows(), $b->columns());
+    $c->setAll(0.);
+    
+    for ($i = 0; $i < $a->rows(); $i++) {
+      for ($j = 0; $j < $a->columns(); $j++) {
+        for ($k = 0; $k < $b->rows(); $k++) {
+          $c->set($i, $j, $c->get($i, $j) + $a->get($i, $k)*$b->get($i, $k));
+        }
+      }
+    }
+    
+    return $c;
   }
   
 	/**
@@ -362,8 +390,10 @@ class Matrix {
 			
 			$matrix->swapColumns($j, $pivot);
 			
-			$trace[$j] = array();
-			$trace[$j]['permutation'] = $matrix->copy();
+      // Save the matrix after permutation.
+			$trace[$j] = array(
+        'permutation' => $matrix->copy(),
+      );
 			
 			for ($i = $j + 1; $i < $matrix->columns(); $i++) {
 				$matrix->set($i, $j, $matrix->get($i, $j)/$matrix->get($j, $j));
@@ -373,6 +403,7 @@ class Matrix {
 				}
 			}
 			
+      // Save the matrix after elimination.
 			$trace[$j]['elimination'] = $matrix->copy();
 		}
 		
@@ -457,37 +488,42 @@ class Matrix {
 		
 		for ($j = 0; $j < $matrix->columns(); $j++) {
 			for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-				$r = sqrt(pow($matrix->get($j, $j), 2) + pow($matrix->get($i, $j), 2));
-				
-				if ($matrix->get($i, $j) < 0) {
-					$r = -$r;
-				}
-				
-				$s = $matrix->get($i, $j)/$r;
-				$c = $matrix->get($j, $j)/$r;
-				
-				for ($k = $j; $k < $Matrix->columns(); $k++) {
-					$jk = $matrix->get($j ,$k);
-					$ik = $matrix->get($i, $k);
-					$matrix->set($j, $k, $c*$jk + $s*$ik);
-					$matrix->set($i, $k, -$s*$jk + $c*$ik);
-				}
-				
-				if ($c == 0) {
-					$matrix->set($i, $j, 1);
-				}
-				else if (abs($s) < abs($c)) {
-					if ($c < 0) {
-						$matrix->set($i, $j, -.5*$s);
-					}
-					else {
-						$matrix->set($i, $j, .5*$s);
-					}
-				}
-				else {
-					$matrix->set($i, $j, 2./$c);
-				}
-			}
+        // If the entry is zero it can be skipped.
+			  if ($matrix->get($i, $j) != 0) {
+  				$r = sqrt(pow($matrix->get($j, $j), 2) + pow($matrix->get($i, $j), 2));
+  				
+  				if ($matrix->get($i, $j) < 0) {
+  					$r = -$r;
+  				}
+  				
+  				$s = $matrix->get($i, $j)/$r;
+  				$c = $matrix->get($j, $j)/$r;
+  				
+          // Apply the givens rotation:
+  				for ($k = $j; $k < $matrix->columns(); $k++) {
+  					$jk = $matrix->get($j ,$k);
+  					$ik = $matrix->get($i, $k);
+  					$matrix->set($j, $k, $c*$jk + $s*$ik);
+  					$matrix->set($i, $k, -$s*$jk + $c*$ik);
+  				}
+  				
+          // c and s can be stored in one matrix entry:
+  				if ($c == 0) {
+  					$matrix->set($i, $j, 1);
+  				}
+  				else if (abs($s) < abs($c)) {
+  					if ($c < 0) {
+  						$matrix->set($i, $j, -.5*$s);
+  					}
+  					else {
+  						$matrix->set($i, $j, .5*$s);
+  					}
+  				}
+  				else {
+  					$matrix->set($i, $j, 2./$c);
+  				}
+  			}
+      }
 		}
 	}
 	
@@ -499,47 +535,37 @@ class Matrix {
 	 */
 	public static function qrDecompositionGivensWithTrace(&$matrix, &$trace) {
 		Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
-		
+    
 		for ($j = 0; $j < $matrix->columns(); $j++) {
 		  $trace[$j] = array();
-      
-			for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-			  $r = sqrt(pow($matrix->get($j, $j), 2) + pow($matrix->get($i, $j), 2));
+      for ($i = $j + 1; $i < $matrix->rows(); $i++) {
+			  // If the entry is zero it can be skipped.
+			  if ($matrix->get($i, $j) != 0) {
+			    $r = sqrt(pow($matrix->get($j, $j), 2) + pow($matrix->get($i, $j), 2));
 				
-				if ($matrix->get($i, $j) < 0) {
-					$r = -$r;
-				}
-				
-				$s = $matrix->get($i, $j)/$r;
-				$c = $matrix->get($j, $j)/$r;
-        
-				for ($k = $j; $k < $matrix->columns(); $k++) {
-					$jk = $matrix->get($j ,$k);
-					$ik = $matrix->get($i, $k);
-					$matrix->set($j, $k, $c*$jk + $s*$ik);
-					$matrix->set($i, $k, -$s*$jk + $c*$ik);
-				}
-				
-				if ($c == 0) {
-					$matrix->set($i, $j, 1);
-				}
-				else if (abs($s) < abs($c)) {
-					if ($c < 0) {
-						$matrix->set($i, $j, -.5*$s);
-					}
-					else {
-						$matrix->set($i, $j, .5*$s);
-					}
-				}
-				else {
-					$matrix->set($i, $j, 2./$c);
-				}
-        
-        $trace[$j][$i] = array(
-          'c' => $c,
-          's' => $s,
-          'matrix' => $matrix,
-        );
+  				if ($matrix->get($i, $j) < 0) {
+  					$r = -$r;
+  				}
+  				
+  				$s = $matrix->get($i, $j)/$r;
+  				$c = $matrix->get($j, $j)/$r;
+          
+          // Apply the givens rotation.
+  				for ($k = $j; $k < $matrix->columns(); $k++) {
+  					$jk = $matrix->get($j ,$k);
+  					$ik = $matrix->get($i, $k);
+  					$matrix->set($j, $k, $c*$jk + $s*$ik);
+  					$matrix->set($i, $k, -$s*$jk + $c*$ik);
+  				}
+          
+          // This time roh (so c and s) are not stored within the matrix but given using the trace.
+          
+          $trace[$j][$i] = array(
+            'c' => $c,
+            's' => $s,
+            'matrix' => $matrix->copy(), // Has to be a copy not a reference!
+          );
+        }
 			}
 		}
 	}
