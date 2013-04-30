@@ -27,7 +27,6 @@
 			
 		    <ul class="nav nav-pills">
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
-          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('basics'); ?>"><?php echo __('Basics'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
 			    <li class="active"><a href="#"><?php echo __('QR Decomposition'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
@@ -35,6 +34,15 @@
 		    
 		    <p>
 		    	<?php echo __('The QR decomposition is a factorization $A = QR$ of a matrix $A \in \mathbb{R}^{m \times n}$ in an orthogonal Matrix $Q \in \mathbb{R}^{m \times m}$ and an upper triangular matrix $R \in \mathbb{R}^{m \times n}$.'); ?>
+		    </p>
+		    
+		    <p>
+		      <?php echo __('Some basic characteristics of orthogonal matrices. Let $Q \in \mathbb{R}^{n \times n}$ be an orthogonal matrix.'); ?>
+		      <ul>
+		        <li><?php echo __('$Q^T$ is orthogonal.'); ?></li>
+		        <li><?php echo __('Let $\bar{Q} \in \mathbb{R}^{n \times n}$ be orthogonal, then $Q \cdot \bar{Q}$ is orthogonal.'); ?></li>
+		        <li><?php echo __('The columns of $Q$ form an orthonormal basis of $\mathbb{R}^n$.'); ?></li>
+		      </ul>
 		    </p>
 		    
 		    <p>
@@ -105,7 +113,9 @@ public static function qrDecompositionGivens(&$original)
   						</pre>
   					</div>
   					<div class="tab-pane" id="algorithm">
-  						
+  						<p>
+  						  <?php echo __('The algorithm is based on the so called givens rotations (named after <a target="_blank" href="http://en.wikipedia.org/wiki/Wallace_Givens">Wallace Givens</a>), which are orthogonal. Using a sequence of givens rotations the given matrix can be transformed to an upper triangular matrix.'); ?>
+  						</p>
   					</div>
   					<div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
   						<form class="form-horizontal" method="POST" action="/matrix-decompositions<?php echo $app->router()->urlFor('givens-decomposition'); ?>">
@@ -129,11 +139,24 @@ public static function qrDecompositionGivens(&$original)
     							
     							<p><b><?php echo __('Algorithm.'); ?></b></p>
     							
+    							<?php $givens = new \Libraries\Matrix(max($original->columns(), $original->rows()), max($original->columns(), $original->rows())); ?>
     							<?php foreach ($trace as $j => $column): ?>
     							  <?php foreach ($column as $i => $array): ?>
-    							    <p>$G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>}$: $c = <?php echo $array['c']; ?>$, $s = <?php echo $array['s']; ?>$</p>
+    							    <?php // Get the givens rotation of this step.
+    							    $givens->setAll(0);
+                      for ($k = 0; $k < $givens->rows(); $k++) {
+                        $givens->set($k, $k, 1.);
+                      }
+                      
+                      $givens->set($j, $j, $array['c']);
+                      $givens->set($j, $i, $array['s']);
+                      $givens->set($i, $i, $array['c']);
+                      $givens->set($i, $j, - $array['s']);
+                      
+                      $q = \Libraries\Matrix::multiply($q, \Libraries\Matrix::transpose($givens));
+                      ?>
       								<p>
-      									$\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['matrix'])); ?>
+      									$\overset{G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>}}{\leadsto}$ <?php echo $app->render('Matrix.php', array('matrix' => $array['matrix'])); ?> <?php echo __('with'); ?> $G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} = $ <?php echo $app->render('Matrix.php', array('matrix' => $givens)); ?>
       								</p>
       							<?php endforeach; ?>
     							<?php endforeach; ?>

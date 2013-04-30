@@ -288,6 +288,8 @@ class Matrix {
    * @return  matrix  $a transposed
    */
   public static function transpose($a) {
+    Matrix::_assert($a instanceof Matrix, 'Given matrix is not of class Matrix.');
+    
     $transposed = $a->copy();
     
     for ($i = 0; $i < $a->rows(); $i++) {
@@ -319,7 +321,7 @@ class Matrix {
     for ($i = 0; $i < $a->rows(); $i++) {
       for ($j = 0; $j < $a->columns(); $j++) {
         for ($k = 0; $k < $b->rows(); $k++) {
-          $c->set($i, $j, $c->get($i, $j) + $a->get($i, $k)*$b->get($i, $k));
+          $c->set($i, $j, $c->get($i, $j) + $a->get($i, $k)*$b->get($k, $j));
         }
       }
     }

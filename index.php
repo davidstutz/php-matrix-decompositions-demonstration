@@ -61,13 +61,6 @@ $app->get('/overview', function () use ($app) {
 })->name('overview');
 
 /**
- * Basic operations on matrices: transpose, multiply, add.
- */
-$app->get('/basics', function () use ($app) {
-    $app->render('Basics.php', array('app' => $app));
-})->name('basics');
-
-/**
  * Overview of the LU decomposition: Theoretical basics and algorithm.
  * Demo will call lu-decomposition.
  */
@@ -94,6 +87,7 @@ $app->post('/lu-decomposition', function() use ($app) {
 		$i++;
 	}
 	
+	// Create the matrix from the above generated array.
 	$matrix = new \Libraries\Matrix($i, $j);
 	$matrix->fromArray($array);
 	$original = $matrix->copy();
@@ -104,6 +98,7 @@ $app->post('/lu-decomposition', function() use ($app) {
 	
 	$l = $matrix->copy();
 	$u = $matrix->copy();
+  
 	// Extract L and U.
 	for ($i = 0; $i < $matrix->rows(); $i++) {
 		for ($j = 0; $j < $matrix->columns(); $j++) {
@@ -154,6 +149,7 @@ $app->post('/givens-decomposition', function() use ($app) {
 		$i++;
 	}
 	
+  // Create the matrix from the above generated array.
 	$matrix = new \Libraries\Matrix($i, $j);
 	$matrix->fromArray($array);
 	$original = $matrix->copy();
@@ -172,32 +168,13 @@ $app->post('/givens-decomposition', function() use ($app) {
 	  }
 	}
   
+  // Q will be given as identity matrix.
+  // Q will be computed within the view, because the single givens rotations are shwon each step.
   $q = new \Libraries\Matrix(max($matrix->columns(), $matrix->rows()), max($matrix->columns(), $matrix->rows()));
   $q->setAll(0.);
   
   for ($i = 0; $i < $q->rows(); $i++) {
     $q->set($i, $i, 1.);
-  }
-  
-  // Q is the product of the single givens rotations.
-  foreach ($trace as $j => $column) {
-    foreach ($column as $i => $array) {
-      $givens = new \Libraries\Matrix(max($matrix->columns(), $matrix->rows()), max($matrix->columns(), $matrix->rows()));
-      $givens->setAll(0);
-      
-      for ($k = 0; $k < $givens->rows(); $k++) {
-        $givens->set($k, $k, 1.);
-      }
-      
-      $givens->set($j, $j, $array['c']);
-      $givens->set($j, $i, - $array['s']);
-      $givens->set($i, $i, $array['c']);
-      $givens->set($i, $j, $array['s']);
-      
-      $q = \Libraries\Matrix::multiply($givens, $q);
-    }
-    
-    $q = \Libraries\Matrix::transpose($q);
   }
   
 	$app->render('Givens.php', array('app' => $app, 'original' => $original, 'r' => $r, 'q' => $q, 'trace' => $trace));
