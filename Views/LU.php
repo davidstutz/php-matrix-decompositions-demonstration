@@ -28,6 +28,7 @@
 		    <ul class="nav nav-pills">
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
 			    <li class="active"><a href="#"><?php echo __('LU Decomposition'); ?></a></li>
+          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
 		    </ul>
@@ -64,81 +65,38 @@
 /**
  * Generate LU decomposition of the matrix.
  * 
- * @param	matrix	matrix to get the lu decomposition of
- * @return	vector	permutation
+ * @param matrix  matrix to get the lu decomposition of
+ * @return  vector  permutation
  */
 public static function luDecomposition(&$matrix) {
-	Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
-	Matrix::_assert($matrix->rows() == $matrix->columns(), 'Matrix is no quadratic.');
-	
-	$permutation = new Vector($matrix->rows());
-	
-	for ($j = 0; $j < $matrix->rows(); $j++) {
-		
-		$pivot = $j;
-		for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-			if (abs($matrix->get($i,$j)) > abs($matrix->get($pivot, $j))) {
-				$pivot = $i;
-			}
-		}
-		
-		$permutation->set($j, $pivot);
-		
-		$matrix->swapColumns($j, $pivot);
-		
-		for ($i = $j + 1; $i < $matrix->columns(); $i++) {
-			$matrix->set($i, $j, $matrix->get($i, $j)/$matrix->get($j, $j));
-			
-			for ($k = $j + 1; $k < $matrix->columns(); $k++) {
-				$matrix->set($i, $k, $matrix->get($i, $k) - $matrix->get($i, $j)*$matrix->get($j,$k));
-			}
-		}
-	}
-	
-	return $permutation;
-}
-
-/**
- * Generate LU decomposition of the matrix.
- * 
- * @param	matrix	matrix to get lu decomposition of
- * @param	array 	store the trace in here
- * @return	vector	permutation
- */
-public static function luDecompositionWithTrace(&$matrix, &$trace) {
-	Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
-	Matrix::_assert($matrix->rows() == $matrix->columns(), 'Matrix is not quadratic.');
-	
-	$permutation = new Vector($matrix->rows());
-	
-	for ($j = 0; $j < $matrix->rows(); $j++) {
-		
-		$pivot = $j;
-		for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-			if (abs($matrix->get($i,$j)) > abs($matrix->get($pivot, $j))) {
-				$pivot = $i;
-			}
-		}
-		
-		$permutation->set($j, $pivot);
-		
-		$matrix->swapColumns($j, $pivot);
-		
-		$trace[$j] = array();
-		$trace[$j]['permutation'] = $matrix->copy();
-		
-		for ($i = $j + 1; $i < $matrix->columns(); $i++) {
-			$matrix->set($i, $j, $matrix->get($i, $j)/$matrix->get($j, $j));
-			
-			for ($k = $j + 1; $k < $matrix->columns(); $k++) {
-				$matrix->set($i, $k, $matrix->get($i, $k) - $matrix->get($i, $j)*$matrix->get($j,$k));
-			}
-		}
-		
-		$trace[$j]['elimination'] = $matrix->copy();
-	}
-	
-	return $permutation;
+  Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+  Matrix::_assert($matrix->rows() == $matrix->columns(), 'Matrix is no quadratic.');
+  
+  $permutation = new Vector($matrix->rows());
+  
+  for ($j = 0; $j < $matrix->rows(); $j++) {
+    
+    $pivot = $j;
+    for ($i = $j + 1; $i < $matrix->rows(); $i++) {
+      if (abs($matrix->get($i,$j)) > abs($matrix->get($pivot, $j))) {
+        $pivot = $i;
+      }
+    }
+    
+    $permutation->set($j, $pivot);
+    
+    $matrix->swapColumns($j, $pivot);
+    
+    for ($i = $j + 1; $i < $matrix->columns(); $i++) {
+      $matrix->set($i, $j, $matrix->get($i, $j)/$matrix->get($j, $j));
+      
+      for ($k = $j + 1; $k < $matrix->columns(); $k++) {
+        $matrix->set($i, $k, $matrix->get($i, $k) - $matrix->get($i, $j)*$matrix->get($j,$k));
+      }
+    }
+  }
+  
+  return $permutation;
 }
 
 /**
@@ -249,47 +207,45 @@ public static function luDeterminant($matrix, $permutation) {
 					</div>
 					<?php if (isset($original)): ?>
 						<div class="tab-pane active" id="result">
-							<?php if (isset($original)): ?>
-								<p><b><?php echo __('Given matrix.'); ?></b></p>
-								
-								<p><?php echo $app->render('Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
-								
-								<p><b><?php echo __('Algorithm.'); ?></b></p>
-								
-								<?php foreach ($trace as $i => $array): ?>
-									<p>
-										$\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['permutation'])); ?> <?php echo __('Step'); ?> $(<?php echo $i; ?>)$ <?php echo __('Permutation.'); ?>
-									</p>
-									<p>
-										$\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['elimination'])); ?> <?php echo __('Step'); ?> $(<?php echo $i; ?>)$ <?php echo __('Elimination.'); ?>
-									</p>
-								<?php endforeach; ?>
-								
-								<p><b><?php echo __('Decomposition.'); ?></b></p>
-								
+							<p><b><?php echo __('Given matrix.'); ?></b></p>
+							
+							<p><?php echo $app->render('Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
+							
+							<p><b><?php echo __('Algorithm.'); ?></b></p>
+							
+							<?php foreach ($trace as $i => $array): ?>
 								<p>
-									$L = $ <?php echo $app->render('Matrix.php', array('matrix' => $l)); ?>
+									$\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['permutation'])); ?> <?php echo __('Step'); ?> $(<?php echo $i; ?>)$ <?php echo __('Permutation.'); ?>
 								</p>
-								
 								<p>
-									$U = $ <?php echo $app->render('Matrix.php', array('matrix' => $u)); ?>
+									$\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['elimination'])); ?> <?php echo __('Step'); ?> $(<?php echo $i; ?>)$ <?php echo __('Elimination.'); ?>
 								</p>
-								
-							<?php endif; ?>
-							<?php if (isset($determinant)): ?>
-								<p><b><?php echo __('Determinant.'); ?></b></p>
-								
-								<?php $swapped = 0; ?>
-								<?php for ($i = 0; $i < $permutation->size(); $i++): ?>
-									<?php if ($permutation->get($i) != $i): ?>
-										<?php $swapped++; ?>
-									<?php endif; ?>
-								<?php endfor; ?>
-								
-								<p>
-									$(-1)^{\sharp swapped rows} \cdot \prod _{i=1} ^{n} u_{i,i} = (-1)^<?php echo $swapped; ?> <?php for ($i = 0; $i < $original->rows(); $i++): ?> \cdot <?php echo $original->get($i, $i); ?><?php endfor; ?> = <?php echo $determinant; ?>$
-								</p>
-							<?php endif; ?>
+							<?php endforeach; ?>
+							
+							<p><b><?php echo __('Decomposition.'); ?></b></p>
+							
+							<p>
+								$L = $ <?php echo $app->render('Matrix.php', array('matrix' => $l)); ?>
+							</p>
+							
+							<p>
+								$U = $ <?php echo $app->render('Matrix.php', array('matrix' => $u)); ?>
+							</p>
+							
+						<?php endif; ?>
+						<?php if (isset($determinant)): ?>
+							<p><b><?php echo __('Determinant.'); ?></b></p>
+							
+							<?php $swapped = 0; ?>
+							<?php for ($i = 0; $i < $permutation->size(); $i++): ?>
+								<?php if ($permutation->get($i) != $i): ?>
+									<?php $swapped++; ?>
+								<?php endif; ?>
+							<?php endfor; ?>
+							
+							<p>
+								$(-1)^{\sharp swapped rows} \cdot \prod _{i=1} ^{n} u_{i,i} = (-1)^<?php echo $swapped; ?> <?php for ($i = 0; $i < $original->rows(); $i++): ?> \cdot <?php echo $original->get($i, $i); ?><?php endfor; ?> = <?php echo $determinant; ?>$
+							</p>
 						</div>
 					<?php endif; ?>
 				</div>
@@ -302,5 +258,3 @@ public static function luDeterminant($matrix, $permutation) {
 	</body>
 </html>
 </html>
-
-

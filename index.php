@@ -118,6 +118,13 @@ $app->post('/lu-decomposition', function() use ($app) {
 })->name('lu-decomposition');
 
 /**
+ * Overview of the cholesky decomposition including definitions.
+ */
+$app->get('/cholesky', function () use ($app) {
+    $app->render('Cholesky.php', array('app' => $app));
+})->name('cholesky');
+
+/**
  * QR decomposition overview: theoretical background and introduction ot givens and householders.
  */
 $app->get('/qr', function () use ($app) {

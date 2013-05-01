@@ -27,6 +27,7 @@
 			
 		    <ul class="nav nav-pills">
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
+          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
 			    <li class="active"><a href="#"><?php echo __('QR Decomposition'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
@@ -69,46 +70,50 @@
 /**
  * Get the qr decomposition of the given matrix using givens rotations.
  * 
- * @param	matrix	matrix to get the qr decomposition of
+ * @param matrix  matrix to get the qr decomposition of
  */
-public static function qrDecompositionGivens(&$original)
-{
-	Matrix::_assert($original instanceof Matrix, 'Given matrix not of class Matrix.');
-	
-	for ($j = 0; $j < $original->columns(); $j++) {
-		for ($i = $j + 1; $i < $original->rows(); $i++) {
-			$r = sqrt(pow($original->get($j, $j), 2) + pow($original->get($i, $j), 2));
-			
-			if ($original->get($i, $j) < 0) {
-				$r = -$r;
-			}
-			
-			$s = $original->get($i, $j)/$r;
-			$c = $original->get($j, $j)/$r;
-			
-			for ($k = $j; $k < $original->columns(); $k++) {
-				$jk = $original->get($j ,$k);
-				$ik = $original->get($i, $k);
-				$original->set($j, $k, $c*$jk + $s*$ik);
-				$original->set($i, $k, -$s*$jk + $c*$ik);
-			}
-			
-			if ($c == 0) {
-				$original->set($i, $j, 1);
-			}
-			else if (abs($s) < abs($c)) {
-				if ($c < 0) {
-					$original->set($i, $j, -.5*$s);
-				}
-				else {
-					$original->set($i, $j, .5*$s);
-				}
-			}
-			else {
-				$original->set($i, $j, 2./$c);
-			}
-		}
-	}
+public static function qrDecompositionGivens(&$matrix) {
+  Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+  
+  for ($j = 0; $j < $matrix->columns(); $j++) {
+    for ($i = $j + 1; $i < $matrix->rows(); $i++) {
+      // If the entry is zero it can be skipped.
+      if ($matrix->get($i, $j) != 0) {
+        $r = sqrt(pow($matrix->get($j, $j), 2) + pow($matrix->get($i, $j), 2));
+        
+        if ($matrix->get($i, $j) < 0) {
+          $r = -$r;
+        }
+        
+        $s = $matrix->get($i, $j)/$r;
+        $c = $matrix->get($j, $j)/$r;
+        
+        // Apply the givens rotation:
+        for ($k = $j; $k < $matrix->columns(); $k++) {
+          $jk = $matrix->get($j ,$k);
+          $ik = $matrix->get($i, $k);
+          $matrix->set($j, $k, $c*$jk + $s*$ik);
+          $matrix->set($i, $k, -$s*$jk + $c*$ik);
+        }
+        
+        // c and s can be stored in one matrix entry:
+        if ($c == 0) {
+          $matrix->set($i, $j, 1);
+        }
+        else if (abs($s) < abs($c)) {
+          if ($c < 0) {
+            $matrix->set($i, $j, -.5*$s);
+          }
+          else {
+            $matrix->set($i, $j, .5*$s);
+          }
+        }
+        else {
+          $matrix->set($i, $j, 2./$c);
+        }
+      }
+    }
+  }
 }
   						</pre>
   					</div>
@@ -116,6 +121,8 @@ public static function qrDecompositionGivens(&$original)
   						<p>
   						  <?php echo __('The algorithm is based on the so called givens rotations (named after <a target="_blank" href="http://en.wikipedia.org/wiki/Wallace_Givens">Wallace Givens</a>), which are orthogonal. Using a sequence of givens rotations the given matrix can be transformed to an upper triangular matrix.'); ?>
   						</p>
+  						
+  						
   					</div>
   					<div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
   						<form class="form-horizontal" method="POST" action="/matrix-decompositions<?php echo $app->router()->urlFor('givens-decomposition'); ?>">
@@ -132,52 +139,49 @@ public static function qrDecompositionGivens(&$original)
   					</div>
             <?php if (isset($original)): ?>
     					<div class="tab-pane active" id="result">
-    						<?php if (isset($original)): ?>
-    							<p><b><?php echo __('Given matrix.'); ?></b></p>
-    							
-    							<p><?php echo $app->render('Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
-    							
-    							<p><b><?php echo __('Algorithm.'); ?></b></p>
-    							
-    							<?php $givens = new \Libraries\Matrix(max($original->columns(), $original->rows()), max($original->columns(), $original->rows())); ?>
-    							<?php foreach ($trace as $j => $column): ?>
-    							  <?php foreach ($column as $i => $array): ?>
-    							    <?php // Get the givens rotation of this step.
-    							    $givens->setAll(0);
-                      for ($k = 0; $k < $givens->rows(); $k++) {
-                        $givens->set($k, $k, 1.);
-                      }
-                      
-                      $givens->set($j, $j, $array['c']);
-                      $givens->set($j, $i, $array['s']);
-                      $givens->set($i, $i, $array['c']);
-                      $givens->set($i, $j, - $array['s']);
-                      
-                      $q = \Libraries\Matrix::multiply($q, \Libraries\Matrix::transpose($givens));
-                      ?>
-      								<p>
-      									$\overset{G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>}}{\leadsto}$ <?php echo $app->render('Matrix.php', array('matrix' => $array['matrix'])); ?> <?php echo __('with'); ?> $G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} = $ <?php echo $app->render('Matrix.php', array('matrix' => $givens)); ?>
-      								</p>
-      							<?php endforeach; ?>
+  							<p><b><?php echo __('Given matrix.'); ?></b></p>
+  							
+  							<p><?php echo $app->render('Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
+  							
+  							<p><b><?php echo __('Algorithm.'); ?></b></p>
+  							
+  							<?php $givens = new \Libraries\Matrix(max($original->columns(), $original->rows()), max($original->columns(), $original->rows())); ?>
+  							<?php foreach ($trace as $j => $column): ?>
+  							  <?php foreach ($column as $i => $array): ?>
+  							    <?php // Get the givens rotation of this step.
+  							    $givens->setAll(0);
+                    for ($k = 0; $k < $givens->rows(); $k++) {
+                      $givens->set($k, $k, 1.);
+                    }
+                    
+                    $givens->set($j, $j, $array['c']);
+                    $givens->set($j, $i, $array['s']);
+                    $givens->set($i, $i, $array['c']);
+                    $givens->set($i, $j, - $array['s']);
+                    
+                    $q = \Libraries\Matrix::multiply($q, \Libraries\Matrix::transpose($givens));
+                    ?>
+    								<p>
+    									$\overset{G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>}}{\leadsto}$ <?php echo $app->render('Matrix.php', array('matrix' => $array['matrix'])); ?> <?php echo __('with'); ?> $G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} = $ <?php echo $app->render('Matrix.php', array('matrix' => $givens)); ?>
+    								</p>
     							<?php endforeach; ?>
-    							
-    							<p><b><?php echo __('Decomposition.'); ?></b></p>
-    							
-    							<p>
-    							  $R = $ <?php echo $app->render('Matrix.php', array('matrix' => $r)); ?>
-    							</p>
-    							
-    							<p>
-    							  $Q = <?php foreach ($trace as $j => $column): ?>
-                      <?php foreach ($column as $i => $array): ?>
-                        G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} ^{T}
-                        <?php endforeach; ?>
+  							<?php endforeach; ?>
+  							
+  							<p><b><?php echo __('Decomposition.'); ?></b></p>
+  							
+  							<p>
+  							  $R = $ <?php echo $app->render('Matrix.php', array('matrix' => $r)); ?>
+  							</p>
+  							
+  							<p>
+  							  $Q = <?php foreach ($trace as $j => $column): ?>
+                    <?php foreach ($column as $i => $array): ?>
+                      G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} ^{T}
                       <?php endforeach; ?>
-                     = $ <?php echo $app->render('Matrix.php', array('matrix' => $q)); ?>
-    							</p>
-    							
-    						<?php endif; ?>
-    					</div>
+                    <?php endforeach; ?>
+                   = $ <?php echo $app->render('Matrix.php', array('matrix' => $q)); ?>
+  							</p>
+  					</div>
             <?php endif; ?>
           </div>
 			</div>
@@ -189,5 +193,3 @@ public static function qrDecompositionGivens(&$original)
 	</body>
 </html>
 </html>
-
-

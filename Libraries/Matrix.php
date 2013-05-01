@@ -284,8 +284,8 @@ class Matrix {
   /**
    * Transpose the given matrix.
    * 
-   * @param matrix  $a
-   * @return  matrix  $a transposed
+   * @param matrix  matrx to transpose
+   * @return  matrix  transposed matrix
    */
   public static function transpose($a) {
     Matrix::_assert($a instanceof Matrix, 'Given matrix is not of class Matrix.');
@@ -304,9 +304,9 @@ class Matrix {
   /**
    * Multiply the given matrices.
    * 
-   * @param matrix  $a
-   * @param matrix  $b
-   * @return  matrix $a*$b
+   * @param matrix  left matrix
+   * @param matrix  right matrix
+   * @return  matrix product matrix $a*$b
    */
   public static function multiply($a, $b) {
     // First check dimensions.
@@ -368,6 +368,7 @@ class Matrix {
 	
 	/**
 	 * Generate LU decomposition of the matrix.
+   * As trace the permutated matrix and eliminated matrix of each step is stored.
 	 * 
 	 * @param	matrix	matrix to get lu decomposition of
 	 * @param	array 	store the trace in here
@@ -482,6 +483,7 @@ class Matrix {
 	
 	/**
 	 * Get the qr decomposition of the given matrix using givens rotations.
+   * The single givens rotations are stored within the matrix.
 	 * 
 	 * @param	matrix	matrix to get the qr decomposition of
 	 */
@@ -531,6 +533,7 @@ class Matrix {
 	
 	/**
 	 * Get the qr decomposition of the given matrix using givens rotations.
+   * The single givens rotations are not stored within the matrix but added to the trace.
 	 * 
 	 * @param	matrix	matrix to get the qr decomposition of
 	 * @param	array 	store the trace in here
@@ -572,6 +575,31 @@ class Matrix {
 		}
 	}
 	
+  /**
+   * Get the cholesky decomposition of the given matrix.
+   * 
+   * @param matrix  matrix to get the cholesky decomposition of
+   */
+  public static function choleskyDecomposition(&$matrix, $tolerance = 0.00001) {
+    Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+    
+    for ($j = 0; $j < $matrix->columns(); $j++) {
+      $d = $matrix->get($j, $j);
+      for ($k = 0; $k < $j; $k++) {
+        $d -= pow($matrix->get($j, $k), 2)*$matrix->get($k, $K);
+      }
+      
+      Matrix::_assert($d < $tolerance*$matrix->get($j, $j), 'Symmetric, positive definit can not be guaranteed.');
+      
+      for ($i = $j + 1; $i < $matrix->rows(); $i++) {
+        $matrix->set($i, $j, $matrix->get($i, $j));
+        for ($k = 0; $k < $j; $k++) {
+          $matrix->set($i, $j, $matrix->get($i, $j) - $matrix->get($i, $k)*$matrix->get($k, $k)*$matrix->get($j, $k));
+        }
+      }
+    }
+  }
+  
 	/**
 	 * Asserts the given expression.
 	 * 
