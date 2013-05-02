@@ -580,22 +580,30 @@ class Matrix {
    * 
    * @param matrix  matrix to get the cholesky decomposition of
    */
-  public static function choleskyDecomposition(&$matrix, $tolerance = 0.00001) {
+  public static function choleskyDecomposition(&$matrix, double $tolerance = NULL) {
     Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+    
+    if ($tolerance === NULL) {
+      $tolerance = (double)0.00001;
+    }
     
     for ($j = 0; $j < $matrix->columns(); $j++) {
       $d = $matrix->get($j, $j);
       for ($k = 0; $k < $j; $k++) {
-        $d -= pow($matrix->get($j, $k), 2)*$matrix->get($k, $K);
+        $d -= pow($matrix->get($j, $k), 2)*$matrix->get($k, $k);
       }
       
-      Matrix::_assert($d < $tolerance*$matrix->get($j, $j), 'Symmetric, positive definit can not be guaranteed.');
+      // Test if symmetric, positive definit can be guaranteed.
+      Matrix::_assert($d > $tolerance*(double)$matrix->get($j, $j), 'Symmetric, positive definit can not be guaranteed: ' . $d . ' > ' . $tolerance*(double)$matrix->get($j, $j));
+      
+      $matrix->set($j, $j, $d);
       
       for ($i = $j + 1; $i < $matrix->rows(); $i++) {
         $matrix->set($i, $j, $matrix->get($i, $j));
         for ($k = 0; $k < $j; $k++) {
           $matrix->set($i, $j, $matrix->get($i, $j) - $matrix->get($i, $k)*$matrix->get($k, $k)*$matrix->get($j, $k));
         }
+        $matrix->set($i, $j, $matrix->get($i, $j)/((double)$matrix->get($j, $j)));
       }
     }
   }
@@ -607,7 +615,7 @@ class Matrix {
 	 */
 	private static function _assert($boolean, $message = '') {
 		if (!$boolean) {
-			throw new \Exception($message);
+			throw new \Libraries\Exception\MatrixException($message);
 		}
 	}
 }

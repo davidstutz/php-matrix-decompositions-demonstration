@@ -125,6 +125,59 @@ $app->get('/cholesky', function () use ($app) {
 })->name('cholesky');
 
 /**
+ * Demonstrate the cholesky deocmposition on the given matrix.
+ * If the matrix is not symmetric, positive definit an error will be thrown.
+ */
+$app->post('/cholesky-decomposition', function () use ($app) {
+  $input = $app->request()->post('matrix');
+  
+  $array = array();
+  $i = 0;
+  foreach (explode("\n", $input) as $line) {
+    $j = 0;
+    $array[$i] = array();
+    foreach (explode(" ", $line) as $entry) {
+      $array[$i][$j] = (double)$entry;
+      $j++;
+    }
+    $i++;
+  }
+  
+  // Create the matrix from the above generated array.
+  $matrix = new \Libraries\Matrix($i, $j);
+  $matrix->fromArray($array);
+  $original = $matrix->copy();
+  
+  try {
+    \Libraries\Matrix::choleskyDecomposition($matrix);
+  }
+  catch (\Libraries\Exception\MatrixException $e) {
+    
+  }
+  
+  $l = $matrix->copy();
+  $d = $matrix->copy();
+  
+  // Extract L and U.
+  for ($i = 0; $i < $matrix->rows(); $i++) {
+    for ($j = 0; $j < $matrix->columns(); $j++) {
+      if ($i > $j) {
+        $d->set($i, $j, 0.);
+      }
+      if ($i < $j) {
+        $d->set($i, $j, 0.);
+        $l->set($i, $j, 0.);
+      }
+      if ($i == $j) {
+        $l->set($i, $j, 1.);
+      }
+    }
+  }
+  
+  $app->render('Cholesky.php', array('app' => $app, 'original' => $original, 'l' => $l, 'd' => $d));
+})->name('cholesky-decomposition');
+
+/**
  * QR decomposition overview: theoretical background and introduction ot givens and householders.
  */
 $app->get('/qr', function () use ($app) {

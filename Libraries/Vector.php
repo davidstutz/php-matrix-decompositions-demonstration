@@ -8,7 +8,7 @@ namespace Libraries;
  * @author  David Stutz
  */
 class Vector {
-   	
+  
 	/**
 	 * @var	array 	data
 	 */
@@ -187,7 +187,7 @@ class Vector {
 	 */
 	private static function _assert($boolean, $message = '') {
 		if (!$boolean) {
-			throw new \Exception($message);
+			throw new \Libraries\Exception\VectorException($message);
 		}
 	}
 }
