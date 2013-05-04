@@ -17,6 +17,7 @@
 			});
 		</script>
 		<link rel="stylesheet" type="text/css" href="Assets/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="Assets/matrix-decompositions.css">
 		<link rel="stylesheet" type="text/css" href="Assets/prettify.css">
 	</head>
 	<body>
@@ -25,13 +26,15 @@
 				<h1><?php echo __('Matrix Decompositions'); ?></h1>
 			</div>
 			
-		    <ul class="nav nav-pills">
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
-			    <li class="active"><a href="#"><?php echo __('LU Decomposition'); ?></a></li>
-          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
-		    </ul>
+	    <ul class="nav nav-pills">
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
+		    <li class="active"><a href="#"><?php echo __('LU Decomposition'); ?></a></li>
+        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
+	    </ul>
+			
+			<h4><?php echo __('LU Decomposition'); ?></h4>
 			
 			<p>
 				<?php echo __('Based on Gaussian elimination the LU decomposition of a matrix $A \in \mathbb{R}^{n \times n}$ is a factorization into a lower normed triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $U \in \mathbb{R}^{n \times n}$: $PA = LU$ where $P$ is a permutation matrix'); ?>.

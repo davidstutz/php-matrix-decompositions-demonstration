@@ -17,6 +17,7 @@
 			});
 		</script>
 		<link rel="stylesheet" type="text/css" href="Assets/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="Assets/matrix-decompositions.css">
 		<link rel="stylesheet" type="text/css" href="Assets/prettify.css">
 	</head>
 	<body>
@@ -25,13 +26,15 @@
 				<h1><?php echo __('Matrix Decompositions'); ?></h1>
 			</div>
 			
-		    <ul class="nav nav-pills">
-			    <li class="active"><a href="#"><?php echo __('Problem Overview'); ?></a></li>
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
-          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
-		    </ul>
+	    <ul class="nav nav-pills">
+		    <li class="active"><a href="#"><?php echo __('Problem Overview'); ?></a></li>
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
+        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
+	    </ul>
+			
+			<h4><?php echo __('Problem Overview'); ?></h4>
 			
 			<p>
 				<?php echo __('In computer science a lot of applications lead to the problem of solving systems of linear equations. In linear algebra the problem is specified as follows:'); ?>
@@ -54,8 +57,48 @@
 				</ul>
 			</p>
 			
+			<h4><?php echo __('Decompositions'); ?></h4>
+			
+			<table class="table table-striped table-hover">
+			  <thead>
+			    <tr>
+			      <th><?php echo __('Decomposition'); ?></th>
+			      <th><?php echo __('Factorizazion'); ?></th>
+			      <th><?php echo __('Applicable for'); ?></th>
+			      <th><?php echo __('Runtime'); ?></th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU'); ?></a></td>
+			      <td><?php echo __('$A = LU$'); ?></td>
+			      <td><?php echo __('$A \in \mathbb{R}^{n \times n}$, $A$ regular'); ?></td>
+			      <td><?php echo __('$\mathcal{O}(\frac{1}{3}n^3)$'); ?></td>
+			    </tr>
+			    <tr>
+            <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky'); ?></a></td>
+            <td><?php echo __('$A = LDL^T$'); ?></td>
+            <td><?php echo __('$A \in \mathbb{R}^{n \times n}$, $A$ symmetric, positive definit'); ?></td>
+            <td><?php echo __('$\mathcal{O}(\frac{1}{6}n^3)$'); ?></td>
+          </tr>
+          <tr>
+            <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('givens'); ?>"><?php echo __('QR: Givens Rotations'); ?></a></td>
+            <td><?php echo __('$A = QR$'); ?></td>
+            <td><?php echo __('$A \in \mathbb{R}^{m \times n}$'); ?></td>
+            <td><?php echo __('$\mathcal{O}(\frac{4}{3}n^3)$'); ?></td>
+          </tr>
+          <tr>
+            <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('householder'); ?>"><?php echo __('QR: Householder Transformations'); ?></a></td>
+            <td><?php echo __('$A = QR$'); ?></td>
+            <td><?php echo __('$A \in \mathbb{R}^{m \times n}$'); ?></td>
+            <td><?php echo __('$\mathcal{O}(\frac{2}{3}n^3)$'); ?></td>
+          </tr>
+			  </tbody>
+			</table>
+			
+			<h4><?php echo __('Code'); ?></h4>
+			
 			<p>
-				<b><?php echo __('Code.'); ?></b>
 				<?php echo __('For working with matrices and vectors using PHP the following classes will be used. I know there are already many solutions of data structures for matrices and vectors, and they will most likely be more efficient or more flexible then these, but for demonstrating common used matrix deocmpositions the given classes will most likely do their jobs.'); ?>
 			</p>
 			

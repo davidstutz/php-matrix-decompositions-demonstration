@@ -17,6 +17,7 @@
       });
     </script>
     <link rel="stylesheet" type="text/css" href="Assets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="Assets/matrix-decompositions.css">
     <link rel="stylesheet" type="text/css" href="Assets/prettify.css">
   </head>
   <body>
@@ -32,6 +33,8 @@
           <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
           <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
         </ul>
+        
+        <h4><?php echo __('Cholesky Decomposition'); ?></h4>
         
         <p>
           <?php echo __('Using the Cholesky decomposition a symmetric, positive definit matrix $A \in \mathbb{R}^{n \times n}$ can be decomposed into the product $LDL^T$ of a normed lower triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $R \in \mathbb{R}^{n \times n}$.'); ?>

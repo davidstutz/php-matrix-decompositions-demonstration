@@ -17,6 +17,7 @@
 			});
 		</script>
 		<link rel="stylesheet" type="text/css" href="Assets/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="Assets/matrix-decompositions.css">
 		<link rel="stylesheet" type="text/css" href="Assets/prettify.css">
 	</head>
 	<body>
@@ -27,11 +28,13 @@
 			
 		    <ul class="nav nav-pills">
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
+          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
           <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
 			    <li class="active"><a href="#"><?php echo __('QR Decomposition'); ?></a></li>
 			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
 		    </ul>
+		    
+		    <h4><?php echo __('QR Decomposition'); ?></h4>
 		    
 		    <p>
 		    	<?php echo __('The QR decomposition is a factorization $A = QR$ of a matrix $A \in \mathbb{R}^{m \times n}$ in an orthogonal Matrix $Q \in \mathbb{R}^{m \times m}$ and an upper triangular matrix $R \in \mathbb{R}^{m \times n}$.'); ?>
@@ -54,6 +57,8 @@
 			    <li class="active"><a href="#"><?php echo __('Givens rotations'); ?></a></li>
 			    <li class="disabled"><a href="#"><?php echo __('Householder transformations'); ?></a></li>
 		    </ul>
+		    
+		    <h4><?php echo __('Givens Rotations'); ?></h4>
 		    
 		    <div class="tabbable">
   				<ul class="nav nav-tabs">
@@ -122,7 +127,113 @@ public static function qrDecompositionGivens(&$matrix) {
   						  <?php echo __('The algorithm is based on the so called givens rotations (named after <a target="_blank" href="http://en.wikipedia.org/wiki/Wallace_Givens">Wallace Givens</a>), which are orthogonal. Using a sequence of givens rotations the given matrix can be transformed to an upper triangular matrix.'); ?>
   						</p>
   						
+  						<!--
+  						<p>
+  						  <?php echo __('Consider the following problem: Find $c$ and $s$ such that:'); ?>
+  						</p>
   						
+  						<p>
+  						  $\left[\begin{array}{c c} 
+                  c & -s \\
+                  s & c \\
+                \end{array} \right]
+                \left[\begin{array}{c} 
+                  a \\
+                  b \\
+                \end{array} \right]
+                 = 
+                \left[\begin{array}{c} 
+                  r \\
+                  0 \\
+                \end{array} \right]$
+              </p>
+              
+              <p>
+                <?php echo __('Under the condition that $c^2 + s^2 = 1$.'); ?>
+                
+                <?php echo __('Then'); ?> 
+                $\left[\begin{array}{c c}
+                  c & -s \\ s & c \\
+                \end{array} \right]$ 
+                <?php echo __('will be orthogonal'); ?>
+                 - 
+                $\left[\begin{array}{c}
+                  c \\
+                  -s \\
+                \end{array} \right]$ 
+                <?php echo __('and'); ?> 
+                $\left[\begin{array}{c}
+                  s \\
+                  c \\
+                \end{array} \right]$
+                <?php echo __('form an orthonormal basis if $\mathbb{R}^n$.'); ?>
+              </p>
+              
+              <p>
+                <?php echo __('The solution is given by $r = \sqrt{a^2 + b^2}$, $c = \frac{a}{r}$ and $s = \frac{b}{r}$. By embedding the givens rotation into the identity matrix we have found a way to eliminate the $i$-th entry of a vector (or column of a matrix) $x \in \mathbb{R}^n:'); ?>
+              </p>
+              -->
+              
+              <p>
+                <?php echo __('Using givens rotations we can eliminate a single entry of a vector (or column) $x \in \mathbb{R}^n$:'); ?>
+              </p>
+              
+              <p>
+                $G = 
+                \left[\begin{array}{c c c c c c c} 
+                  1 & & & & \ldots & & & & 0\\
+                   & \ddots & & & & & & & \\
+                   & & & c & \ldots & -s & & & \\
+                  \vdots & & & \vdots & & \vdots & & & \vdots \\
+                   & & & s & \ldots & c & & & \\
+                   & & & & & & & \ddots & \\
+                  0 & & & & \ldots & & & & 1 \\
+                \end{array} \right]
+                \left[\begin{array}{c} 
+                  x_1 \\
+                  \vdots \\
+                  x_i \\
+                  \vdots \\
+                  x_j \\
+                  \vdots \\
+                  x_n \\
+                \end{array} \right]
+                 = 
+                \left[\begin{array}{c} 
+                  x_1 \\
+                  \vdots \\
+                  r \\
+                  \vdots \\
+                  0\ \
+                  \vdots \\
+                  x_n \\
+                \end{array} \right]
+                $
+              </p>
+              
+              <p>
+                <?php echo __('Where $r = \sqrt{x_i^2 + x_j^2}$ and $c$ and $s$ can be computed using: $c = \frac{x_i}{r}$, $s = \frac{x_j}{r}$.'); ?>
+              </p>
+              
+              <p>
+                <?php echo __('$G$ is obviously orthogonal - the columns form an orthonormal basis of $\mathbb{R}^n$. In addition note that $G$ is only affecting the $i$-th and $j$-th row.') ;?>
+              </p>
+              
+              <p>
+                <?php echo __('So the matrix $A$ can be reduced to an upper triangular matrix by eliminating all entries below the diagonal:'); ?>
+              </p>
+              
+              <p>
+                $G_{m,n} \ldots G_{3,1} G_{2,1} G_{1,1} A = R$
+              </p>
+              
+              <p>
+                <?php echo __('Where $G_{i,j}$ is the givens rotation eliminating the $i$-th entry in the $j$-th column of $A$. So the decomposition is given by:'); ?>
+              </p>
+              
+              <p>
+                $A = G_{1,1}^T G_{2,1}^T G_{3,1}^T \ldots G_{m,n}^T R = QR$
+              </p>
   					</div>
   					<div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
   						<form class="form-horizontal" method="POST" action="/matrix-decompositions<?php echo $app->router()->urlFor('givens-decomposition'); ?>">

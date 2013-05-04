@@ -17,6 +17,7 @@
 			});
 		</script>
 		<link rel="stylesheet" type="text/css" href="Assets/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="Assets/matrix-decompositions.css">
 		<link rel="stylesheet" type="text/css" href="Assets/prettify.css">
 	</head>
 	<body>
@@ -25,24 +26,22 @@
 				<h1><?php echo __('Credits'); ?></h1>
 			</div>
 			
-		    <ul class="nav nav-pills">
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
-          <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
-			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
-			    <li class="active"><a href="#"><?php echo __('Credits'); ?></a></li>
-		    </ul>
+	    <ul class="nav nav-pills">
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('overview'); ?>"><?php echo __('Problem Overview'); ?></a></li>
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
+        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
+		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
+		    <li class="active"><a href="#"><?php echo __('Credits'); ?></a></li>
+	    </ul>
 			
-			<p><b><?php echo __('About me.'); ?></b></p>
-			
+			<h4><?php echo __('Credits'); ?></h4>
+						
 			<p>
-				<?php echo __('Visit my personal website:'); ?> <a href="http://davidstutz.de">davidstutz.de</a>.
+				<b><?php echo __('About me.'); ?></b> <?php echo __('Visit my personal website:'); ?> <a href="http://davidstutz.de" target="_blank">davidstutz.de</a>.
 			</p>
-			
-			<p><b><?php echo __('Code.'); ?></b></p>
-			
+		  			
 			<p>
-				<?php echo __('Visit the project on GitHub:'); ?> <a href="https://github.com/davidstutz/matrix-decompositions" target="_blank">davidstutz/matrix-decompositions</a>
+				<b><?php echo __('Code.'); ?></b> <?php echo __('Visit the project on GitHub:'); ?> <a href="https://github.com/davidstutz/matrix-decompositions" target="_blank">davidstutz/matrix-decompositions</a>
 			</p>
 			
 			<p><b><?php echo __('Sources.'); ?></b></p>
