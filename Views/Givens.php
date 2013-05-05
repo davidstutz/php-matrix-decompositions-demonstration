@@ -58,8 +58,6 @@
 			    <li class="disabled"><a href="#"><?php echo __('Householder transformations'); ?></a></li>
 		    </ul>
 		    
-		    <h4><?php echo __('Givens Rotations'); ?></h4>
-		    
 		    <div class="tabbable">
   				<ul class="nav nav-tabs">
   					<li><a href="#code" data-toggle="tab"><?php echo __('Code'); ?></a></li>

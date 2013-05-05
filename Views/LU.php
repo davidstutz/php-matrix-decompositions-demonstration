@@ -34,24 +34,22 @@
 		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
 	    </ul>
 			
-			<h4><?php echo __('LU Decomposition'); ?></h4>
-			
 			<p>
 				<?php echo __('Based on Gaussian elimination the LU decomposition of a matrix $A \in \mathbb{R}^{n \times n}$ is a factorization into a lower normed triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $U \in \mathbb{R}^{n \times n}$: $PA = LU$ where $P$ is a permutation matrix'); ?>.
 			</p>
 			
-			<p><b><?php echo __('Applications.'); ?></b></p>
-			
-			<ul>
-				<li>
-					<?php echo __('The solution of $Ax = b$ is then reduced to solving a system with a lower triangular matrix and one with an upper triangular matrix:
-					 $Ax = b \Leftrightarrow PAx = Pb \Leftrightarrow LRx = Pb$. Set $Rx = y$ and the problem is reduced to solving $Ly = Pb$ and $Rx = y$.'); ?>
-				</li>
-				<li>
-					<?php echo __('Calculating the determinant of the matrix $A$: $det(A) = (-1)^{\sharp swapped rows} \cdot \prod _{i=1} ^{n} u_{i,i}$ where $u_{i,i}$ is the entry of $U$ in the $i$-th row and $i$-th column.'); ?>
-				</li>
-				<li><?php echo __('Inverting the matrix $A$ by solving $n$ systems of linear equations given by $Ax = e_i$ where $e_i$ is the $i$-th unit vector.'); ?></li>
-			</ul>
+			<p><b><?php echo __('Applications.'); ?></b>
+  			<ul>
+  				<li>
+  					<?php echo __('The solution of $Ax = b$ is then reduced to solving a system with a lower triangular matrix and one with an upper triangular matrix:
+  					 $Ax = b \Leftrightarrow PAx = Pb \Leftrightarrow LRx = Pb$. Set $Rx = y$ and the problem is reduced to solving $Ly = Pb$ and $Rx = y$.'); ?>
+  				</li>
+  				<li>
+  					<?php echo __('Calculating the determinant of the matrix $A$: $det(A) = (-1)^{\sharp swapped rows} \cdot \prod _{i=1} ^{n} u_{i,i}$ where $u_{i,i}$ is the entry of $U$ in the $i$-th row and $i$-th column.'); ?>
+  				</li>
+  				<li><?php echo __('Inverting the matrix $A$ by solving $n$ systems of linear equations given by $Ax = e_i$ where $e_i$ is the $i$-th unit vector.'); ?></li>
+  			</ul>
+			</p>
 			
 			<div class="tabbable">
 				<ul class="nav nav-tabs">
@@ -151,7 +149,7 @@ public static function luDeterminant($matrix, $permutation) {
 							<li><?php echo __('For $c \neq 0$: multiply the $i$-th row of $A$ with c.'); ?></li>
 						</ul>
 						
-						<p><b><?php echo __('Algorithm.'); ?></b></p>
+						<p><b><?php echo __('Algorithm'); ?></b> <?php echo __('(without pivoting)'); ?>.</p>
 						
 						<ul style="list-style-type:none;">
 							<li><?php echo __('For $j = 1,2,...,n-1$ and if $a_{j,j} \neq 0$:'); ?>
@@ -193,7 +191,19 @@ public static function luDeterminant($matrix, $permutation) {
 							</li>
 						</ul>
 						
-						<p><?php echo __('For solving $Ax = b$ $k$ need to be saved in each step, so the generated row permutation can be applied on the right hand vector $b$, too. In addition the number of swapped rows is important for calculating the determinant of $A$.'); ?></p>
+						<p>
+						  <?php echo __('$k$ needs to be saved in each step, so the generated row permutation can be applied on the right hand vector $b$, too. In addition the number of swapped rows is important for calculating the determinant of $A$.'); ?>
+						</p>
+						
+						<p>
+						  <?php echo __('Given the above algorithm the runtime analysis using the uniform cost model is really intuitive. For each column $j$ substracting the $j$-th row from $n-j$ rows costs $n-j$ divisions and $(n-j)^2$ additions and multiplications:'); ?>
+						</p>
+						
+						<p><b><?php echo __('Runtime.'); ?></b></p>
+						
+						<p>
+						  <?php echo __('$T(n) = \sum _{j = 1} ^{n-1} (n - j) + n (n - j)^2 \approx \sum _{j = 1} ^{n-1} (n-j)^2 = \sum _{j = 1} ^{n-1} (j)^2 = \frac{n (n - 1) (2n - 1)}{6} = \frac{1}{6} (2n^3 - 3n^2 + n) \in \mathcal{O}(\frac{1}{3}n^3)$'); ?>
+						</p>
 					</div>
 					<div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
 						<form class="form-horizontal" method="POST" action="/matrix-decompositions<?php echo $app->router()->urlFor('lu-decomposition'); ?>">

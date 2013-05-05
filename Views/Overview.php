@@ -34,8 +34,6 @@
 		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
 	    </ul>
 			
-			<h4><?php echo __('Problem Overview'); ?></h4>
-			
 			<p>
 				<?php echo __('In computer science a lot of applications lead to the problem of solving systems of linear equations. In linear algebra the problem is specified as follows:'); ?>
 			</p>
@@ -49,7 +47,7 @@
 			</p>
 			
 			<p>
-				<?php echo __('If $A$ is regular following statements hold:'); ?>
+				<b><?php echo __('Remark.'); ?></b> <?php echo __('If $A$ is regular following statements hold:'); ?>
 				<ul>
 					<li><?php echo __('$det(A) \neq 0$'); ?></li>
 					<li><?php echo __('The system $Ax = b$ has a single unique solution for each $b \in \mathbb{R}^n$.'); ?></li>
@@ -57,7 +55,9 @@
 				</ul>
 			</p>
 			
-			<h4><?php echo __('Decompositions'); ?></h4>
+			<p>
+			  <?php echo __('The following table gives an overview of the decompositions covered here:'); ?>
+			</p>
 			
 			<table class="table table-striped table-hover">
 			  <thead>
@@ -96,10 +96,8 @@
 			  </tbody>
 			</table>
 			
-			<h4><?php echo __('Code'); ?></h4>
-			
 			<p>
-				<?php echo __('For working with matrices and vectors using PHP the following classes will be used. I know there are already many solutions of data structures for matrices and vectors, and they will most likely be more efficient or more flexible then these, but for demonstrating common used matrix deocmpositions the given classes will most likely do their jobs.'); ?>
+				<?php echo __('For working with matrices and vectors using PHP the following classes will be used. I know there are already many solutions of data structures for matrices and vectors, and they will most likely be more efficient or more flexible then these, but for demonstrating common used matrix decompositions the given classes will most likely do their jobs.'); ?>
 			</p>
 			
 			<div class="tabbable">

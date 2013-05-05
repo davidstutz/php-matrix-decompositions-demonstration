@@ -34,8 +34,6 @@
           <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
         </ul>
         
-        <h4><?php echo __('Cholesky Decomposition'); ?></h4>
-        
         <p>
           <?php echo __('Using the Cholesky decomposition a symmetric, positive definit matrix $A \in \mathbb{R}^{n \times n}$ can be decomposed into the product $LDL^T$ of a normed lower triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $R \in \mathbb{R}^{n \times n}$.'); ?>
         </p>
@@ -106,7 +104,7 @@ public static function choleskyDecomposition(&$matrix, double $tolerance = NULL)
               </ul>
               
               <p>
-                <?php echo __('The formulars can be seen as result of a per-entry comparison:'); ?>
+                <?php echo __('The formulars can be seen as result of an entry-wise comparison:'); ?>
               </p>
               
               <p>
@@ -148,7 +146,7 @@ public static function choleskyDecomposition(&$matrix, double $tolerance = NULL)
                 <li><?php echo __('For $j = 1,2,...,n$:'); ?>
                   <ul style="list-style-type:none;">
                     <li><?php echo __('$d := a _{j,j} - \sum _{k = 1} ^{j - 1} a _{j,k}^2 a_{k,k}$'); ?></li>
-                    <li><?php echo __('If $diag > \epsilon a_{j,j}$:'); ?>
+                    <li><?php echo __('If $diag > \epsilon \cdot a_{j,j}$:'); ?>
                       <ul style="list-style-type:none;">
                         <li><?php echo __('$a_{j,j} := d$'); ?></li>
                         <li><?php echo __('For $i = j+1,...,n$:'); ?>
@@ -161,7 +159,17 @@ public static function choleskyDecomposition(&$matrix, double $tolerance = NULL)
                   </ul>
                 </li>
               </ul>
-            
+              
+              <p>
+                <?php echo __('For each column $j$: Computing the diagonal entry needs $j - 1$ substractions and $2(j - 1)$ multiplications. Computing the entries of L needs $(n - j)$ divisions, $(n - j) (j - 1)$ additions and $2 (n - j) (j - 1)$ multiplications:'); ?>
+              </p>
+              
+              <p><b><?php echo __('Runtime.'); ?></b></p>
+              
+              <p>
+                <?php echo __('$T(n) = \sum _{j = 1} ^{n} 3 (j - 1) + (n - j) + 3 (n - j) (j - 1) = \sum _{j = 1} ^{n} 3 (j - 1) + j + 3 j (j - 1) $'); ?>
+              </p>
+              
             </div>
             <div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
               <form class="form-horizontal" method="POST" action="/matrix-decompositions<?php echo $app->router()->urlFor('cholesky-decomposition'); ?>">

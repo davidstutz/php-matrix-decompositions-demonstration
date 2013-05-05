@@ -33,8 +33,6 @@
 		    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
 		    <li class="active"><a href="#"><?php echo __('Credits'); ?></a></li>
 	    </ul>
-			
-			<h4><?php echo __('Credits'); ?></h4>
 						
 			<p>
 				<b><?php echo __('About me.'); ?></b> <?php echo __('Visit my personal website:'); ?> <a href="http://davidstutz.de" target="_blank">davidstutz.de</a>.
@@ -54,7 +52,9 @@
           <li><a href="http://en.wikipedia.org/wiki/Orthogonal_matrix" target="_blank"><?php echo __('Wikipedia: Orthogonal Matrix'); ?></a> <span class="muted"><?php echo __(' - visited april 2013'); ?></span></li>
           <li><a href="http://en.wikipedia.org/wiki/Wallace_Givens" target="_blank"><?php echo __('Wikipedia: Wallace Givens'); ?></a> <span class="muted"><?php echo __(' - visited april 2013'); ?></span></li>
           <li><a href="http://en.wikipedia.org/wiki/Cholesky_decomposition" target="_blank"><?php echo __('Wikipedia: Cholesky Decomposition'); ?></a> <span class="muted"><?php echo __(' - visited april 2013'); ?></span></li>
-					<li><?php echo __('"Numerik f&uuml;r Ingeneure und Naturwissenschaftler", W. Dahmen, A.Resuken, Springer Verlag, 2. Auflage'); ?></li>
+          <li><a href="http://en.wikipedia.org/wiki/Analysis_of_algorithms" target="_blank"><?php echo __('Wikipedia: Analysis of Algorithms'); ?></a> <span class="muted"><?php echo __(' - visited april 2013'); ?></span></li>
+					<li><?php echo __('"Introduction to Algorithms", T. Cormen, C. Leiserson, R. Rivest, C. Stein, MIT Press, Third Edition'); ?></li>
+					<li><?php echo __('"Numerik f&uuml;r Ingeneure und Naturwissenschaftler", W. Dahmen, A.Resuken, Springer Verlag, Second Edition'); ?></li>
 				</ul>
 			</p>
 			
