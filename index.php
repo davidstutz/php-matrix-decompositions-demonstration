@@ -22,6 +22,7 @@ require 'Slim/Slim.php';
 $app = new \Slim\Slim(array(
 	'templates.path' => './Views',
 	'view' => new \Slim\View(),
+	'base' => 'matrix-decompositions',
 ));
 
 \Slim\I18n::setPath('I18n');
@@ -49,29 +50,29 @@ if (!function_exists('__')) {
  */
 
 $app->get('/', function () use ($app) {
-   $app->redirect('/matrix-decompositions' . $app->router()->urlFor('overview'));
+   $app->redirect('/matrix-decompositions' . $app->router()->urlFor('matrix-decompositions'));
 });
 
 /**
  * Problem overview.
  * Quick introduction into the topic.
  */
-$app->get('/overview', function () use ($app) {
-   	$app->render('Overview.php', array('app' => $app));
-})->name('overview');
+$app->get('/matrix-decompositions', function () use ($app) {
+   	$app->render('MatrixDecompositions/Overview.php', array('app' => $app));
+})->name('matrix-decompositions');
 
 /**
  * Overview of the LU decomposition: Theoretical basics and algorithm.
  * Demo will call lu-decomposition.
  */
-$app->get('/lu', function () use ($app) {
-   	$app->render('LU.php', array('app' => $app));
-})->name('lu');
+$app->get('/matrix-decompositions/lu', function () use ($app) {
+   	$app->render('MatrixDecompositions/LU.php', array('app' => $app));
+})->name('matrix-decompositions/lu');
 
 /**
  * Demonstrate the lu decomposition on the given matrix.
  */
-$app->post('/lu-decomposition', function() use ($app) {
+$app->post('/matrix-decompositions/lu/demo', function() use ($app) {
 	
 	$input = $app->request()->post('matrix');
 	
@@ -114,21 +115,21 @@ $app->post('/lu-decomposition', function() use ($app) {
 		}
 	}
 	
-	$app->render('LU.php', array('app' => $app, 'original' => $original, 'l' => $l, 'u' => $u, 'trace' => $trace, 'permutation' => $permutation, 'determinant' => $determinant));
-})->name('lu-decomposition');
+	$app->render('MatrixDecompositions/LU.php', array('app' => $app, 'original' => $original, 'l' => $l, 'u' => $u, 'trace' => $trace, 'permutation' => $permutation, 'determinant' => $determinant));
+})->name('matrix-decompositions/lu/demo');
 
 /**
  * Overview of the cholesky decomposition including definitions.
  */
-$app->get('/cholesky', function () use ($app) {
-    $app->render('Cholesky.php', array('app' => $app));
-})->name('cholesky');
+$app->get('/matrix-decompositions/cholesky', function () use ($app) {
+    $app->render('MatrixDecompositions/Cholesky.php', array('app' => $app));
+})->name('matrix-decompositions/cholesky');
 
 /**
  * Demonstrate the cholesky deocmposition on the given matrix.
  * If the matrix is not symmetric, positive definit an error will be thrown.
  */
-$app->post('/cholesky-decomposition', function () use ($app) {
+$app->post('/matrix-decompositions/cholesky/demo', function () use ($app) {
   $input = $app->request()->post('matrix');
   
   $array = array();
@@ -175,26 +176,26 @@ $app->post('/cholesky-decomposition', function () use ($app) {
   }
   
   $app->render('Cholesky.php', array('app' => $app, 'original' => $original, 'l' => $l, 'd' => $d));
-})->name('cholesky-decomposition');
+})->name('matrix-decompositions/cholesky/demo');
 
 /**
  * QR decomposition overview: theoretical background and introduction ot givens and householders.
  */
-$app->get('/qr', function () use ($app) {
-  	$app->redirect('/matrix-decompositions' . $app->router()->urlFor('givens'));
-})->name('qr');
+$app->get('/matrix-decompositions/qr', function () use ($app) {
+  	$app->redirect('/matrix-decompositions' . $app->router()->urlFor('matrix-decompositions/givens'));
+})->name('matrix-decompositions/qr');
 
 /**
  * Overview of givens rotations: theoretical background and algorithm.
  */
-$app->get('/givens', function() use ($app) {
-	$app->render('Givens.php', array('app' => $app));
-})->name('givens');
+$app->get('/matrix-decompositions/givens', function() use ($app) {
+	$app->render('MatrixDecompositions/Givens.php', array('app' => $app));
+})->name('matrix-decompositions/givens');
 
 /**
  * Demonstrate the givens rotation on the given matrix.
  */
-$app->post('/givens-decomposition', function() use ($app) {
+$app->post('/matrix-decompositions/givens/demo', function() use ($app) {
 	$input = $app->request()->post('matrix');
 	
 	$array = array();
@@ -237,22 +238,29 @@ $app->post('/givens-decomposition', function() use ($app) {
     $q->set($i, $i, 1.);
   }
   
-	$app->render('Givens.php', array('app' => $app, 'original' => $original, 'r' => $r, 'q' => $q, 'trace' => $trace));
-})->name('givens-decomposition');
+	$app->render('MatrixDecompositions/Givens.php', array('app' => $app, 'original' => $original, 'r' => $r, 'q' => $q, 'trace' => $trace));
+})->name('matrix-decompositions/givens/demo');
 
 /**
  * Overview of householder transformations.
  */
-$app->get('/householder', function() use ($app) {
+$app->get('/matrix-decompositions/householder', function() use ($app) {
 	$app->redirect('/matrix-decompositions' . $app->router()->urlFor('givens'));
-	$app->render('Householder.php', array('app' => $app));
-})->name('householder');
+	$app->render('MatrixDecompositions/Householder.php', array('app' => $app));
+})->name('matrix-decompositions/householder');
+
+/**
+ * Overview over the applications ofr matrix decompositions.
+ */
+$app->get('/applications', function() use ($app) {
+  $app->render('Applications/Overview.php', array('app' => $app));
+})->name('applications');
 
 /**
  * Credits. About me, used literatur and used software.
  */
 $app->get('/credits', function () use ($app) {
-  	$app->render('Credits.php', array('app' => $app));
+  $app->render('Credits.php', array('app' => $app));
 })->name('credits');
 
 /**
