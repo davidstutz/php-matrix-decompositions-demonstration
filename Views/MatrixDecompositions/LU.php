@@ -157,19 +157,20 @@
     							<li><?php echo __('For $c \neq 0$: multiply the $i$-th row of $A$ with c.'); ?></li>
     						</ul>
     						
-    						<p><b><?php echo __('Algorithm'); ?></b> <?php echo __('(without pivoting)'); ?>.</p>
-    						
-    						<ul style="list-style-type:none;">
-    							<li><?php echo __('For $j = 1,2,...,n-1$ and if $a_{j,j} \neq 0$:'); ?>
-    								<ul style="list-style-type:none;">
-    									<li><?php echo __('For $i = j+1,j+2,...,n$:'); ?>
-    										<ul style="list-style-type:none;">
-    											<li><?php echo __('Subtract the $j$-th row of $\left[\begin{array}{rr} A & b \end{array} \right]$ from the $i$-th row multiplied by $l_{i,j} = \frac{a_{i,j}}{a_{j,j}}$'); ?></li>
-    										</ul>
-    									</li>
-    								</ul>
-    							</li>
-    						</ul>
+    						<p>
+    						  <b><?php echo __('Algorithm'); ?></b> <?php echo __('(without pivoting)'); ?>.
+      						<ul style="list-style-type:none;">
+      							<li><?php echo __('For $j = 1,2, \ldots, n-1$ and if $a_{j,j} \neq 0$:'); ?>
+      								<ul style="list-style-type:none;">
+      									<li><?php echo __('For $i = j+1,j+2, \ldots, n$:'); ?>
+      										<ul style="list-style-type:none;">
+      											<li><?php echo __('Subtract the $j$-th row of $\left[\begin{array}{rr} A & b \end{array} \right]$ from the $i$-th row multiplied by $l_{i,j} = \frac{a_{i,j}}{a_{j,j}}$'); ?></li>
+      										</ul>
+      									</li>
+      								</ul>
+      							</li>
+      						</ul>
+    						</p>
     						
     						<p>
     							<?php echo __('If $a_{j,j} \neq 0$ holds in every step the result has the form $\left[\begin{array}{rr} U & b \end{array} \right]$ for an upper triangular matrix $U$. Then the algorithm computes a factorization $A = LU$ where $L$ is alower triangular matrix defined by its entries $l_{i,j}$ and $l_{i,i} = 1$. The algorithm fails if $a_{j,j} = 0$ in one of the steps.'); ?>
@@ -183,22 +184,22 @@
     							<?php echo __('The above described mechanism is called partial pivoting.'); ?>
     						</p>
     						
-    						<p><b><?php echo __('Algorithm.'); ?></b></p>
-    						
-    						<ul style="list-style-type:none;">
-    							<li><?php echo __('For $j = 1,2,...,n-1$ and if $a_{j,j} \neq 0$:'); ?>
-    								<ul style="list-style-type:none;">
-    									<li><?php echo __('Find $k \in \{j + 1, \ldots , n\}$ such that $|a_{k,j}| \geq |a_{i,j}|$ for all $i \in \{j + 1, \ldots , n\}\backslash\{k\}$'); ?></li>
-    									<li><?php echo __('Swap the $j$-th with the $k$-th row (pivoting)'); ?></li>
-    									<li><?php echo __('For $i = j+1,j+2,...,n$:'); ?>
-    										<ul style="list-style-type:none;">
-    											<li><?php echo __('Subtract the $j$-th row of $\left[\begin{array}{rr} A & b \end{array} \right]$ from the $i$-th row multiplied by $l_{i,j} = \frac{a_{i,j}}{a_{j,j}}$'); ?></li>
-    										</ul>
-    									</li>
-    								</ul>
-    							</li>
-    						</ul>
-    						
+    						<p>
+    						  <b><?php echo __('Algorithm.'); ?></b>
+      						<ul style="list-style-type:none;">
+      							<li><?php echo __('For $j = 1,2, \ldots, n-1$ and if $a_{j,j} \neq 0$:'); ?>
+      								<ul style="list-style-type:none;">
+      									<li><?php echo __('Find $k \in \{j + 1, \ldots , n\}$ such that $|a_{k,j}| \geq |a_{i,j}|$ for all $i \in \{j + 1, \ldots , n\}\backslash\{k\}$'); ?></li>
+      									<li><?php echo __('Swap the $j$-th with the $k$-th row (pivoting)'); ?></li>
+      									<li><?php echo __('For $i = j+1,j+2, \ldots, n$:'); ?>
+      										<ul style="list-style-type:none;">
+      											<li><?php echo __('Subtract the $j$-th row of $\left[\begin{array}{rr} A & b \end{array} \right]$ from the $i$-th row multiplied by $l_{i,j} = \frac{a_{i,j}}{a_{j,j}}$'); ?></li>
+      										</ul>
+      									</li>
+      								</ul>
+      							</li>
+      						</ul>
+    						</p>
     						<p>
     						  <?php echo __('$k$ needs to be saved in each step, so the generated row permutation can be applied on the right hand vector $b$, too. In addition the number of swapped rows is important for calculating the determinant of $A$.'); ?>
     						</p>

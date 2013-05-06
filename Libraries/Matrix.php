@@ -490,7 +490,8 @@ class Matrix {
 	public static function qrDecompositionGivens(&$matrix) {
 		Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
 		
-		for ($j = 0; $j < $matrix->columns(); $j++) {
+    // Check in all columns except the n-th one for entries to eliminate.
+		for ($j = 0; $j < $matrix->columns() - 1; $j++) {
 			for ($i = $j + 1; $i < $matrix->rows(); $i++) {
         // If the entry is zero it can be skipped.
 			  if ($matrix->get($i, $j) != 0) {
@@ -541,7 +542,8 @@ class Matrix {
 	public static function qrDecompositionGivensWithTrace(&$matrix, &$trace) {
 		Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
     
-		for ($j = 0; $j < $matrix->columns(); $j++) {
+    // Check in all columns except the n-th one for entries to eliminate.
+		for ($j = 0; $j < $matrix->columns() - 1; $j++) {
 		  $trace[$j] = array();
       for ($i = $j + 1; $i < $matrix->rows(); $i++) {
 			  // If the entry is zero it can be skipped.

@@ -109,8 +109,8 @@
                 </p>
                 
                 <ul style="list-style-type:none;">
-                  <li><?php echo __('$d_{j,k} = a_{j,j} - \sum _{k = 1} ^{j - 1} l_{j,k}^2 d_{k,k}$ for the columns $j = 1,...,n$.'); ?></li>
-                  <li><?php echo __('$l_{i,j} = \frac{a_{i,j} - \sum _{k = 1} ^{j - 1} l_{i,k} d_{k,k} l_{j,k}}{d_{j,j}}$ for the columns $j = 1,...,n$.'); ?></li>
+                  <li><?php echo __('$d_{j,k} = a_{j,j} - \sum _{k = 1} ^{j - 1} l_{j,k}^2 d_{k,k}$ for the columns $j = 1, \ldots, n$.'); ?></li>
+                  <li><?php echo __('$l_{i,j} = \frac{a_{i,j} - \sum _{k = 1} ^{j - 1} l_{i,k} d_{k,k} l_{j,k}}{d_{j,j}}$ for the columns $j = 1, \ldots, n$.'); ?></li>
                 </ul>
                 
                 <p>
@@ -152,23 +152,26 @@
                   <?php echo __('The algorithm can easily be derived from the above formulars:'); ?>
                 </p>
                 
-                <ul style="list-style-type:none;">
-                  <li><?php echo __('For $j = 1,2,...,n$:'); ?>
-                    <ul style="list-style-type:none;">
-                      <li><?php echo __('$d := a _{j,j} - \sum _{k = 1} ^{j - 1} a _{j,k}^2 a_{k,k}$'); ?></li>
-                      <li><?php echo __('If $diag > \epsilon \cdot a_{j,j}$:'); ?>
-                        <ul style="list-style-type:none;">
-                          <li><?php echo __('$a_{j,j} := d$'); ?></li>
-                          <li><?php echo __('For $i = j+1,...,n$:'); ?>
-                            <ul style="list-style-type:none;">
-                              <li><?php echo __('$a_{i,j} := \frac{a_{i,j} - \sum _{k = 1} ^{j - 1} a_{i,k} a_{k,k} a_{j,k}}{a_{j,j}}$'); ?></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                <p>
+                  <b><?php echo __('Algorithm.'); ?></b>
+                  <ul style="list-style-type:none;">
+                    <li><?php echo __('For $j = 1,2, \ldots, n$:'); ?>
+                      <ul style="list-style-type:none;">
+                        <li><?php echo __('$d := a _{j,j} - \sum _{k = 1} ^{j - 1} a _{j,k}^2 a_{k,k}$'); ?></li>
+                        <li><?php echo __('If $diag > \epsilon \cdot a_{j,j}$:'); ?>
+                          <ul style="list-style-type:none;">
+                            <li><?php echo __('$a_{j,j} := d$'); ?></li>
+                            <li><?php echo __('For $i = j+1, \ldots, n$:'); ?>
+                              <ul style="list-style-type:none;">
+                                <li><?php echo __('$a_{i,j} := \frac{a_{i,j} - \sum _{k = 1} ^{j - 1} a_{i,k} a_{k,k} a_{j,k}}{a_{j,j}}$'); ?></li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </p>
                 
                 <p>
                   <?php echo __('For each column $j$: Computing the diagonal entry needs $j - 1$ substractions and $2(j - 1)$ multiplications. Computing the entries of L needs $(n - j)$ divisions, $(n - j) (j - 1)$ additions and $2 (n - j) (j - 1)$ multiplications:'); ?>

@@ -216,7 +216,7 @@
                     \vdots \\
                     r \\
                     \vdots \\
-                    0\ \
+                    0\ \\
                     \vdots \\
                     x_n \\
                   \end{array} \right]
@@ -228,7 +228,7 @@
                 </p>
                 
                 <p>
-                  <?php echo __('$G$ is obviously orthogonal - the columns form an orthonormal basis of $\mathbb{R}^n$. In addition note that $G$ is only affecting the $i$-th and $j$-th row.') ;?>
+                  <?php echo __('$G$ is obviously orthogonal - the columns form an orthonormal basis of $\mathbb{R}^n$. In addition note that $G$ is only affecting the $i$-th and $j$-th row when applied on a matrix.') ;?>
                 </p>
                 
                 <p>
@@ -236,7 +236,7 @@
                 </p>
                 
                 <p>
-                  $G_{m,n} \ldots G_{3,1} G_{2,1} G_{1,1} A = R$
+                  $G_{m,n-1} \ldots G_{3,1} G_{2,1} G_{1,1} A = R$
                 </p>
                 
                 <p>
@@ -246,6 +246,53 @@
                 <p>
                   $A = G_{1,1}^T G_{2,1}^T G_{3,1}^T \ldots G_{m,n}^T R = QR$
                 </p>
+                
+                <p>
+                  <?php echo __('The algorithm goes simply through all entries below the diagonal and checks if they need to be eliminated. If so the appropriate givens rotation will be computed and applied on the matrix. Note that computing $c$ and $s$ is sufficient for applying the rotation.'); ?>
+                </p>
+                
+                <p>
+                  <b><?php echo __('Algorithm.'); ?></b>
+                  <ul style="list-style-type:none;">
+                    <li><?php echo __('For $i = 1, \ldots, n - 1$:'); ?>
+                      <ul style="list-style-type:none;">
+                        <li><?php echo __('For $i = j + 1, \ldots, m$:'); ?>
+                          <ul style="list-style-type:none;">
+                            <li><?php echo __('If $a_{i, j} \neq 0$:'); ?>
+                              <ul style="list-style-type:none;">
+                                <li><?php echo __('Set up $G_{i, j}$ by computing $r := \sqrt{a_{j, j}^2 + x_{i,j}^2}$, $c := \frac{a_{j, j}}{r}$, $s := \frac{x_{i, j}}{r}$'); ?></li>
+                                <li><?php echo __('Apply $G_{i, j}$ on $A$.'); ?></li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </p>
+                
+                <p><?php echo __('In addition $G_{i, j}$ can be saved in $a_{i, j}$ the following way:'); ?></p>
+                
+                <p>
+                  <ul style="list-style-type:none;">
+                    <li><?php echo __('If $c = 0$:'); ?>
+                      <ul style="list-style-type:none;">
+                        <li><?php echo __('$a_{i, j} := 0$'); ?></li>
+                      </ul>
+                    </li>
+                    <li><?php echo __('If $|s| < |c|$:'); ?>
+                      <ul style="list-style-type:none;">
+                        <li><?php echo __('$a_{i, j} := \frac{1}{2}sign(c)s$'); ?></li>
+                      </ul>
+                    </li>
+                    <li><?php echo __('If $|c| \leq |s|$:'); ?>
+                      <ul style="list-style-type:none;">
+                        <li><?php echo __('$a_{i, j} := 2\frac{sign(s)}{c}$'); ?></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </p>
+                
     					</div>
     					<div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
     						<form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/givens/demo'); ?>">
