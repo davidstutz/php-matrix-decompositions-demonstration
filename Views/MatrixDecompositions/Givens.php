@@ -16,7 +16,7 @@
         window.prettyPrint() && prettyPrint();
       });
     </script>
-    <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/matrix-decompositions.css">
     <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/prettify.css">
 	</head>
@@ -69,7 +69,7 @@
   		    
   		    <ul class="nav nav-pills">
   			    <li class="active"><a href="#"><?php echo __('Givens rotations'); ?></a></li>
-  			    <li class="disabled"><a href="#"><?php echo __('Householder transformations'); ?></a></li>
+  			    <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/householder'); ?>"><?php echo __('Householder transformations'); ?></a></li>
   		    </ul>
   		    
   		    <div class="tabbable">
@@ -351,7 +351,7 @@
                       <?php endforeach; ?>
                      = $ <?php echo $app->render('Matrix.php', array('matrix' => $q)); ?>
     							</p>
-    					</div>
+    					 </div>
               <?php endif; ?>
             </div>
     			</div>

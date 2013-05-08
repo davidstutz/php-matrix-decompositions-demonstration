@@ -182,7 +182,7 @@ $app->post('/matrix-decompositions/cholesky/demo', function () use ($app) {
  * QR decomposition overview: theoretical background and introduction ot givens and householders.
  */
 $app->get('/matrix-decompositions/qr', function () use ($app) {
-  	$app->redirect('/matrix-decompositions' . $app->router()->urlFor('matrix-decompositions/givens'));
+  	$app->render('MatrixDecompositions/QR.php', array('app' => $app));
 })->name('matrix-decompositions/qr');
 
 /**
@@ -245,9 +245,15 @@ $app->post('/matrix-decompositions/givens/demo', function() use ($app) {
  * Overview of householder transformations.
  */
 $app->get('/matrix-decompositions/householder', function() use ($app) {
-	$app->redirect('/matrix-decompositions' . $app->router()->urlFor('givens'));
 	$app->render('MatrixDecompositions/Householder.php', array('app' => $app));
 })->name('matrix-decompositions/householder');
+
+/**
+ * Demonstrate the householder transformations on the given matrix.
+ */
+$app->post('/matrix-decompositions/givens/demo', function() use ($app) {
+  $app->render('MatrixDecompositions/Householder.php', array('app' => $app));
+})->name('matrix-decompositions/householder/demo');
 
 /**
  * Overview over the applications ofr matrix decompositions.

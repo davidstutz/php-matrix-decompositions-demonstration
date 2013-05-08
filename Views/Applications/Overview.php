@@ -16,7 +16,7 @@
         window.prettyPrint() && prettyPrint();
       });
     </script>
-    <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/matrix-decompositions.css">
     <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/prettify.css">
   </head>
@@ -30,12 +30,22 @@
         <div class="span3">
           <ul class="nav nav-pills nav-stacked">
             <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a></li>
-            <li class="active"><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
-            <li><a href="#"><?php echo __('Credits'); ?></a></li>
+            <li class="active"><a href="#"><?php echo __('Applications'); ?></a></li>
+            <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
           </ul>
-      </div>
-      <div class="span9">
+        </div>
+        <div class="span9">
+          <p>
+            <?php echo __('This section will discuss some common applications of the introduced matrix decompositions. Among others there are:'); ?>
+          </p>
           
+          <p>
+            <ul>
+              <li><?php echo __('Solve systems of linear equations $Ax = b$ for $A \in \mathbb{R}^{n \times n}$, $x,b \in \mathbb{R}^n$.'); ?></li>
+              <li><?php echo __('Solve the linear least square problem using a QR decomposition or the nonlinear least square problem using iterative methods.'); ?></li>
+              <li><?php echo __('Compute eigenvalues and eigenvectors using the vector iteration or the QR algorithm.'); ?></li>
+            </ul>
+          </p>
         </div>
       </div>
       <hr>

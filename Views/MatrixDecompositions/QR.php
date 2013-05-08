@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><?php echo __('Matrix Decompositions - QR Decomposition - Householder Transformations'); ?></title>
+    <title><?php echo __('Matrix Decompositions - QR Decomposition - Givens Rotations'); ?></title>
     <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
     <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -69,48 +69,8 @@
           
           <ul class="nav nav-pills">
             <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/givens'); ?>"><?php echo __('Givens rotations'); ?></a></li>
-            <li class="active"><a href="#"><?php echo __('Householder transformations'); ?></a></li>
+            <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/householder'); ?>"><?php echo __('Householder transformations'); ?></a></li>
           </ul>
-          
-          <div class="tabbable">
-            <ul class="nav nav-tabs">
-              <li><a href="#code" data-toggle="tab"><?php echo __('Code'); ?></a></li>
-              <li><a href="#algorithm" data-toggle="tab"><?php echo __('Algorithm'); ?></a></li>
-              <li <?php if (!isset($original)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
-              <?php if (isset($original)): ?>
-                <li class="active"><a href="#result" data-toggle="tab"><?php echo __('Result'); ?></a></li>
-              <?php endif; ?>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane" id="code">
-                <pre class="prettyprint linenums">
-
-                </pre>
-              </div>
-              <div class="tab-pane" id="algorithm">
-                
-                
-              </div>
-              <div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
-                <form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/householder/demo'); ?>">
-                  <div class="control-group">
-                    <label class="control-label"><?php echo __('Matrix'); ?></label>
-                    <div class="controls">
-                      <textarea name="matrix" rows="10" class="span6"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-actions">
-                    <button class="btn btn-primary type="submit"><?php echo __('Calculate QR Decomposition'); ?></button>
-                  </div>
-                </form>
-              </div>
-              <?php if (isset($original)): ?>
-                <div class="tab-pane active" id="result">
-                  
-                </div>
-              <?php endif; ?>
-            </div>
-          </div>
         </div>
       </div>
       <hr>
