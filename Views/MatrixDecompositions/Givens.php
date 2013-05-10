@@ -265,7 +265,7 @@
         </div>
         <hr>
             <p>
-                David Stutz - <a href="/matrix-decompositions<?php echo $app -> router() -> urlFor('credits'); ?>"><?php echo __('Credits'); ?></a>
+                &copy; 2013 David Stutz - <a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
             </p>
         </div>
     </body>
