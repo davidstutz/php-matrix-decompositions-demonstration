@@ -1,12 +1,6 @@
-# Common Matrix Decompositions Demonstrated in PHP
-
-Throughout the first course of Numerical Analysis at the RWTH Aachen University I tried some matrix decompositions in PHP and based on the Slim framework I developed a small demonstration website - this project.
-
-# License
-
-The application is licensed under the GPL v3.
-
 Copyright 2013 David Stutz
+
+This file is part of the matrix decompositions demonstration application.
 
 The application is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,3 +13,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 See <http://www.gnu.org/licenses/>.
+
+David Stutz
+davidstutz@web.de
