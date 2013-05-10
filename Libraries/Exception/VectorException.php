@@ -7,4 +7,5 @@ namespace Libraries\Exception;
  *
  * @author  David Stutz
  */
-class VectorException extends \Exception {}
+class VectorException extends \Exception {
+}

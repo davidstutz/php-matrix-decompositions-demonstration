@@ -7,4 +7,5 @@ namespace Libraries\Exception;
  *
  * @author  David Stutz
  */
-class MatrixException extends \Exception {}
+class MatrixException extends \Exception {
+}
