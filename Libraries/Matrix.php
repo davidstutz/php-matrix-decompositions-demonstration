@@ -582,7 +582,7 @@ class Matrix {
      * @param matrix  matrix to get the composition of
      * @param vector  vector to store first entry of each householder vector in
      */
-    public function qrDecompositionHouseholder(&$matrix, &$tau) {
+    public static function qrDecompositionHouseholder(&$matrix, &$tau) {
         Matrix::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
         Matrix::_assert($tau instanceof Vector, 'Given vector not of class Vector');
 
@@ -609,7 +609,7 @@ class Matrix {
                 $scalar += pow($matrix->get($i, $j), 2);
             }
 
-            $tau->set($j) = 2. / $scalar;
+            $tau->set($j, 2. / $scalar);
 
             $w = new \Libraries\Vector($matrix->columns());
             $w->setAll(0.);
@@ -617,7 +617,7 @@ class Matrix {
             // First calculate w = v_j * A.
             for ($i = $j; $i < $matrix->columns(); $i++) {
                 $w->set($i, $matrix->get($j, $i));
-                for ($k = $k + 1; $k < $matrix->rows(); $k++) {
+                for ($k = $j + 1; $k < $matrix->rows(); $k++) {
                     if ($i == $j) {
                         $w->set($i, $matrix->get($k, $j) * $matrix->get($k, $i) * $v1);
                     }
@@ -626,10 +626,10 @@ class Matrix {
                     }
                 }
 
-                $matrix->set($j, $i, $matrix->get($j, $i) - $tau->get($j) * $w($i));
+                $matrix->set($j, $i, $matrix->get($j, $i) - $tau->get($j) * $w->get($i));
                 for ($k = $j + 1; $k < $matrix->rows(); $k++) {
                     if ($i > $j) {
-                        $matrix->set($k, $i, $matrix->get($k, $i) - $tau($j) * $matrix->get($k, $j) * $w($i));
+                        $matrix->set($k, $i, $matrix->get($k, $i) - $tau->get($j) * $matrix->get($k, $j) * $w->get($i));
                     }
                 }
             }

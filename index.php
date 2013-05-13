@@ -243,20 +243,10 @@ $app->post('/matrix-decompositions/givens/demo', function() use ($app) {
         }
     }
 
-    // Q will be given as identity matrix.
-    // Q will be computed within the view, because the single givens rotations are shwon each step.
-    $q = new \Libraries\Matrix(max($matrix->columns(), $matrix->rows()), max($matrix->columns(), $matrix->rows()));
-    $q->setAll(0.);
-
-    for ($i = 0; $i < $q->rows(); $i++) {
-        $q->set($i, $i, 1.);
-    }
-
     $app->render('MatrixDecompositions/Givens.php', array(
         'app' => $app,
         'original' => $original,
         'r' => $r,
-        'q' => $q,
         'trace' => $trace
     ));
 })->name('matrix-decompositions/givens/demo');
@@ -271,8 +261,41 @@ $app->get('/matrix-decompositions/householder', function() use ($app) {
 /**
  * Demonstrate the householder transformations on the given matrix.
  */
-$app->post('/matrix-decompositions/givens/demo', function() use ($app) {
-    $app->render('MatrixDecompositions/Householder.php', array('app' => $app));
+$app->post('/matrix-decompositions/householder/demo', function() use ($app) {
+    $input = $app->request()->post('matrix');
+
+    $array = array();
+    $i = 0;
+    foreach (explode("\n", $input) as $line) {
+        $j = 0;
+        $array[$i] = array();
+        foreach (explode(" ", $line) as $entry) {
+            $array[$i][$j] = (double)$entry;
+            $j++;
+        }
+        $i++;
+    }
+
+    // Create the matrix from the above generated array.
+    $matrix = new \Libraries\Matrix($i, $j);
+    $matrix->fromArray($array);
+    $original = $matrix->copy();
+    $tau = new \Libraries\Vector($matrix->columns());
+
+    \Libraries\Matrix::qrDecompositionHouseholder($matrix, $tau);
+
+    $r = $matrix->copy();
+
+    // Extract R.
+    for ($i = 0; $i < $matrix->rows(); $i++) {
+        for ($j = 0; $j < $matrix->columns(); $j++) {
+            if ($j < $i) {
+                $r->set($i, $j, 0.);
+            }
+        }
+    }
+    
+    $app->render('MatrixDecompositions/Householder.php', array('app' => $app, 'original' => $original, 'matrix' => $matrix, 'r' => $r));
 })->name('matrix-decompositions/householder/demo');
 
 /**
