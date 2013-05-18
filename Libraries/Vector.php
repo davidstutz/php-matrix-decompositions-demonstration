@@ -6,6 +6,7 @@ namespace Libraries;
  * Vector class.
  *
  * @author  David Stutz
+ * @license http://www.gnu.org/licenses/gpl-3.0
  */
 class Vector {
 
@@ -29,7 +30,7 @@ class Vector {
         $this->_data = array();
 
         $size = (int)$size;
-        Vector::_assert($size > 0, 'Invalid size given.');
+        Vector::assert($size > 0, 'Invalid size given.');
 
         $this->_size = (int)$size;
     }
@@ -54,8 +55,8 @@ class Vector {
      * @return	boolean	equals
      */
     public function equals($vector) {
-        Vector::_assert($vector instanceof Vector, 'Given vector not of class Vector.');
-        Vector::_assert($this->_rows == $vector->size(), 'The dimensions do not match.');
+        Vector::assert($vector instanceof Vector, 'Given vector not of class Vector.');
+        Vector::assert($this->_rows == $vector->size(), 'The dimensions do not match.');
 
         for ($i = 0; $i < $this->_rows; $i++) {
             for ($j = 0; $j < $this->_columns; $j++) {
@@ -86,7 +87,7 @@ class Vector {
     public function get($position) {
         $position = (int)$position;
 
-        Vector::_assert($position >= 0 AND $position < $this->_size, 'Tried to access invalid position.');
+        Vector::assert($position >= 0 AND $position < $this->size(), 'Tried to access invalid position.');
 
         $value = 0;
         if (isset($this->_data[$position])) {
@@ -106,7 +107,7 @@ class Vector {
     public function set($position, $value) {
         $position = (int)$position;
 
-        Vector::_assert($position >= 0 AND $position < $this->_size, 'Tried to access invalid position.');
+        Vector::assert($position >= 0 AND $position < $this->size(), 'Tried to access invalid position.');
 
         $this->_data[$position] = $value;
 
@@ -120,7 +121,7 @@ class Vector {
      * @return	matrix	this
      */
     public function setAll($value) {
-        for ($i = 0; $i < $this->_size; $i++) {
+        for ($i = 0; $i < $this->size(); $i++) {
             $this->set($i, $value);
         }
     }
@@ -148,8 +149,8 @@ class Vector {
      * @return	matrix	this
      */
     public function swapEntries($i, $j) {
-        Vector::_assert($i >= 0 AND $i < $this->size(), 'Tried to access invalid position.');
-        Vector::_assert($j >= 0 AND $j < $this->size(), 'Tried to access invalid position.');
+        Vector::assert($i >= 0 AND $i < $this->size(), 'Tried to access invalid position.');
+        Vector::assert($j >= 0 AND $j < $this->size(), 'Tried to access invalid position.');
 
         $tmp = $this->get($i);
         $this->set($i, $this->get($j));
@@ -165,10 +166,10 @@ class Vector {
      * @param	vector	$b
      * @return	vector	inner product
      */
-    public static function innerProduct($a, $b) {
-        Vector::_assert($a instanceof Vector, 'Given first vector not of class Vector.');
-        Vector::_assert($b instanceof Vector, 'Given second vector not of class Vector.');
-        Vector::_assert($a->size() == $b->size(), 'Dimensions do not match.');
+    public static function inner($a, $b) {
+        Vector::assert($a instanceof Vector, 'Given first vector not of class Vector.');
+        Vector::assert($b instanceof Vector, 'Given second vector not of class Vector.');
+        Vector::assert($a->size() == $b->size(), 'Dimensions do not match.');
 
         $size = $a->size();
         $result = 0;
@@ -185,7 +186,7 @@ class Vector {
      *
      * @throws	Exception
      */
-    private static function _assert($boolean, $message = '') {
+    public static function assert($boolean, $message = '') {
         if (!$boolean) {
             throw new \Libraries\Exception\VectorException($message);
         }

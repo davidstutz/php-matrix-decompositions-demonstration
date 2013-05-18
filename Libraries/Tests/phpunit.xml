@@ -1,0 +1,7 @@
+<phpunit colors="true" bootstrap="../../test.php">
+    <testsuites>
+        <testsuite>
+            <directory>./</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
