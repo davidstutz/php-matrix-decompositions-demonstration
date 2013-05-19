@@ -13,7 +13,7 @@ class LUWithTrace extends LU {
     /**
      * @var array
      */
-    private $_trace = array();
+    protected $_trace = array();
 
     /**
      * Constructor: Generate LU decomposition of the matrix.
@@ -23,12 +23,12 @@ class LUWithTrace extends LU {
      * @return  vector  permutation
      */
     public function __construct(&$matrix) {
-        Matrix::assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
-        Matrix::assert($matrix->isSquare(), 'Matrix is not square.');
+        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
+        new \Libraries\Assertion($matrix->isSquare(), 'Matrix is not square.');
 
         $this->_matrix = $matrix->copy();
-        $this->_permutation = new Vector($this->_matrix->rows());
-
+        $this->_permutation = new \Libraries\Vector($this->_matrix->rows());
+        
         for ($j = 0; $j < $this->_matrix->rows(); $j++) {
 
             $pivot = $j;

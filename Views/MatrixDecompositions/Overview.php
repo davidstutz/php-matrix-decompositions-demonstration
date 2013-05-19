@@ -30,12 +30,15 @@
             <div class="row">
                 <div class="span3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a href="#"><?php echo __('Matrix Decompositions'); ?></a>
-                        <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
-                            <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
-                            <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
-                            <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
-                        </ul>
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
+                        <li class="active">
+                            <a href="#"><?php echo __('Matrix Decompositions'); ?></a>
+                            <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
+                            </ul>
+                        </li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
                     </ul>
@@ -102,27 +105,6 @@
                             </tr>
                         </tbody>
                     </table>
-                    
-                    <p>
-                        <?php echo __('For working with matrices and vectors using PHP the following classes will be used. I know there are already many solutions of data structures for matrices and vectors, and they will most likely be more efficient or more flexible then these, but for demonstrating common used matrix decompositions the given classes will most likely do their jobs.'); ?>
-                    </p>
-                    
-                    <div class="tabbable">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="#matrix" data-toggle="tab"><?php echo __('Matrix Class'); ?></a></li>
-                            <li><a href="#vector" data-toggle="tab"><?php echo __('Vector Class'); ?></a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="matrix">
-                                <pre class="prettyprint linenums">
-                                </pre>
-                            </div>
-                            <div class="tab-pane" id="vector">
-                                <pre class="prettyprint linenums">
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <hr>

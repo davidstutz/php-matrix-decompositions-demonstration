@@ -13,7 +13,7 @@ class QRGivensWithTrace extends QRGivens {
     /**
      * @var array
      */
-    private $_trace = array();
+    protected $_trace = array();
 
     /**
      * Cosntructor: Get the qr decomposition of the given matrix using givens rotations.
@@ -22,13 +22,13 @@ class QRGivensWithTrace extends QRGivens {
      * @param   matrix  matrix to get the qr decomposition of
      */
     public function __construct(&$matrix) {
-        MatrixDecomposition::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
 
-        $this->_matrix = $this->_matrix->copy();
+        $this->_matrix = $matrix->copy();
 
         // Check in all columns except the n-th one for entries to eliminate.
         for ($j = 0; $j < $this->_matrix->columns() - 1; $j++) {
-            $trace[$j] = array();
+            $this->_trace[$j] = array();
             for ($i = $j + 1; $i < $this->_matrix->rows(); $i++) {
                 // If the entry is zero it can be skipped.
                 if ($this->_matrix->get($i, $j) != 0) {
@@ -51,7 +51,7 @@ class QRGivensWithTrace extends QRGivens {
 
                     // This time roh (so c and s) are not stored within the matrix but given using the trace.
 
-                    $trace[$j][$i] = array(
+                    $this->_trace[$j][$i] = array(
                         'c' => $c,
                         's' => $s,
                         'matrix' => $this->_matrix->copy(), // Has to be a copy not a reference!

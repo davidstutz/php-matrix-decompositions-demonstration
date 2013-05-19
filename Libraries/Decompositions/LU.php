@@ -13,12 +13,12 @@ class LU {
     /**
      * @var matrix
      */
-    private $_matrix;
+    protected $_matrix;
     
     /**
      * @var vector
      */
-    private $_permutation;
+    protected $_permutation;
     
     /**
      * Constructor: Generate LU decomposition of the matrix.
@@ -27,111 +27,65 @@ class LU {
      * @return  vector  permutation
      */
     public function __construct(&$matrix) {
-        MatrixDecomposition::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
-        MatrixDecomposition::_assert($matrix->rows() == $matrix->columns(), 'Matrix is no quadratic.');
+        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
+        new \Libraries\Assertion($matrix->isSquare(), 'Matrix is no quadratic.');
 
-        $this->_permutation = new Vector($matrix->rows());
-
-        for ($j = 0; $j < $matrix->rows(); $j++) {
+        $this->_permutation = new \Libraries\Vector($matrix->rows());
+        $this->_matrix = $matrix->copy();
+        
+        for ($j = 0; $j < $this->_matrix->rows(); $j++) {
 
             $pivot = $j;
-            for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-                if (abs($matrix->get($i, $j)) > abs($matrix->get($pivot, $j))) {
+            for ($i = $j + 1; $i < $this->_matrix->rows(); $i++) {
+                if (abs($this->_matrix->get($i, $j)) > abs($this->_matrix->get($pivot, $j))) {
                     $pivot = $i;
                 }
             }
 
             $this->_permutation->set($j, $pivot);
 
-            $matrix->swapColumns($j, $pivot);
+            $this->_matrix->swapColumns($j, $pivot);
 
-            for ($i = $j + 1; $i < $matrix->columns(); $i++) {
-                $matrix->set($i, $j, $matrix->get($i, $j) / $matrix->get($j, $j));
+            for ($i = $j + 1; $i < $this->_matrix->columns(); $i++) {
+                $this->_matrix->set($i, $j, $this->_matrix->get($i, $j) / $this->_matrix->get($j, $j));
 
-                for ($k = $j + 1; $k < $matrix->columns(); $k++) {
-                    $matrix->set($i, $k, $matrix->get($i, $k) - $matrix->get($i, $j) * $matrix->get($j, $k));
+                for ($k = $j + 1; $k < $this->_matrix->columns(); $k++) {
+                    $this->_matrix->set($i, $k, $this->_matrix->get($i, $k) - $this->_matrix->get($i, $j) * $this->_matrix->get($j, $k));
                 }
             }
         }
-
-        $this->_matrix = $matrix;
-    }
-
-    /**
-     * Generate LU decomposition of the matrix.
-     * As trace the permutated matrix and eliminated matrix of each step is stored.
-     *
-     * @param   matrix  matrix to get lu decomposition of
-     * @param   array   store the trace in here
-     * @return  vector  permutation
-     */
-    public function decompositionWithTrace(&$matrix, &$trace) {
-        MatrixDecomposition::_assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
-        MatrixDecomposition::_assert($matrix->rows() == $matrix->columns(), 'Matrix is not quadratic.');
-
-        $permutation = new Vector($matrix->rows());
-
-        for ($j = 0; $j < $matrix->rows(); $j++) {
-
-            $pivot = $j;
-            for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-                if (abs($matrix->get($i, $j)) > abs($matrix->get($pivot, $j))) {
-                    $pivot = $i;
-                }
-            }
-
-            $permutation->set($j, $pivot);
-
-            $matrix->swapColumns($j, $pivot);
-
-            // Save the matrix after permutation.
-            $trace[$j] = array('permutation' => $matrix->copy(), );
-
-            for ($i = $j + 1; $i < $matrix->columns(); $i++) {
-                $matrix->set($i, $j, $matrix->get($i, $j) / $matrix->get($j, $j));
-
-                for ($k = $j + 1; $k < $matrix->columns(); $k++) {
-                    $matrix->set($i, $k, $matrix->get($i, $k) - $matrix->get($i, $j) * $matrix->get($j, $k));
-                }
-            }
-
-            // Save the matrix after elimination.
-            $trace[$j]['elimination'] = $matrix->copy();
-        }
-
-        return $permutation;
     }
 
     /**
      * Solve system of linear equation using a right hand vector, the lu decomposition and the permutation vector of the lu decomposition.
      *
-     * @param   matrix  lu decomposition
-     * @param   vector  permutation vector of lu decomposition
      * @param   vector  right hand
      */
     public function solve($b) {
-        MatrixDecomposition::_assert($this->_matrix->rows() == $b->size(), 'Right hand vector does not have correct size.');
-
-        for ($i = 0; $i < $b->size(); $i++) {
-            $b->swapColumns($i, $permutation->get($i));
+        new \Libraries\Assertion($this->_matrix->rows() == $b->size(), 'Right hand vector does not have correct size.');
+        
+        $x = $b->copy();
+        
+        for ($i = 0; $i < $x->size(); $i++) {
+            $x->swapColumns($i, $permutation->get($i));
         }
 
         // First solve L*y = b.
-        for ($i = 0; $i < $matrix->rows(); $i++) {
+        for ($i = 0; $i < $this->_matrix->rows(); $i++) {
             for ($j = $i - 1; $j >= 0; $j--) {
-                $b->set($i, $b->get($i) - $b->get($j) * $matrix->get($i, $j));
+                $x->set($i, $x->get($i) - $x->get($j) * $this->_matrix->get($i, $j));
             }
         }
 
         // Now solve R*x =y.
-        for ($i = $matrix->rows() - 1; $i >= 0; $i--) {
-            for ($j = $i + 1; $j < $matrix->columns(); $j--) {
-                $b->set($i, $b->get($i) - $b->get($j) * $matrix->get($i, $j));
+        for ($i = $this->_matrix->rows() - 1; $i >= 0; $i--) {
+            for ($j = $i + 1; $j < $this->_matrix->columns(); $j--) {
+                $x->set($i, $x->get($i) - $x->get($j) * $this->_matrix->get($i, $j));
             }
-            $b->set($i, $b->get($i) / $matrix->get($i, $i));
+            $x->set($i, $x->get($i) / $this->_matrix->get($i, $i));
         }
 
-        return $b;
+        return $x;
     }
 
     /**
@@ -140,7 +94,7 @@ class LU {
      * @param   matrix  lu decomposition
      * @param   vector  permutation vector of the lu decomposition
      */
-    public static function determinant() {
+    public function getDeterminant() {
 
         // Calculate number of swapped rows.
         $swapped = 0;
@@ -157,5 +111,53 @@ class LU {
         }
 
         return $determinant;
+    }
+    
+    /**
+     * Get the L of the decomposition.
+     * 
+     * @return  matrix  L
+     */
+    public function getL() {
+        $L = $this->_matrix->copy();
+        
+        for ($i = 0; $i < $L->rows(); $i++) {
+            for ($j = $i; $j < $L->columns(); $j++) {
+                if ($i == $j) {
+                    $L->set($i, $j, 1);
+                }
+                else {
+                    $L->set($i, $j, 0);
+                }
+            }
+        }
+        
+        return $L;
+    }
+    
+    /**
+     * Get the U of the decomposition.
+     * 
+     * @return  matrix  U
+     */
+    public function getU() {
+        $U = $this->_matrix->copy();
+        
+        for ($i = 0; $i < $U->rows(); $i++) {
+            for ($j = 0; $j < $i; $j++) {
+                $U->set($i, $j, 0);
+            }
+        }
+        
+        return $U;
+    }
+    
+    /**
+     * Gets the row permutation.
+     * 
+     * @return  vector  permutation
+     */
+    public function getPermutation() {
+        return $this->_permutation->copy();
     }
 }

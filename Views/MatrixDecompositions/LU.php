@@ -24,22 +24,24 @@
         <a href="https://github.com/davidstutz/matrix-decompositions"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
         <div class="container">
             <div class="page-header">
-                <h1><?php echo __('Matrix Decompositions'); ?></h1>
+                <h1><?php echo __('Matrix Decompositions'); ?> <span class="muted">//</span> <?php echo __('LU'); ?></h1>
             </div>
             
             <div class="row">
                 <div class="span3">
-                <ul class="nav nav-pills nav-stacked">
-                <li>
-                <a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
-                <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
-                <li class="active"><a href="#"><?php echo __('LU Decomposition'); ?></a></li>
-                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
-                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
-                </ul>
-                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
-                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
-                </ul>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
+                        <li>
+                            <a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
+                            <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
+                                <li class="active"><a href="#"><?php echo __('LU Decomposition'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
+                    </ul>
                 </div>
                 <div class="span9">
                     <p>
@@ -72,6 +74,134 @@
                         <div class="tab-content">
                             <div class="tab-pane" id="code">
                                 <pre class="prettyprint linenums">
+/**
+ * Helper class to provide methods concerning the lu decomposition.
+ *
+ * @author  David Stutz
+ * @license http://www.gnu.org/licenses/gpl-3.0
+ */
+class LU {
+    
+    /**
+     * @var matrix
+     */
+    protected $_matrix;
+    
+    /**
+     * @var vector
+     */
+    protected $_permutation;
+    
+    /**
+     * Constructor: Generate LU decomposition of the matrix.
+     *
+     * @param   matrix  matrix to get the lu decomposition of
+     * @return  vector  permutation
+     */
+    public function __construct(&$matrix) {
+        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
+        new \Libraries\Assertion($matrix->isSquare(), 'Matrix is no quadratic.');
+
+        $this->_permutation = new \Libraries\Vector($matrix->rows());
+        $this->_matrix = $matrix->copy();
+        
+        for ($j = 0; $j < $this->_matrix->rows(); $j++) {
+
+            $pivot = $j;
+            for ($i = $j + 1; $i < $this->_matrix->rows(); $i++) {
+                if (abs($this->_matrix->get($i, $j)) > abs($this->_matrix->get($pivot, $j))) {
+                    $pivot = $i;
+                }
+            }
+
+            $this->_permutation->set($j, $pivot);
+
+            $this->_matrix->swapColumns($j, $pivot);
+
+            for ($i = $j + 1; $i < $this->_matrix->columns(); $i++) {
+                $this->_matrix->set($i, $j, $this->_matrix->get($i, $j) / $this->_matrix->get($j, $j));
+
+                for ($k = $j + 1; $k < $this->_matrix->columns(); $k++) {
+                    $this->_matrix->set($i, $k, $this->_matrix->get($i, $k) - $this->_matrix->get($i, $j) * $this->_matrix->get($j, $k));
+                }
+            }
+        }
+    }
+
+    /**
+     * Calculate the determinant of the matrix with the given lu decomposition.
+     *
+     * @param   matrix  lu decomposition
+     * @param   vector  permutation vector of the lu decomposition
+     */
+    public function getDeterminant() {
+
+        // Calculate number of swapped rows.
+        $swapped = 0;
+        for ($i = 0; $i < $this->_permutation->size(); $i++) {
+            if ($this->_permutation->get($i) != $i) {
+                $swapped++;
+            }
+        }
+
+        $determinant = pow(-1, $swapped);
+
+        for ($i = 0; $i < $this->_matrix->rows(); $i++) {
+            $determinant *= $this->_matrix->get($i, $i);
+        }
+
+        return $determinant;
+    }
+    
+    /**
+     * Get the L of the decomposition.
+     * 
+     * @return  matrix  L
+     */
+    public function getL() {
+        $L = $this->_matrix->copy();
+        
+        for ($i = 0; $i < $L->rows(); $i++) {
+            for ($j = $i; $j < $L->columns(); $j++) {
+                if ($i == $j) {
+                    $L->set($i, $j, 1);
+                }
+                else {
+                    $L->set($i, $j, 0);
+                }
+            }
+        }
+        
+        return $L;
+    }
+    
+    /**
+     * Get the U of the decomposition.
+     * 
+     * @return  matrix  U
+     */
+    public function getU() {
+        $U = $this->_matrix->copy();
+        
+        for ($i = 0; $i < $U->rows(); $i++) {
+            for ($j = 0; $j < $i; $j++) {
+                $U->set($i, $j, 0);
+            }
+        }
+        
+        return $U;
+    }
+    
+    /**
+     * Gets the row permutation.
+     * 
+     * @return  vector  permutation
+     */
+    public function getPermutation() {
+        return $this->_permutation->copy();
+    }
+}
+
                                 </pre>
                             </div>
                             <div class="tab-pane" id="algorithm">
@@ -160,7 +290,11 @@
                                     <div class="control-group">
                                         <label class="control-label"><?php echo __('Matrix'); ?></label>
                                         <div class="controls">
-                                            <textarea name="matrix" rows="10" class="span6"></textarea>
+                                            <textarea name="matrix" rows="10" class="span6">
+4 4 2
+4 2 4
+2 4 4
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="form-actions">
@@ -172,27 +306,27 @@
                                 <div class="tab-pane active" id="result">
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
-                                    <p><?php echo $app->render('Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
+                                    <p><?php echo $app->render('Utilities/Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
                                     
                                     <?php foreach ($trace as $i => $array): ?>
                                         <p>
-                                            $\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['permutation'])); ?> <?php echo __('Step'); ?> $(<?php echo $i; ?>)$ <?php echo __('Permutation.'); ?>
+                                            $\leadsto$ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $array['permutation'])); ?> <?php echo __('Step'); ?> $(<?php echo $i; ?>)$ <?php echo __('Permutation.'); ?>
                                         </p>
                                         <p>
-                                            $\leadsto$ <?php echo $app->render('Matrix.php', array('matrix' => $array['elimination'])); ?> <?php echo __('Step'); ?> $(<?php echo $i; ?>)$ <?php echo __('Elimination.'); ?>
+                                            $\leadsto$ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $array['elimination'])); ?> <?php echo __('Step'); ?> $(<?php echo $i; ?>)$ <?php echo __('Elimination.'); ?>
                                         </p>
                                     <?php endforeach; ?>
                                     
                                     <p><b><?php echo __('Decomposition.'); ?></b></p>
                                     
                                     <p>
-                                        $L = $ <?php echo $app->render('Matrix.php', array('matrix' => $l)); ?>
+                                        $L = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $l)); ?>
                                     </p>
                                     
                                     <p>
-                                        $U = $ <?php echo $app->render('Matrix.php', array('matrix' => $u)); ?>
+                                        $U = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $u)); ?>
                                     </p>
                                     
                                     <?php if (isset($determinant)): ?>

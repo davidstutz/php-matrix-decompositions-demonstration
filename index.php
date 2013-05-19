@@ -55,6 +55,34 @@ $app->get('/', function() use ($app) {
 });
 
 /**
+ * Code overview.
+ */
+$app->get('/code', function() use ($app) {
+    $app->render('Code/Overview.php', array('app' => $app));
+})->name('code');
+
+/**
+ * Matrix class code.
+ */
+$app->get('/code/matrix', function() use ($app) {
+    $app->render('Code/Matrix.php', array('app' => $app));
+})->name('code/matrix');
+
+/**
+ * Vector class code.
+ */
+$app->get('/code/vector', function() use ($app) {
+    $app->render('Code/Vector.php', array('app' => $app));
+})->name('code/vector');
+
+/**
+ * Test code.
+ */
+$app->get('/code/tests', function() use ($app) {
+    $app->render('Code/Tests.php', array('app' => $app));
+})->name('code/tests');
+
+/**
  * Problem overview.
  * Quick introduction into the topic.
  */
@@ -76,54 +104,33 @@ $app->get('/matrix-decompositions/lu', function() use ($app) {
 $app->post('/matrix-decompositions/lu/demo', function() use ($app) {
 
     $input = $app->request()->post('matrix');
-
+    
     $array = array();
     $i = 0;
-    foreach (explode("\n", $input) as $line) {
+    foreach (explode("\n", trim($input)) as $line) {
         $j = 0;
         $array[$i] = array();
-        foreach (explode(" ", $line) as $entry) {
+        foreach (explode(" ", trim($line)) as $entry) {
             $array[$i][$j] = (double)$entry;
             $j++;
         }
         $i++;
     }
-
+    
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix($i, $j);
+    $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
-    $original = $matrix->copy();
 
-    $trace = array();
-    $permutation = \Libraries\Matrix::luDecompositionWithTrace($matrix, $trace);
-    $determinant = \Libraries\Matrix::luDeterminant($matrix, $permutation);
-
-    $l = $matrix->copy();
-    $u = $matrix->copy();
-
-    // Extract L and U.
-    for ($i = 0; $i < $matrix->rows(); $i++) {
-        for ($j = 0; $j < $matrix->columns(); $j++) {
-            if ($i > $j) {
-                $u->set($i, $j, 0.);
-            }
-            if ($i < $j) {
-                $l->set($i, $j, 0.);
-            }
-            if ($i == $j) {
-                $l->set($i, $j, 1.);
-            }
-        }
-    }
+    $decomposition = new \Libraries\Decompositions\LUWithTrace($matrix);
 
     $app->render('MatrixDecompositions/LU.php', array(
         'app' => $app,
-        'original' => $original,
-        'l' => $l,
-        'u' => $u,
-        'trace' => $trace,
-        'permutation' => $permutation,
-        'determinant' => $determinant
+        'original' => $matrix,
+        'l' => $decomposition->getL(),
+        'u' => $decomposition->getU(),
+        'trace' => $decomposition->getTrace(),
+        'permutation' => $decomposition->getPermutation(),
+        'determinant' => $decomposition->getDeterminant()
     ));
 })->name('matrix-decompositions/lu/demo');
 
@@ -143,10 +150,10 @@ $app->post('/matrix-decompositions/cholesky/demo', function() use ($app) {
 
     $array = array();
     $i = 0;
-    foreach (explode("\n", $input) as $line) {
+    foreach (explode("\n", trim($input)) as $line) {
         $j = 0;
         $array[$i] = array();
-        foreach (explode(" ", $line) as $entry) {
+        foreach (explode(" ", trim($line)) as $entry) {
             $array[$i][$j] = (double)$entry;
             $j++;
         }
@@ -154,41 +161,16 @@ $app->post('/matrix-decompositions/cholesky/demo', function() use ($app) {
     }
 
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix($i, $j);
+    $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
-    $original = $matrix->copy();
-
-    try {
-        \Libraries\Matrix::choleskyDecomposition($matrix);
-    }
-    catch (\Libraries\Exception\MatrixException $e) {
-        // No s.p.d matrix.
-    }
-
-    $l = $matrix->copy();
-    $d = $matrix->copy();
-
-    // Extract L and U.
-    for ($i = 0; $i < $matrix->rows(); $i++) {
-        for ($j = 0; $j < $matrix->columns(); $j++) {
-            if ($i > $j) {
-                $d->set($i, $j, 0.);
-            }
-            if ($i < $j) {
-                $d->set($i, $j, 0.);
-                $l->set($i, $j, 0.);
-            }
-            if ($i == $j) {
-                $l->set($i, $j, 1.);
-            }
-        }
-    }
-
-    $app->render('Cholesky.php', array(
+    
+    $decomposition = new \Libraries\Decompositions\Cholesky($matrix);
+    
+    $app->render('MatrixDecompositions/Cholesky.php', array(
         'app' => $app,
-        'original' => $original,
-        'l' => $l,
-        'd' => $d
+        'original' => $matrix,
+        'l' => $decomposition->getL(),
+        'd' => $decomposition->getD(),
     ));
 })->name('matrix-decompositions/cholesky/demo');
 
@@ -214,10 +196,10 @@ $app->post('/matrix-decompositions/givens/demo', function() use ($app) {
 
     $array = array();
     $i = 0;
-    foreach (explode("\n", $input) as $line) {
+    foreach (explode("\n", trim($input)) as $line) {
         $j = 0;
         $array[$i] = array();
-        foreach (explode(" ", $line) as $entry) {
+        foreach (explode(" ", trim($line)) as $entry) {
             $array[$i][$j] = (double)$entry;
             $j++;
         }
@@ -225,29 +207,24 @@ $app->post('/matrix-decompositions/givens/demo', function() use ($app) {
     }
 
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix($i, $j);
+    $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
-    $original = $matrix->copy();
 
-    $trace = array();
-    \Libraries\Matrix::qrDecompositionGivensWithTrace($matrix, $trace);
+    $decomposition = new \Libraries\Decompositions\QRGivensWithTrace($matrix);
 
-    $r = $matrix->copy();
-
-    // Extract R.
-    for ($i = 0; $i < $matrix->rows(); $i++) {
-        for ($j = 0; $j < $matrix->columns(); $j++) {
-            if ($j < $i) {
-                $r->set($i, $j, 0.);
-            }
-        }
+    $q = new \Libraries\Matrix(max($matrix->rows(), $matrix->columns()), max($matrix->rows(), $matrix->columns()));
+    $q->setAll(0);
+    
+    for ($i = 0; $i < $q->rows(); $i++) {
+        $q->set($i, $i, 1);
     }
 
     $app->render('MatrixDecompositions/Givens.php', array(
         'app' => $app,
-        'original' => $original,
-        'r' => $r,
-        'trace' => $trace
+        'original' => $matrix,
+        'r' => $decomposition->getR(),
+        'q' => $q,
+        'trace' => $decomposition->getTrace(),
     ));
 })->name('matrix-decompositions/givens/demo');
 

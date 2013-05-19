@@ -13,7 +13,7 @@ class QRGivens {
     /**
      * @var matrix
      */
-    private $_matrix;
+    protected $_matrix;
      
     /**
      * Constructor: Get the qr decomposition of the given matrix using givens rotations.
@@ -22,7 +22,7 @@ class QRGivens {
      * @param   matrix  matrix to get the qr decomposition of
      */
     public function __construct(&$matrix) {
-        Matrix::assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
 
         // Check in all columns except the n-th one for entries to eliminate.
         for ($j = 0; $j < $matrix->columns() - 1; $j++) {
@@ -85,7 +85,7 @@ class QRGivens {
      * Gets the upper triangular matrix R.
      */
     public function getR() {
-        $R = $matrix->copy();
+        $R = $this->_matrix->copy();
         
         for ($i = 0; $i < $R->rows(); $i++) {
             for ($j = 0; $j < $i; $j++) {

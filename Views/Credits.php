@@ -7,14 +7,14 @@
         <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/prettify.js"></script>
         <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-        });
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+            });
         </script>
         <script type="text/javascript">
-        $(document).ready(function() {
-        window.prettyPrint() && prettyPrint();
-        });
+            $(document).ready(function() {
+                window.prettyPrint() && prettyPrint();
+            });
         </script>
         <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/matrix-decompositions.css">
@@ -30,6 +30,7 @@
             <div class="row">
                 <div class="span3">
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a></li>
                         <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
                         <li class="active"><a href="#"><?php echo __('Credits'); ?></a></li>
@@ -64,10 +65,36 @@
                     
                     <p>
                         <ul>
-                            <li><a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a></li>
-                            <li><a href="http://www.mathjax.org/" target="_blank">MathJax</a></li>
-                            <li><a href="http://www.slimframework.com/" target="_blank">Slim</a></li>
+                            <li><a href="http://twitter.github.com/bootstrap/" target="_blank"><?php echo __('Twitter Bootstrap'); ?></a></li>
+                            <li><a href="http://www.mathjax.org/" target="_blank"><?php echo __('MathJax'); ?></a></li>
+                            <li><a href="http://www.slimframework.com/" target="_blank"><?php echo __('Slim'); ?></a></li>
+                            <li><a href="https://code.google.com/p/google-code-prettify/"><?php echo __('Google Code Prettify'); ?></a></li>
                         </ul>
+                    </p>
+                    
+                    <p><b><?php echo __('License.'); ?></b></p>
+                    
+                    <p>
+                        <?php echo __('The source of this demonstration application is published under the GNU General Public License Version 3.'); ?>
+                    </p>
+                    
+                    <pre>
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see http://www.gnu.org/licenses/.
+                    </pre>
+                    
+                    <p>
+                        <?php echo __('In addition the (mathemtical) content discussed in this demonstration application comes without any warranty!'); ?>
                     </p>
                 </div>
             </div>

@@ -13,12 +13,12 @@ class QRHouseholder {
     /**
      * @var matrix
      */
-    private $_matrix;
+    protected $_matrix;
     
     /**
      * @var vector
      */
-    private $_tau;
+    protected $_tau;
     
     /**
      * Constructor: Get the qr decomposition of the given matrix using householder transformations.
@@ -27,9 +27,9 @@ class QRHouseholder {
      * @param matrix  matrix to get the composition of
      */
     public function __construct(&$matrix) {
-        Matrix::assert($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
 
-        $this->_tau = new Vector($matrix->columns());
+        $this->_tau = new \Libraries\Vector($matrix->columns());
 
         for ($j = 0; $j < $matrix->columns(); $j++) {
 
@@ -54,7 +54,7 @@ class QRHouseholder {
 
             $this->_tau->set($j, 2. / $scalar);
 
-            $w = new \Libraries\Vector($matrix->columns());
+            $w = new \Libraries\Libraries\Vector($matrix->columns());
             $w->setAll(0.);
 
             // First calculate w = v_j * A.

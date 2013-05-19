@@ -1,7 +1,50 @@
-<?php
-
-namespace Libraries;
-
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><?php echo __('Matrix Decompositions - Code Base'); ?></title>
+        <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
+        <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/prettify.js"></script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+            });
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                window.prettyPrint() && prettyPrint();
+            });
+        </script>
+        <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/matrix-decompositions.css">
+        <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/prettify.css">
+    </head>
+    <body>
+        <a href="https://github.com/davidstutz/matrix-decompositions"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+        <div class="container">
+            <div class="page-header">
+                <h1><?php echo __('Code Base'); ?> <span class="muted">//</span> <?php echo __('Matrix Class'); ?></h1>
+            </div>
+            
+            <div class="row">
+                <div class="span3">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li>
+                            <a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a>
+                            <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
+                                <li class="active"><a href="#"><?php echo __('Matrix Class'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code/vector'); ?>"><?php echo __('Vector Class'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code/tests'); ?>"><?php echo __('Tests'); ?></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a></li>
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
+                    </ul>
+                </div>
+                <div class="span9">
+                    <pre class="prettyprint linenums">
 /**
  * Matrix class.
  *
@@ -11,17 +54,17 @@ namespace Libraries;
 class Matrix {
 
     /**
-     * @var	array 	data
+     * @var array   data
      */
     private $_data;
 
     /**
-     * @var	int	rows
+     * @var int rows
      */
     private $_rows;
 
     /**
-     * @var	int	columns
+     * @var int columns
      */
     private $_columns;
     
@@ -33,9 +76,9 @@ class Matrix {
     /**
      * Constructor.
      *
-     * @param	int		rows
-     * @param	int		columns
-     * @return	matrix	matrix
+     * @param   int     rows
+     * @param   int     columns
+     * @return  matrix  matrix
      */
     public function __construct($rows, $columns) {
         $this->_data = array();
@@ -53,9 +96,9 @@ class Matrix {
     /**
      * Resizes the dimensions of the matrix.
      *
-     * @param	int		rows
-     * @param	int		columns
-     * @return	matrix	this
+     * @param   int     rows
+     * @param   int     columns
+     * @return  matrix  this
      */
     public function resize($rows, $columns) {
         $rows = (int)$rows;
@@ -80,8 +123,8 @@ class Matrix {
     /**
      * Compares the matrix with the given matrix for equality.
      *
-     * @param	matrix	matrix
-     * @return	boolean	equals
+     * @param   matrix  matrix
+     * @return  boolean equals
      */
     public function equals($matrix) {
         new \Libraries\Assertion($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
@@ -102,7 +145,7 @@ class Matrix {
     /**
      * Get number of rows.
      *
-     * @return	int	rows
+     * @return  int rows
      */
     public function rows() {
         if (TRUE === $this->_transposed) {
@@ -116,7 +159,7 @@ class Matrix {
     /**
      * Get number of columns.
      *
-     * @return	int	columns
+     * @return  int columns
      */
     public function columns() {
         if (TRUE === $this->_transposed) {
@@ -130,9 +173,9 @@ class Matrix {
     /**
      * Get the matrix entry on the position specified by $row and $column.
      *
-     * @param	int		row
-     * @param	int		column
-     * @param	mixed	value
+     * @param   int     row
+     * @param   int     column
+     * @param   mixed   value
      */
     public function get($row, $column) {
         $row = (int)$row;
@@ -165,10 +208,10 @@ class Matrix {
     /**
      * Set the matrix entry on the position specified by $row and $column.
      *
-     * @param	int	 	row
-     * @param	int	 	column
-     * @param	mixed	value
-     * @return	matrix	this
+     * @param   int     row
+     * @param   int     column
+     * @param   mixed   value
+     * @return  matrix  this
      */
     public function set($row, $column, $value) {
         $row = (int)$row;
@@ -199,8 +242,8 @@ class Matrix {
     /**
      * Sets all entries of the matrix to the given value.
      *
-     * @param	mixed	value
-     * @return	matrix	this
+     * @param   mixed   value
+     * @return  matrix  this
      */
     public function setAll($value) {
         for ($i = 0; $i < $this->rows(); $i++) {
@@ -208,14 +251,12 @@ class Matrix {
                 $this->set($i, $j, $value);
             }
         }
-        
-        return $this;
     }
 
     /**
      * Copy this matrix.
      *
-     * @return	matrix	copy
+     * @return  matrix  copy
      */
     public function copy() {
         $matrix = new Matrix($this->rows(), $this->columns());
@@ -232,7 +273,7 @@ class Matrix {
     /**
      * Return the i-th column as vector.
      *
-     * @return vector	i-th column
+     * @return vector   i-th column
      */
     public function asVector($column) {
         $column = (int)$column;
@@ -251,7 +292,7 @@ class Matrix {
     /**
      * Get the matrix as array.
      *
-     * @return	array 	matrix
+     * @return  array   matrix
      */
     public function asArray() {
         $array = array();
@@ -269,8 +310,8 @@ class Matrix {
     /**
      * Copy content form array.
      *
-     * @param	array 	data
-     * @return	matrix	this
+     * @param   array   data
+     * @return  matrix  this
      */
     public function fromArray($array) {
         new \Libraries\Assertion(is_array($array), 'No array given.');
@@ -291,18 +332,18 @@ class Matrix {
     /**
      * Swap the given columns.
      *
-     * @param	int	column
-     * @param 	int column
-     * @return	matrix	this
+     * @param   int column
+     * @param   int column
+     * @return  matrix  this
      */
     public function swapColumns($i, $j) {
         new \Libraries\Assertion($i >= 0 AND $i < $this->rows(), 'Tried to access invalid entry.');
         new \Libraries\Assertion($j >= 0 AND $j < $this->rows(), 'Tried to access invalid entry.');
 
-        for ($k = 0; $k < $this->rows(); $k++) {
-            $tmp = $this->get($k, $i);
-            $this->set($k, $i, $this->get($k, $j));
-            $this->set($k, $j, $tmp);
+        for ($k = 0; $k < $this->columns(); $k++) {
+            $tmp = $this->get($i, $k);
+            $this->set($i, $k, $this->get($j, $k));
+            $this->set($j, $k, $tmp);
         }
 
         return $this;
@@ -405,3 +446,13 @@ class Matrix {
     }
 
 }
+                    </pre>
+                </div>
+            </div>
+            <hr>
+            <p>
+                &copy; 2013 David Stutz - <a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
+            </p>
+        </div>
+    </body>
+</html>
