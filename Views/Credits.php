@@ -49,6 +49,7 @@
                     
                     <p>
                         <ul>
+                            <li><a href="http://en.wikipedia.org/wiki/Matrix_decomposition" target="_blank"><?php echo __('Wikipedia: Matrix Decomposition'); ?></a> <span class="muted"><?php echo __(' - visited may 2013'); ?></span></li>
                             <li><a href="http://en.wikipedia.org/wiki/Triangular_matrix" target="_blank"><?php echo __('Wikipedia: Triangular Matrix'); ?></a> <span class="muted"><?php echo __(' - visited february 2013'); ?></span></li>
                             <li><a href="http://en.wikipedia.org/wiki/Lu_decomposition" target="_blank"><?php echo __('Wikipedia: LU Decomposition'); ?></a> <span class="muted"><?php echo __(' - visited february 2013'); ?></span></li>
                             <li><a href="http://en.wikipedia.org/wiki/Gaussian_elimination" target="_blank"><?php echo __('Wikipedia: Gaussian Elimination'); ?></a> <span class="muted"><?php echo __(' - visited february 2013'); ?></span></li>

@@ -49,7 +49,7 @@
                     </p>
                     
                     <p>
-                        <?php echo __('Thus the aspects I focussed on are readable and clean code. Thus efficiency concerning the runtime as well as the needed memory of the written code is less important.'); ?>
+                        <?php echo __('Thus I focussed on writing readable and clean code for demonstration. Thus efficiency concerning the runtime as well as the needed memory of the written code is less important.'); ?>
                     </p>
                 </div>
             </div>

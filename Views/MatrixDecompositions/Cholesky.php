@@ -44,19 +44,23 @@
                 </div>
                 <div class="span9">
                     <p>
-                        <?php echo __('Using the Cholesky decomposition a symmetric, positive definit matrix $A \in \mathbb{R}^{n \times n}$ can be decomposed into the product $LDL^T$ of a normed lower triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $R \in \mathbb{R}^{n \times n}$.'); ?>
+                       <b><?php echo __('Definition.'); ?></b> <?php echo __('$A \in \mathbb{R}^{n \times n}$ is called symmetric, if $A = A^T$.'); ?>
+                        <?php echo __('In addition $A$ is called positive definite, if $x^TAx > 0$ for all $x \in \mathbb{R}^{n}$, $x \neq 0$.'); ?>
                     </p>
                     
                     <p>
-                        <?php echo __('$A \in \mathbb{R}^{n \times n}$ is called symmetric, if $A = A^T$.'); ?>
-                        <?php echo __('In addition $A$ is called positive definit, if $x^TAx > 0$ for all $x \in \mathbb{R}^{n}$, $x \neq 0$.'); ?>
+                        <b><?php echo __('Remark.'); ?></b> <?php echo __('If $A \in \mathbb{R}^{n \times n}$ is symmetric, positive definite then $A$ is regular and $A^{-1}$ is symmetric, positive definite, too.'); ?>
+                    </p>
+                    
+                    <p>
+                        <?php echo __('Using the Cholesky decomposition a symmetric, positive definite matrix $A \in \mathbb{R}^{n \times n}$ can be decomposed into the product $LDL^T$ of a normed lower triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $R \in \mathbb{R}^{n \times n}$.'); ?>
                     </p>
                     
                     <p>
                         <b><?php echo __('Applications.'); ?></b>
                         <ul>
-                            <li><?php echo __('Solving $Ax = LDL^Tx = b$ is reduced to solve $Ly = b$ and $L^Tx = D^{-1}y$.'); ?></li>
-                            <li><?php echo __('The used algorithm can be used to check whether the given matrix $A$ is symmetric, positive definit.'); ?></li>
+                            <li><?php echo __('The problem $Ax = LDL^Tx = b$ is reduced to solving $Ly = b$ and $L^Tx = D^{-1}y$.'); ?></li>
+                            <li><?php echo __('The used algorithm can be used to check whether the given matrix $A$ is symmetric, positive definite.'); ?></li>
                         </ul>
                     </p>
                     

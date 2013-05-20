@@ -45,7 +45,16 @@
                 </div>
                 <div class="span9">
                     <p>
-                        <?php echo __('Based on Gaussian elimination the LU decomposition of a matrix $A \in \mathbb{R}^{n \times n}$ is a factorization into a lower normed triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $U \in \mathbb{R}^{n \times n}$: $PA = LU$ where $P$ is a permutation matrix'); ?>.
+                        <?php echo __('Based on Gaussian elimination the LU decomposition of a regular matrix $A \in \mathbb{R}^{n \times n}$ is a factorization into a lower normed triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $U \in \mathbb{R}^{n \times n}$: $PA = LU$ where $P$ is a permutation matrix'); ?>.
+                    </p>
+                    
+                    <p>
+                        <b><?php echo __('Remark.'); ?></b> <?php echo __('If $A$ is regular the following statements hold:'); ?>
+                        <ul>
+                            <li><?php echo __('$det(A) \neq 0$'); ?></li>
+                            <li><?php echo __('The system $Ax = b$ has a single unique solution for each $b \in \mathbb{R}^n$.'); ?></li>
+                            <li><?php echo __('The matrix $A$ has full rank: $rank(A) = n$.'); ?></li>
+                        </ul>
                     </p>
                     
                     <p>

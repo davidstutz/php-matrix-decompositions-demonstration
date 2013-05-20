@@ -32,10 +32,10 @@
                     <ul class="nav nav-pills nav-stacked">
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a></li>
-                        <li class="active">
-                            <a href="#"><?php echo __('Applications'); ?></a>
+                        <li>
+                            <a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a>
                             <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
-                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications/system-of-linear-equations'); ?>"><?php echo __('System of Linear Equations'); ?></a></li>
+                                <li class="active"><a href="#"><?php echo __('System of Linear Equations'); ?></a></li>
                             </ul>
                         </li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
@@ -43,15 +43,24 @@
                 </div>
                 <div class="span9">
                     <p>
-                        <?php echo __('This section will discuss some common applications of the introduced matrix decompositions. Among others there are:'); ?>
+                        <?php echo __('In computer science a lot of applications lead to the problem of solving systems of linear equations. In linear algebra the problem is specified as follows:'); ?>
                     </p>
-                      
+                    
                     <p>
-                        <ul>
-                            <li><?php echo __('Solve systems of linear equations $Ax = b$ for $A \in \mathbb{R}^{n \times n}$, $x,b \in \mathbb{R}^n$.'); ?></li>
-                            <li><?php echo __('Solve the linear least square problem using a QR decomposition or the nonlinear least square problem using iterative methods.'); ?></li>
-                            <li><?php echo __('Compute eigenvalues and eigenvectors using the vector iteration or the QR algorithm.'); ?></li>
-                        </ul>
+                        <b><?php echo __('Problem.'); ?></b> <?php echo __('Given $A \in \mathbb{R}^{n \times n}$ and $b \in \mathbb{R}^n$. Find $x \in \mathbb{R}^n$ such that $Ax = b$.'); ?>
+                    </p>
+                    
+                    <!--
+                    <p>
+                        $a_{1,1} x_1 + a_{1,2} x_2 + \ldots + a_{1,n} x_n = b_1$<br>
+                        $a_{2,1} x_1 + a_{2,2} x_2 + \ldots + a_{2,n} x_n = b_2$<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$\vdots$<br>
+                        $a_{n,1} x_1 + a_{n,2} x_2 + \ldots + a_{n,n} x_n = b_n$<br>
+                    </p>
+                    -->
+                    
+                    <p>
+                        
                     </p>
                 </div>
             </div>

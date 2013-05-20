@@ -45,24 +45,15 @@
                 </div>
                 <div class="span9">
                     <p>
-                        <?php echo __('In computer science a lot of applications lead to the problem of solving systems of linear equations. In linear algebra the problem is specified as follows:'); ?>
+                        <?php echo __('This demonstration application discusses several common matrix decompositions. A matrix decomposition is a factorization of a given matrix $A \in \mathbb{R}^{m \times n}$ into a product of matrices.'); ?>
                     </p>
                     
                     <p>
-                        <b><?php echo __('Problem.'); ?></b> <?php echo __('Given $A \in \mathbb{R}^{n \times n}$ and $b \in \mathbb{R}^n$. Find $x \in \mathbb{R}^n$ such that $Ax = b$.'); ?>
+                        <?php echo __('Matrix decompositions are widely used to solve common problems in computer science as well as numerical analysis.'); ?>
                     </p>
                     
                     <p>
                         <?php echo __('In this experiment we want to examine some numerical methods to solve this problem implemented in PHP.'); ?>
-                    </p>
-                    
-                    <p>
-                        <b><?php echo __('Remark.'); ?></b> <?php echo __('If $A$ is regular the following statements hold:'); ?>
-                        <ul>
-                            <li><?php echo __('$det(A) \neq 0$'); ?></li>
-                            <li><?php echo __('The system $Ax = b$ has a single unique solution for each $b \in \mathbb{R}^n$.'); ?></li>
-                            <li><?php echo __('The matrix $A$ has full rank: $rank(A) = n$.'); ?></li>
-                        </ul>
                     </p>
                     
                     <p>

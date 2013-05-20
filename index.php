@@ -283,6 +283,13 @@ $app->get('/applications', function() use ($app) {
 })->name('applications');
 
 /**
+ * Application: System of Linear Equations.
+ */
+$app->get('/applications/system-of-linear-equations', function() use ($app) {
+    $app->render('Applications/SystemOfLinearEquations.php', array('app' => $app));
+})->name('applications/system-of-linear-equations');
+
+/**
  * Credits. About me, used literatur and used software.
  */
 $app->get('/credits', function() use ($app) {

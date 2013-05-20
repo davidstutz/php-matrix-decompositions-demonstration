@@ -387,15 +387,14 @@ class Matrix {
         // First check dimensions.
         new \Libraries\Assertion($a instanceof Matrix, 'Given first matrix not of class Matrix.');
         new \Libraries\Assertion($b instanceof Matrix, 'Given second matrix not of class Matrix.');
-        new \Libraries\Assertion($a->rows() == $b->rows(), 'Given dimensions are not compatible.');
-        new \Libraries\Assertion($a->columns() == $b->columns(), 'Given dimensions are not compatible.');
+        new \Libraries\Assertion($a->columns() == $b->rows(), 'Given dimensions are not compatible.');
 
         $c = new Matrix($a->rows(), $b->columns());
         $c->setAll(0.);
 
         for ($i = 0; $i < $a->rows(); $i++) {
-            for ($j = 0; $j < $a->columns(); $j++) {
-                for ($k = 0; $k < $b->rows(); $k++) {
+            for ($j = 0; $j < $b->columns(); $j++) {
+                for ($k = 0; $k < $a->columns(); $k++) {
                     $c->set($i, $j, $c->get($i, $j) + $a->get($i, $k) * $b->get($k, $j));
                 }
             }

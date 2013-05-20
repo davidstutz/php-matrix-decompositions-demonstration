@@ -883,7 +883,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
             ),
         );
     }
-
+    
     /**
      * Tests swapRows.
      * 
@@ -906,6 +906,344 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
                 $this->assertSame($expected[$i][$j], $matrix->get($i, $j));
             }
         }
+    }
+    
+    /**
+     * Provides data for testing transpose.
+     * 
+     * @return  array   data.
+     */
+    public function providerTranspose() {
+        return array(
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                ),
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                ),
+                3,
+                3,
+            ),
+            array(
+                array(
+                    array(1, 2),
+                    array(3, 4),
+                    array(5, 6),
+                ),
+                array(
+                    array(1, 3, 5),
+                    array(2, 4, 6),
+                ),
+                2,
+                3,
+            ),
+            array(
+                array(
+                    array(1, 3, 5),
+                    array(2, 4, 6),
+                ),
+                array(
+                    array(1, 2),
+                    array(3, 4),
+                    array(5, 6),
+                ),
+                3,
+                2,
+            ),
+        );
+    }
+    
+    /**
+     * Tests transpose.
+     * 
+     * @test
+     * @dataProvider providerTranspose
+     * @param   array   matrix
+     * @param   array   transposed
+     * @param   int     rows
+     * @param   int     columns
+     */
+    public function testTranspose($array, $transposed, $expectedRows, $expectedColumns) {
+        $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
+        $matrix->fromArray($array);
+        $matrix->transpose();
+        
+        for ($i = 0; $i < $matrix->rows(); $i++) {
+            for ($j = 0; $j < $matrix->columns(); $j++) {
+                $this->assertSame($transposed[$i][$j], $matrix->get($i, $j));
+            }
+        }
+        
+        $this->assertSame($expectedRows, $matrix->rows());
+        $this->assertSame($expectedColumns, $matrix->columns());
+    }
+    
+    /**
+     * Provides data for testing multiply.
+     * 
+     * @return  array   data
+     */
+    public function providerMultiply() {
+        return array(
+            array(
+                array(
+                    array(1, 0, 0, 0),
+                    array(0, 1, 0, 0),
+                    array(0, 0, 1, 0),
+                    array(0, 0, 0, 1),
+                ),
+                array(
+                    array(1, 0, 0, 0),
+                    array(0, 1, 0, 0),
+                    array(0, 0, 1, 0),
+                    array(0, 0, 0, 1),
+                ),
+                array(
+                    array((double)1, (double)0, (double)0, (double)0),
+                    array((double)0, (double)1, (double)0, (double)0),
+                    array((double)0, (double)0, (double)1, (double)0),
+                    array((double)0, (double)0, (double)0, (double)1),
+                ),
+            ),
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                    array(0, 0, 0),
+                ),
+                array(
+                    array(1, 0, 0, 0),
+                    array(0, 1, 0, 0),
+                    array(0, 0, 1, 0),
+                ),
+                array(
+                    array((double)1, (double)0, (double)0, (double)0),
+                    array((double)0, (double)1, (double)0, (double)0),
+                    array((double)0, (double)0, (double)1, (double)0),
+                    array((double)0, (double)0, (double)0, (double)0),
+                ),
+            ),
+            array(
+                array(
+                    array(1, 0, 0, 0),
+                    array(0, 1, 0, 0),
+                    array(0, 0, 1, 0),
+                ),
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                    array(0, 0, 0),
+                ),
+                array(
+                    array((double)1, (double)0, (double)0),
+                    array((double)0, (double)1, (double)0),
+                    array((double)0, (double)0, (double)1),
+                ),
+            ),
+            array(
+                array(
+                    array(1, 2, 3),
+                    array(4, 5, 6),
+                    array(7, 8, 9),
+                ),
+                array(
+                    array(1, 2, 3),
+                    array(4, 5, 6),
+                    array(7, 8, 9),
+                ),
+                array(
+                    array((double)30, (double)36, (double)42),
+                    array((double)66, (double)81, (double)96),
+                    array((double)102, (double)126, (double)150),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * Tests multiply.
+     * 
+     * @test
+     * @dataProvider providerMultiply
+     * @param   array   a
+     * @param   array   b
+     * @param   array   product
+     */
+    public function testMultiply($a, $b, $product) {
+        $matrixA = new \Libraries\Matrix(sizeof($a), sizeof($a[0]));
+        $matrixB = new \Libraries\Matrix(sizeof($b), sizeof($b[0]));
+        
+        $matrixA->fromArray($a);
+        $matrixB->fromArray($b);
+        
+        $this->assertSame($product, \Libraries\Matrix::multiply($matrixA, $matrixB)->asArray());
+    }
+    
+    /**
+     * Provides data for testing multiply exceptions.
+     * 
+     * @return  array   data
+     */
+    public function providerMultiplyExceptions() {
+        return array(
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                ),
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                    array(0, 0, 0),
+                ),
+            ),
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                    array(0, 0, 0),
+                ),
+                array(
+                    array(1, 0, 0, 0),
+                    array(0, 1, 0, 0),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * Tests multiply exceptions.
+     * 
+     * @test
+     * @dataProvider providerMultiplyExceptions
+     * @expectedException InvalidArgumentException
+     * @param   array   a
+     * @param   array   b
+     * @param   array   product
+     */
+    public function testMultiplyExceptions($a, $b) {
+        $matrixA = new \Libraries\Matrix(sizeof($a), sizeof($a[0]));
+        $matrixB = new \Libraries\Matrix(sizeof($b), sizeof($b[0]));
+        
+        $matrixA->fromArray($a);
+        $matrixB->fromArray($b);
+        
+        \Libraries\Matrix::multiply($matrixA, $matrixB);
+    }
+    
+    /**
+     * Provides data for testing add.
+     * 
+     * @return  array   data
+     */
+    public function providerAdd() {
+        return array(
+            array(
+                array(
+                    array(1, 1, 1, 1),
+                    array(1, 1, 1, 1),
+                    array(1, 1, 1, 1),
+                    array(1, 1, 1, 1),
+                ),
+                array(
+                    array(1, 1, 1, 1),
+                    array(1, 1, 1, 1),
+                    array(1, 1, 1, 1),
+                    array(1, 1, 1, 1),
+                ),
+                array(
+                    array(2, 2, 2, 2),
+                    array(2, 2, 2, 2),
+                    array(2, 2, 2, 2),
+                    array(2, 2, 2, 2),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * Tests multiply.
+     * 
+     * @test
+     * @dataProvider providerAdd
+     * @param   array   a
+     * @param   array   b
+     * @param   array   sum
+     */
+    public function testAdd($a, $b, $sum) {
+        $matrixA = new \Libraries\Matrix(sizeof($a), sizeof($a[0]));
+        $matrixB = new \Libraries\Matrix(sizeof($b), sizeof($b[0]));
+        
+        $matrixA->fromArray($a);
+        $matrixB->fromArray($b);
+        
+        $this->assertSame($sum, \Libraries\Matrix::add($matrixA, $matrixB)->asArray());
+    }
+    
+    /**
+     * Provides data for testing add exceptions.
+     * 
+     * @return  array   data
+     */
+    public function providerAddExceptions() {
+        return array(
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                ),
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                    array(0, 0, 0),
+                ),
+            ),
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                    array(0, 0, 0),
+                ),
+                array(
+                    array(1, 0, 0, 0),
+                    array(0, 1, 0, 0),
+                    array(0, 0, 1, 0),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * Tests add exceptions.
+     * 
+     * @test
+     * @dataProvider providerAddExceptions
+     * @expectedException InvalidArgumentException
+     * @param   array   a
+     * @param   array   b
+     * @param   array   product
+     */
+    public function testAddExceptions($a, $b) {
+        $matrixA = new \Libraries\Matrix(sizeof($a), sizeof($a[0]));
+        $matrixB = new \Libraries\Matrix(sizeof($b), sizeof($b[0]));
+        
+        $matrixA->fromArray($a);
+        $matrixB->fromArray($b);
+        
+        \Libraries\Matrix::add($matrixA, $matrixB);
     }
 }
     
