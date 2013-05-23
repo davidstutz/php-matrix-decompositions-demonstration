@@ -75,8 +75,8 @@
                         <ul class="nav nav-tabs">
                             <li><a href="#code" data-toggle="tab"><?php echo __('Code'); ?></a></li>
                             <li><a href="#algorithm" data-toggle="tab"><?php echo __('Algorithm'); ?></a></li>
-                            <li <?php if (!isset($original)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
-                            <?php if (isset($original)): ?>
+                            <li <?php if (!isset($matrix)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
+                            <?php if (isset($matrix)): ?>
                                 <li class="active"><a href="#result" data-toggle="tab"><?php echo __('Result'); ?></a></li>
                             <?php endif; ?>
                         </ul>
@@ -294,7 +294,7 @@ class LU {
                                     <?php echo __('$= \frac{n (n - 1) (2n - 1)}{6} = \frac{1}{6} (2n^3 - 3n^2 + n) \in \mathcal{O}(\frac{1}{3}n^3)$'); ?>
                                 </p>
                             </div>
-                            <div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
+                            <div class="tab-pane <?php if (!isset($matrix)): ?>active<?php endif; ?>" id="demo">
                                 <form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/lu/demo'); ?>">
                                     <div class="control-group">
                                         <label class="control-label"><?php echo __('Matrix'); ?></label>
@@ -307,15 +307,15 @@ class LU {
                                         </div>
                                     </div>
                                     <div class="form-actions">
-                                        <button class="btn btn-primary type="submit"><?php echo __('Calculate LU Decomposition'); ?></button>
+                                        <button class="btn btn-primary" type="submit"><?php echo __('Calculate LU Decomposition'); ?></button>
                                     </div>
                                 </form>
                             </div>
-                            <?php if (isset($original)): ?>
+                            <?php if (isset($matrix)): ?>
                                 <div class="tab-pane active" id="result">
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
-                                    <p><?php echo $app->render('Utilities/Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original->rows(); ?> \times <?php echo $original->columns(); ?>}$</p>
+                                    <p><?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
                                     
@@ -349,7 +349,7 @@ class LU {
                                         <?php endfor; ?>
                                         
                                         <p>
-                                            $(-1)^{\sharp swapped rows} \cdot \prod _{i=1} ^{n} u_{i,i} = (-1)^<?php echo $swapped; ?> <?php for ($i = 0; $i < $original->rows(); $i++): ?> \cdot <?php echo $original->get($i, $i); ?><?php endfor; ?> = <?php echo $determinant; ?>$
+                                            $(-1)^{\sharp swapped rows} \cdot \prod _{i=1} ^{n} u_{i,i} = (-1)^<?php echo $swapped; ?> <?php for ($i = 0; $i < $matrix->rows(); $i++): ?> \cdot <?php echo $matrix->get($i, $i); ?><?php endfor; ?> = <?php echo $determinant; ?>$
                                         </p>
                                     <?php endif; ?>
                                 </div>

@@ -28,7 +28,7 @@ class LU {
      */
     public function __construct(&$matrix) {
         new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
-        new \Libraries\Assertion($matrix->isSquare(), 'Matrix is no quadratic.');
+        new \Libraries\Assertion($matrix->isSquare(), 'Matrix is not quadratic.');
 
         $this->_permutation = new \Libraries\Vector($matrix->rows());
         $this->_matrix = $matrix->copy();
@@ -44,8 +44,8 @@ class LU {
 
             $this->_permutation->set($j, $pivot);
 
-            $this->_matrix->swapColumns($j, $pivot);
-
+            $this->_matrix->swapRows($j, $pivot);
+            
             for ($i = $j + 1; $i < $this->_matrix->columns(); $i++) {
                 $this->_matrix->set($i, $j, $this->_matrix->get($i, $j) / $this->_matrix->get($j, $j));
 
@@ -67,7 +67,7 @@ class LU {
         $x = $b->copy();
         
         for ($i = 0; $i < $x->size(); $i++) {
-            $x->swapColumns($i, $permutation->get($i));
+            $x->swapEntries($i, $this->_permutation->get($i));
         }
 
         // First solve L*y = b.
@@ -79,7 +79,7 @@ class LU {
 
         // Now solve R*x =y.
         for ($i = $this->_matrix->rows() - 1; $i >= 0; $i--) {
-            for ($j = $i + 1; $j < $this->_matrix->columns(); $j--) {
+            for ($j = $i; $j >= 0; $j--) {
                 $x->set($i, $x->get($i) - $x->get($j) * $this->_matrix->get($i, $j));
             }
             $x->set($i, $x->get($i) / $this->_matrix->get($i, $i));

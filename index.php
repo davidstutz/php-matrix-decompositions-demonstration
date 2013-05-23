@@ -125,7 +125,7 @@ $app->post('/matrix-decompositions/lu/demo', function() use ($app) {
 
     $app->render('MatrixDecompositions/LU.php', array(
         'app' => $app,
-        'original' => $matrix,
+        'matrix' => $matrix,
         'l' => $decomposition->getL(),
         'u' => $decomposition->getU(),
         'trace' => $decomposition->getTrace(),
@@ -168,7 +168,7 @@ $app->post('/matrix-decompositions/cholesky/demo', function() use ($app) {
     
     $app->render('MatrixDecompositions/Cholesky.php', array(
         'app' => $app,
-        'original' => $matrix,
+        'matrix' => $matrix,
         'l' => $decomposition->getL(),
         'd' => $decomposition->getD(),
     ));
@@ -221,7 +221,7 @@ $app->post('/matrix-decompositions/givens/demo', function() use ($app) {
 
     $app->render('MatrixDecompositions/Givens.php', array(
         'app' => $app,
-        'original' => $matrix,
+        'matrix' => $matrix,
         'r' => $decomposition->getR(),
         'q' => $q,
         'trace' => $decomposition->getTrace(),
@@ -254,25 +254,17 @@ $app->post('/matrix-decompositions/householder/demo', function() use ($app) {
     }
 
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix($i, $j);
+    $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
-    $original = $matrix->copy();
-    $tau = new \Libraries\Vector($matrix->columns());
 
-    \Libraries\Matrix::qrDecompositionHouseholder($matrix, $tau);
-
-    $r = $matrix->copy();
-
-    // Extract R.
-    for ($i = 0; $i < $matrix->rows(); $i++) {
-        for ($j = 0; $j < $matrix->columns(); $j++) {
-            if ($j < $i) {
-                $r->set($i, $j, 0.);
-            }
-        }
-    }
+    $decomposition = \Libraries\Decompositions\QRHouseholder($matrix);
     
-    $app->render('MatrixDecompositions/Householder.php', array('app' => $app, 'original' => $original, 'matrix' => $matrix, 'r' => $r));
+    $app->render('MatrixDecompositions/Householder.php', array(
+        'app' => $app,
+        'matrix' => $matrix,
+        'r' => $decomposition->getR(),
+        'q' => $decomposition->getQ(),
+    ));
 })->name('matrix-decompositions/householder/demo');
 
 /**
@@ -288,6 +280,51 @@ $app->get('/applications', function() use ($app) {
 $app->get('/applications/system-of-linear-equations', function() use ($app) {
     $app->render('Applications/SystemOfLinearEquations.php', array('app' => $app));
 })->name('applications/system-of-linear-equations');
+
+/**
+ * Application Demo: System of Linear Equations.
+ */
+$app->post('/applications/system-of-linear-equations/demo', function() use ($app) {
+    $matrixInput = $app->request()->post('matrix');
+    $vectorInput = $app->request()->post('vector');
+
+    $matrixArray = array();
+    $i = 0;
+    foreach (explode("\n", trim($matrixInput)) as $line) {
+        $j = 0;
+        $matrixArray[$i] = array();
+        foreach (explode(" ", trim($line)) as $entry) {
+            $matrixArray[$i][$j] = (double) $entry;
+            $j++;
+        }
+        $i++;
+    }
+    
+    $vectorArray = array();
+    $i = 0;
+    foreach (explode("\n", trim($vectorInput)) as $line) {
+        $vectorArray[$i] = (double) trim($line);
+        $i++;
+    }
+    
+    // Create the matrix from the above generated array.
+    $matrix = new \Libraries\Matrix(sizeof($matrixArray), sizeof($matrixArray[0]));
+    $matrix->fromArray($matrixArray);
+    
+    // Get the vector from input.
+    $vector = new \Libraries\Vector(sizeof($vectorArray));
+    $vector->fromArray($vectorArray);
+    
+    $decomposition = new \Libraries\Decompositions\LU($matrix);
+    $x = $decomposition->solve($vector);
+    
+    $app->render('Applications/SystemOfLinearEquations.php', array(
+        'app' => $app,
+        'matrix' => $matrix,
+        'vector' => $vector,
+        'x' => $x,
+    ));
+})->name('applications/system-of-linear-equations/demo');
 
 /**
  * Credits. About me, used literatur and used software.

@@ -84,8 +84,8 @@
                         <ul class="nav nav-tabs">
                             <li><a href="#code" data-toggle="tab"><?php echo __('Code'); ?></a></li>
                             <li><a href="#algorithm" data-toggle="tab"><?php echo __('Algorithm'); ?></a></li>
-                            <li <?php if (!isset($original)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
-                            <?php if (isset($original)): ?>
+                            <li <?php if (!isset($matrix)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
+                            <?php if (isset($matrix)): ?>
                                 <li class="active"><a href="#result" data-toggle="tab"><?php echo __('Result'); ?></a></li>
                             <?php endif; ?>
                         </ul>
@@ -302,7 +302,7 @@ class QRGivens {
                                     </ul>
                                 </p>
                             </div>
-                            <div class="tab-pane <?php if (!isset($original)): ?>active<?php endif; ?>" id="demo">
+                            <div class="tab-pane <?php if (!isset($matrix)): ?>active<?php endif; ?>" id="demo">
                                 <form class="form-horizontal" method="POST" action="/<?php echo $app -> config('base') . $app -> router() -> urlFor('matrix-decompositions/givens/demo'); ?>">
                                     <div class="control-group">
                                         <label class="control-label"><?php echo __('Matrix'); ?></label>
@@ -311,19 +311,19 @@ class QRGivens {
                                         </div>
                                     </div>
                                     <div class="form-actions">
-                                        <button class="btn btn-primary type="submit"><?php echo __('Calculate QR Decomposition'); ?></button>
+                                        <button class="btn btn-primary" type="submit"><?php echo __('Calculate QR Decomposition'); ?></button>
                                     </div>
                                 </form>
                             </div>
-                            <?php if (isset($original)): ?>
+                            <?php if (isset($matrix)): ?>
                                 <div class="tab-pane active" id="result">
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
-                                    <p><?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $original)); ?> $\in \mathbb{R}^{<?php echo $original -> rows(); ?> \times <?php echo $original -> columns(); ?>}$</p>
+                                    <p><?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix -> rows(); ?> \times <?php echo $matrix -> columns(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
                                     
-                                    <?php $givens = new \Libraries\Matrix(max($original -> columns(), $original -> rows()), max($original -> columns(), $original -> rows())); ?>
+                                    <?php $givens = new \Libraries\Matrix(max($matrix -> columns(), $matrix -> rows()), max($matrix -> columns(), $matrix -> rows())); ?>
                                     <?php foreach ($trace as $j => $column): ?>
                                         <?php foreach ($column as $i => $array): ?>
                                             <?php // Get the givens rotation of this step.

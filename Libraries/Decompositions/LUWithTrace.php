@@ -40,7 +40,7 @@ class LUWithTrace extends LU {
 
             $this->_permutation->set($j, $pivot);
 
-            $this->_matrix->swapColumns($j, $pivot);
+            $this->_matrix->swapRows($j, $pivot);
 
             // Save the matrix after permutation.
             $this->_trace[$j] = array('permutation' => $this->_matrix->copy(), );

@@ -57,15 +57,15 @@ class QRHouseholder {
             $w = new \Libraries\Libraries\Vector($matrix->columns());
             $w->setAll(0.);
 
-            // First calculate w = v_j * A.
+            // First calculate w = v_j^T * A.
             for ($i = $j; $i < $matrix->columns(); $i++) {
                 $w->set($i, $matrix->get($j, $i));
                 for ($k = $j + 1; $k < $matrix->rows(); $k++) {
                     if ($i == $j) {
-                        $w->set($i, $matrix->get($k, $j) * $matrix->get($k, $i) * $v1);
+                        $w->set($i, $w->get($i) + $matrix->get($k, $j) * $matrix->get($k, $i) * $v1);
                     }
                     else {
-                        $w->set($i, $matrix->get($k, $j) * $matrix->get($k, $i));
+                        $w->set($i, $w->get($i) + $matrix->get($k, $j) * $matrix->get($k, $i));
                     }
                 }
 
