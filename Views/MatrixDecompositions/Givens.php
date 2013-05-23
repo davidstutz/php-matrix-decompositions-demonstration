@@ -307,7 +307,11 @@ class QRGivens {
                                     <div class="control-group">
                                         <label class="control-label"><?php echo __('Matrix'); ?></label>
                                         <div class="controls">
-                                            <textarea name="matrix" rows="10" class="span6"></textarea>
+                                            <textarea name="matrix" rows="10" class="span6">
+4 2 2
+2 4 2
+2 2 4
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="form-actions">

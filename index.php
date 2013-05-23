@@ -243,7 +243,7 @@ $app->post('/matrix-decompositions/householder/demo', function() use ($app) {
 
     $array = array();
     $i = 0;
-    foreach (explode("\n", $input) as $line) {
+    foreach (explode("\n", trim($input)) as $line) {
         $j = 0;
         $array[$i] = array();
         foreach (explode(" ", $line) as $entry) {
@@ -257,7 +257,7 @@ $app->post('/matrix-decompositions/householder/demo', function() use ($app) {
     $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
 
-    $decomposition = \Libraries\Decompositions\QRHouseholder($matrix);
+    $decomposition = new \Libraries\Decompositions\QRHouseholder($matrix);
     
     $app->render('MatrixDecompositions/Householder.php', array(
         'app' => $app,

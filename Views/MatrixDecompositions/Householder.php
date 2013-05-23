@@ -102,7 +102,11 @@
                                     <div class="control-group">
                                         <label class="control-label"><?php echo __('Matrix'); ?></label>
                                         <div class="controls">
-                                            <textarea name="matrix" rows="10" class="span6"></textarea>
+                                            <textarea name="matrix" rows="10" class="span6">
+4 2 2
+2 4 2
+2 2 4
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="form-actions">
@@ -112,7 +116,11 @@
                             </div>
                             <?php if (isset($matrix)): ?>
                                 <div class="tab-pane active" id="result">
-                                
+                                    <p><b><?php echo __('Given matrix.'); ?></b></p>
+                                    
+                                    <p><?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix -> rows(); ?> \times <?php echo $matrix -> columns(); ?>}$</p>
+                                    
+                                    <p><b><?php echo __('Algorithm.'); ?></b></p>
                                 </div>
                             <?php endif; ?>
                         </div>

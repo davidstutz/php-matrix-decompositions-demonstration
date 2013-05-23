@@ -8,17 +8,12 @@ namespace Libraries\Decompositions;
  * @author  David Stutz
  * @license http://www.gnu.org/licenses/gpl-3.0
  */
-class QRHouseholder {
+class QRHouseholderWithTrace extends QRHouseholder {
     
     /**
-     * @var matrix
+     * @var array   trace
      */
-    protected $_matrix;
-    
-    /**
-     * @var vector
-     */
-    protected $_tau;
+    protected $_trace = array();
     
     /**
      * Constructor: Get the qr decomposition of the given matrix using householder transformations.
@@ -77,38 +72,26 @@ class QRHouseholder {
                     }
                 }
             }
-        }
-    }
-    
-    /**
-     * Assembles Q using the single givens rotations.
-     * 
-     * @return  matrix  Q
-     */
-    public function getQ() {
-        // Q is an mxm matrix if m is the maximum of the number of rows and thenumber of columns.
-        $m = max($this->_matrix->columns(), $this->_matrix->rows());
-        $Q = new \Libraries\Matrix($m, $m);
-        
-        // TODO: Assemble Q.
-        
-        return $Q;
-    }
-    
-    /**
-     * Gets the upper triangular matrix R.
-     */
-    public function getR() {
-        $R = $this->_matrix->copy();
-        
-        for ($i = 0; $i < $R->rows(); $i++) {
-            for ($j = 0; $j < $i; $j++) {
-                $R->set($i, $j, 0);
+            
+            $v = new \Libraries\Vector($j);
+            
+            for ($i = 0; $i < $v->size(); $i++) {
+                $v->set($this->_matrix->get($j + $i, $j));
             }
+            
+            $this->_trace[$j] = array(
+                'v' => $v,
+                'tau' => $this->_tau->get($j),
+            );
         }
-        
-        // Resize R to a square matrix.
-        $n = min($R->rows(), $R->columns());
-        return $R->resize($n, $n);
+    }
+    
+    /**
+     * Get the assembled trace.
+     * 
+     * @return  array   trace
+     */
+    public function getTrace() {
+        return $this->_trace;
     }
 }
