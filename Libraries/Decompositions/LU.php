@@ -79,7 +79,7 @@ class LU {
 
         // Now solve R*x =y.
         for ($i = $this->_matrix->rows() - 1; $i >= 0; $i--) {
-            for ($j = $i; $j >= 0; $j--) {
+            for ($j = $this->_matrix->columns() - 1; $j > $i; $j--) {
                 $x->set($i, $x->get($i) - $x->get($j) * $this->_matrix->get($i, $j));
             }
             $x->set($i, $x->get($i) / $this->_matrix->get($i, $i));

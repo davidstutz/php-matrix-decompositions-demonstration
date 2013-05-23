@@ -89,8 +89,9 @@ class QRHouseholder {
         // Q is an mxm matrix if m is the maximum of the number of rows and thenumber of columns.
         $m = max($this->_matrix->columns(), $this->_matrix->rows());
         $Q = new \Libraries\Matrix($m, $m);
+        $Q->setAll(0.);
         
-        // TODO: Assemble Q.
+        // TODO: assemble Q.
         
         return $Q;
     }

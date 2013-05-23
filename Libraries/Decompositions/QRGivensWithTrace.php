@@ -48,8 +48,22 @@ class QRGivensWithTrace extends QRGivens {
                         $this->_matrix->set($j, $k, $c * $jk + $s * $ik);
                         $this->_matrix->set($i, $k, -$s * $jk + $c * $ik);
                     }
-
-                    // This time roh (so c and s) are not stored within the matrix but given using the trace.
+                    
+                    // c and s can be stored in one matrix entry:
+                    if ($c == 0) {
+                        $this->_matrix->set($i, $j, 1);
+                    }
+                    else if (abs($s) < abs($c)) {
+                        if ($c < 0) {
+                            $this->_matrix->set($i, $j, -.5 * $s);
+                        }
+                        else {
+                            $this->_matrix->set($i, $j, .5 * $s);
+                        }
+                    }
+                    else {
+                        $this->_matrix->set($i, $j, 2. / $c);
+                    }
 
                     $this->_trace[$j][$i] = array(
                         'c' => $c,

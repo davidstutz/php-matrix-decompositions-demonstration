@@ -315,7 +315,9 @@ class LU {
                                 <div class="tab-pane active" id="result">
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
-                                    <p><?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$</p>
+                                    <p>
+                                        $A = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$
+                                    </p>
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
                                     
@@ -336,6 +338,12 @@ class LU {
                                     
                                     <p>
                                         $U = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $u)); ?>
+                                    </p>
+                                    
+                                    <p><b><?php echo __('CHeck.'); ?></b></p>
+                                    
+                                    <p>
+                                        $LU = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => \Libraries\Matrix::multiply($l, $u))); ?>
                                     </p>
                                     
                                     <?php if (isset($determinant)): ?>

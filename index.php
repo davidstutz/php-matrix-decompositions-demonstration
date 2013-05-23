@@ -223,7 +223,7 @@ $app->post('/matrix-decompositions/givens/demo', function() use ($app) {
         'app' => $app,
         'matrix' => $matrix,
         'r' => $decomposition->getR(),
-        'q' => $q,
+        'q' => $decomposition->getQ(),
         'trace' => $decomposition->getTrace(),
     ));
 })->name('matrix-decompositions/givens/demo');
@@ -257,13 +257,14 @@ $app->post('/matrix-decompositions/householder/demo', function() use ($app) {
     $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
 
-    $decomposition = new \Libraries\Decompositions\QRHouseholder($matrix);
+    $decomposition = new \Libraries\Decompositions\QRHouseholderWithTrace($matrix);
     
     $app->render('MatrixDecompositions/Householder.php', array(
         'app' => $app,
         'matrix' => $matrix,
         'r' => $decomposition->getR(),
         'q' => $decomposition->getQ(),
+        'trace' => $decomposition->getTrace(),
     ));
 })->name('matrix-decompositions/householder/demo');
 
@@ -316,13 +317,14 @@ $app->post('/applications/system-of-linear-equations/demo', function() use ($app
     $vector->fromArray($vectorArray);
     
     $decomposition = new \Libraries\Decompositions\LU($matrix);
-    $x = $decomposition->solve($vector);
     
     $app->render('Applications/SystemOfLinearEquations.php', array(
         'app' => $app,
         'matrix' => $matrix,
         'vector' => $vector,
-        'x' => $x,
+        'x' => $decomposition->solve($vector),
+        'l' => $decomposition->getL(),
+        'u' => $decomposition->getU(),
     ));
 })->name('applications/system-of-linear-equations/demo');
 

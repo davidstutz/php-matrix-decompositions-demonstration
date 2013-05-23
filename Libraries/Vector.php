@@ -209,5 +209,30 @@ class Vector {
 
         return $result;
     }
+    
+    /**
+     * Multiply the given matrices.
+     *
+     * @param matrix  left matrix
+     * @param matrix  right matrix
+     * @return  matrix product matrix $a*$b
+     */
+    public static function multiply($a, $x) {
+        // First check dimensions.
+        new \Libraries\Assertion($a instanceof Matrix, 'Given first matrix not of class Matrix.');
+        new \Libraries\Assertion($x instanceof Vector, 'Given second vector not of class Vector.');
+        new \Libraries\Assertion($a->columns() == $x->size(), 'Given dimensions are not compatible.');
+
+        $c = new Vector($a->rows());
+        $c->setAll(0.);
+
+        for ($i = 0; $i < $a->rows(); $i++) {
+            for ($j = 0; $j < $x->size(); $j++) {
+                $c->set($i, $c->get($i) + $a->get($i, $j) * $x->get($j));
+            }
+        }
+
+        return $c;
+    }
 
 }

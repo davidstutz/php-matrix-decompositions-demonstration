@@ -118,9 +118,27 @@
                                 <div class="tab-pane active" id="result">
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
-                                    <p><?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix -> rows(); ?> \times <?php echo $matrix -> columns(); ?>}$</p>
+                                    <p>
+                                        $A = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix -> rows(); ?> \times <?php echo $matrix -> columns(); ?>}$
+                                    </p>
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
+                                    
+                                    <p><b><?php echo __('Decomposition.'); ?></b></p>
+                                    
+                                    <p>
+                                        $R = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $r)); ?>
+                                    </p>
+                                    
+                                    <p>
+                                        $Q = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $q)); ?>
+                                    </p>
+                                    
+                                    <p><b><?php echo __('Check.'); ?></b></p>
+                                        
+                                    <p>
+                                        $QR = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => \Libraries\Matrix::multiply($q, $r))); ?>
+                                    </p>
                                 </div>
                             <?php endif; ?>
                         </div>

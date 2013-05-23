@@ -323,25 +323,26 @@ class QRGivens {
                                 <div class="tab-pane active" id="result">
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
-                                    <p><?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix -> rows(); ?> \times <?php echo $matrix -> columns(); ?>}$</p>
+                                    <p>
+                                        $A = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix -> rows(); ?> \times <?php echo $matrix -> columns(); ?>}$
+                                    </p>
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
                                     
                                     <?php $givens = new \Libraries\Matrix(max($matrix -> columns(), $matrix -> rows()), max($matrix -> columns(), $matrix -> rows())); ?>
                                     <?php foreach ($trace as $j => $column): ?>
                                         <?php foreach ($column as $i => $array): ?>
-                                            <?php // Get the givens rotation of this step.
-                                            $givens -> setAll(0);
-                                            for ($k = 0; $k < $givens -> rows(); $k++) {
-                                            $givens -> set($k, $k, 1.);
+                                            <?php
+                                            // Dirty way for tracing the givens rotations.
+                                            $givens->setAll(0);
+                                            for ($k = 0; $k < $givens->rows(); $k++) {
+                                                $givens -> set($k, $k, 1.);
                                             }
                                             
-                                            $givens -> set($j, $j, $array['c']);
-                                            $givens -> set($j, $i, $array['s']);
-                                            $givens -> set($i, $i, $array['c']);
-                                            $givens -> set($i, $j, -$array['s']);
-                                            
-                                            $q = \Libraries\Matrix::multiply($q, $givens->transpose());
+                                            $givens->set($j, $j, $array['c']);
+                                            $givens->set($j, $i, $array['s']);
+                                            $givens->set($i, $i, $array['c']);
+                                            $givens->set($i, $j, -$array['s']);
                                             ?>
                                             <p>
                                                 $\overset{G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>}}{\leadsto}$ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $array['matrix'])); ?> <br>
@@ -360,13 +361,13 @@ class QRGivens {
                                     </p>
                                     
                                     <p>
-                                        $Q = 
-                                        <?php foreach ($trace as $j => $column): ?>
-                                            <?php foreach ($column as $i => $array): ?>
-                                                G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} ^{T}
-                                            <?php endforeach; ?>
-                                        <?php endforeach; ?>
-                                         = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $q)); ?>
+                                        $Q = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $q)); ?>
+                                    </p>
+                                    
+                                    <p><b><?php echo __('Check.'); ?></b></p>
+                                        
+                                    <p>
+                                        $QR = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => \Libraries\Matrix::multiply($q, $r))); ?>
                                     </p>
                                 </div>
                             <?php endif; ?>

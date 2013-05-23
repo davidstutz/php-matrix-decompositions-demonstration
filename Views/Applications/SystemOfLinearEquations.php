@@ -115,9 +115,25 @@
                                     
                                     <p><?php echo $app->render('Utilities/Vector.php', array('vector' => $vector)); ?> $\in \mathbb{R}^{<?php echo $vector->size(); ?>}$</p>
                                     
+                                    <p><b><?php echo __('Decomposition.'); ?></b></p>
+                                    
+                                    <p>
+                                        $L = $ <?php echo $app->render('Utilities/Matrix.php', array('vector' => $l)); ?>
+                                    </p>
+                                    
+                                    <p>
+                                        $U = $ <?php echo $app->render('Utilities/Matrix.php', array('vector' => $u)); ?>
+                                    </p>
+                                    
                                     <p><b><?php echo __('Solution $x$ such that $Ax = b$.'); ?></b></p>
                                     
                                     <p><?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $\in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
+                                    
+                                    <p><b><?php echo __('Check.'); ?></b></p>
+                                    
+                                    <p>
+                                        $Ax = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => \Libraries\Vector::multiply($matrix, $x))); ?>
+                                    </p>
                                 </div>
                             <?php endif; ?>
                         </div>

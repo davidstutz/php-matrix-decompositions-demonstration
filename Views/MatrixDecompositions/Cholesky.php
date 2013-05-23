@@ -268,19 +268,28 @@ class Cholesky {
                             </div>
                             <?php if (isset($matrix)): ?>
                                 <div class="tab-pane active" id="result">
-                                <p><b><?php echo __('Given matrix.'); ?></b></p>
-                                
-                                <p><?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$</p>
-                                
-                                <p><b><?php echo __('Decomposition.'); ?></b></p>
-                                
-                                <p>
-                                    $L = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $l)); ?>
-                                </p>
-                                
-                                <p>
-                                    $D = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $d)); ?>
-                                </p>
+                                    <p><b><?php echo __('Given matrix.'); ?></b></p>
+                                    
+                                    <p>
+                                        $A = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$
+                                    </p>
+                                    
+                                    <p><b><?php echo __('Decomposition.'); ?></b></p>
+                                    
+                                    <p>
+                                        $L = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $l)); ?>
+                                    </p>
+                                    
+                                    <p>
+                                        $D = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $d)); ?>
+                                    </p>
+                                    
+                                    <p><b><?php echo __('Check.'); ?></b></p>
+                                        
+                                    <p>
+                                        <?php $lt = $l->copy()->transpose(); ?>
+                                        $LDL^T = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => \Libraries\Matrix::multiply($l, \Libraries\Matrix::multiply($d, $lt)))); ?>
+                                    </p>
                                 </div>
                             <?php endif; ?>
                         </div>
