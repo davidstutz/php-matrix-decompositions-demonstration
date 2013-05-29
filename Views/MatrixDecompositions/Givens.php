@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<title><?php echo __('Matrix Decompositions - QR Decomposition - Givens Rotations'); ?></title>
-		<script type="text/javascript" src="/<?php echo $app -> config('base'); ?>/Assets/Js/jquery.min.js"></script>
-        <script type="text/javascript" src="/<?php echo $app -> config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
+        <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="/<?php echo $app -> config('base'); ?>/Assets/Js/prettify.js"></script>
+        <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/prettify.js"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
                 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -16,9 +16,8 @@
     			window.prettyPrint() && prettyPrint();
     		});
         </script>
-        <link rel="stylesheet" type="text/css" href="/<?php echo $app -> config('base'); ?>/Assets/Css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="/<?php echo $app -> config('base'); ?>/Assets/Css/matrix-decompositions.css">
-        <link rel="stylesheet" type="text/css" href="/<?php echo $app -> config('base'); ?>/Assets/Css/prettify.css">
+        <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/prettify.css">
 	</head>
 	<body>
         <a href="https://github.com/davidstutz/matrix-decompositions"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
@@ -32,15 +31,15 @@
                     <ul class="nav nav-pills nav-stacked">
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li>
-                            <a href="/matrix-decompositions<?php echo $app -> router() -> urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
+                            <a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
                             <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
-                                <li><a href="/matrix-decompositions<?php echo $app -> router() -> urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
-                                <li><a href="/matrix-decompositions<?php echo $app -> router() -> urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
+                                <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
+                                <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
                                 <li class="active"><a href="#"><?php echo __('QR Decomposition'); ?></a></li>
                             </ul>
                         </li>
-                        <li><a href="/matrix-decompositions<?php echo $app -> router() -> urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
-                        <li><a href="/matrix-decompositions<?php echo $app -> router() -> urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
+                        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
+                        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
                     </ul>
                     </div>
                 <div class="span9">
@@ -77,7 +76,7 @@
                     
                     <ul class="nav nav-pills">
                         <li class="active"><a href="#"><?php echo __('Givens rotations'); ?></a></li>
-                        <li><a href="/matrix-decompositions<?php echo $app -> router() -> urlFor('matrix-decompositions/householder'); ?>"><?php echo __('Householder transformations'); ?></a></li>
+                        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/householder'); ?>"><?php echo __('Householder transformations'); ?></a></li>
                     </ul>
                     
                     <div class="tabbable">
@@ -303,7 +302,7 @@ class QRGivens {
                                 </p>
                             </div>
                             <div class="tab-pane <?php if (!isset($matrix)): ?>active<?php endif; ?>" id="demo">
-                                <form class="form-horizontal" method="POST" action="/<?php echo $app -> config('base') . $app -> router() -> urlFor('matrix-decompositions/givens/demo'); ?>">
+                                <form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/givens/demo'); ?>">
                                     <div class="control-group">
                                         <label class="control-label"><?php echo __('Matrix'); ?></label>
                                         <div class="controls">
@@ -324,19 +323,19 @@ class QRGivens {
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
                                     <p>
-                                        $A = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix -> rows(); ?> \times <?php echo $matrix -> columns(); ?>}$
+                                        $A = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$
                                     </p>
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
                                     
-                                    <?php $givens = new \Libraries\Matrix(max($matrix -> columns(), $matrix -> rows()), max($matrix -> columns(), $matrix -> rows())); ?>
+                                    <?php $givens = new \Libraries\Matrix(max($matrix->columns(), $matrix->rows()), max($matrix->columns(), $matrix->rows())); ?>
                                     <?php foreach ($trace as $j => $column): ?>
                                         <?php foreach ($column as $i => $array): ?>
                                             <?php
                                             // Dirty way for tracing the givens rotations.
                                             $givens->setAll(0);
                                             for ($k = 0; $k < $givens->rows(); $k++) {
-                                                $givens -> set($k, $k, 1.);
+                                                $givens->set($k, $k, 1.);
                                             }
                                             
                                             $givens->set($j, $j, $array['c']);
@@ -345,11 +344,11 @@ class QRGivens {
                                             $givens->set($i, $j, -$array['s']);
                                             ?>
                                             <p>
-                                                $\overset{G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>}}{\leadsto}$ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $array['matrix'])); ?> <br>
+                                                $\overset{G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>}}{\leadsto}$ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $array['matrix'])); ?> <br>
                                             </p>
                                             <p>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <?php echo __('with'); ?> $G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $givens)); ?>
+                                                <?php echo __('with'); ?> $G_{<?php echo $i + 1; ?>,<?php echo $j + 1; ?>} = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $givens)); ?>
                                             </p>
                                         <?php endforeach; ?>
                                     <?php endforeach; ?>
@@ -357,11 +356,11 @@ class QRGivens {
                                     <p><b><?php echo __('Decomposition.'); ?></b></p>
                                     
                                     <p>
-                                        $R = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $r)); ?>
+                                        $R = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $r)); ?>
                                     </p>
                                     
                                     <p>
-                                        $Q = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $q)); ?>
+                                        $Q = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $q)); ?>
                                     </p>
                                     
                                     <p><b><?php echo __('Check.'); ?></b></p>

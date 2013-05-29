@@ -17,7 +17,6 @@
             });
         </script>
         <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/matrix-decompositions.css">
         <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/prettify.css">
     </head>
     <body>
@@ -36,6 +35,7 @@
                             <a href="#"><?php echo __('Applications'); ?></a>
                             <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
                                 <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications/system-of-linear-equations'); ?>"><?php echo __('System of Linear Equations'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications/linear-least-squares'); ?>"><?php echo __('Linear Least Squares'); ?></a></li>
                             </ul>
                         </li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>

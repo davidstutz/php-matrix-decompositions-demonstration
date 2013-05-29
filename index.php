@@ -329,6 +329,13 @@ $app->post('/applications/system-of-linear-equations/demo', function() use ($app
 })->name('applications/system-of-linear-equations/demo');
 
 /**
+ * Application: Linear Least Squares.
+ */
+$app->get('/applications/linear-least-squares', function() use ($app) {
+    $app->render('Applications/LinearLeastSquares.php', array('app' => $app));
+})->name('applications/linear-least-squares');
+
+/**
  * Credits. About me, used literatur and used software.
  */
 $app->get('/credits', function() use ($app) {

@@ -34,8 +34,8 @@
                         <li>
                             <a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a>
                             <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
-                                <li class="active"><a href="#"><?php echo __('System of Linear Equations'); ?></a></li>
-                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications/linear-least-squares'); ?>"><?php echo __('Linear Least Squares'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications/system-of-linear-equations'); ?>"><?php echo __('System of Linear Equations'); ?></a></li>
+                                <li class="active"><a href="#"><?php echo __('Linear Least Squares'); ?></a></li>
                             </ul>
                         </li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
@@ -43,34 +43,15 @@
                 </div>
                 <div class="span9">
                     <p>
-                        <?php echo __('In computer science a lot of applications lead to the problem of solving systems of linear equations. In linear algebra the problem is specified as follows:'); ?>
+                        <?php echo __('Given a mathematical model and some data, linear least squares is a method to fit the model to the data. As concrete example consider the following basic curve fitting problem. Imagine some points within a plane. We want to find a line within this plane such that the sum over all distances between the line and each point is minimized - so the line which has the best "fit" to the given data points. In general the problem can be described as (approximately) solving an overdetermined system of linear equations.'); ?>
                     </p>
                     
-                    <p>
-                        <b><?php echo __('Problem.'); ?></b> <?php echo __('Given $A \in \mathbb{R}^{n \times n}$ regular and $b \in \mathbb{R}^n$. Find $x \in \mathbb{R}^n$ such that $Ax = b$.'); ?>
-                    </p>
+                    <p><b><?php echo __('Remark.'); ?></b> <?php echo __('A system of linear equations is overdetermined if it has more equations than unknowns.'); ?></p>
+                    
+                    <p><b><?php echo __('Problem.'); ?></b> <?php echo __('Given $A \in \mathbb{R}^{m \times n}$ with $m \geq n$ and full rank and $b \in \mathbb{R}^m$. Find $x \in \mathbb{R}^n$ such that $\|Ax - b\|_2 = min_{y \in \mathbb{R}^n} \|Ay - b\|_2$.'); ?></p>
                     
                     <p>
-                        <?php echo __('Given a LU decomposition the problem can be solved the following way:'); ?>
-                        <ol>
-                            <li><?php echo __('Solve $Ly = Pb$ where $P \in \mathbb{R}^{n \times n}$ is the permutation matrix of the LU decomposition.'); ?></li>
-                            <li><?php echo __('Solve $Rx = y$.'); ?></li>
-                        </ol>
-                    </p>
-                    
-                    <p>
-                        <?php echo __('Because $L$ and $R$ are both triangular matrices solving $Ly = PB$ and $Rx = y$ can be done by forward- and backward substitution respectively. As example see the following algorithm for solving $Rx = b$ with $R \in \mathbb{R}^{n \times n}$ an regular upper triangular matrix and $x,b \in \mathbb{R}^n$.'); ?>
-                    </p>
-                    
-                    <p>
-                        <b><?php echo __('Algorihm'); ?></b> <?php echo __('(Backward substitution)'); ?>
-                        <ul style="list-style-type:none;">
-                            <li><?php echo __('For $j = n, \ldots, 1$:'); ?>
-                                <ul style="list-style-type:none;">
-                                    <li><?php echo __('$x_j = \frac{b_j - \sum _{i = j+1} ^n r_{j,i} x_k}{r_{j,j}}$'); ?></li>
-                                </ul>
-                            </li>
-                        </ul>
+                        <?php echo __('Using the QR decomposition the problem can easily be solved including computing the error $\|Ax - b\|_2$ of the found solution $x$. First calculate a QR decomposition $A = QR$.'); ?>
                     </p>
                     
                     <div class="tabbable">

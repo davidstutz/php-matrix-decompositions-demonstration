@@ -17,7 +17,6 @@
             });
         </script>
         <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/matrix-decompositions.css">
         <link rel="stylesheet" type="text/css" href="/<?php echo $app->config('base'); ?>/Assets/Css/prettify.css">
     </head>
     <body>
@@ -119,7 +118,7 @@
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
                                     <p>
-                                        $A = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix -> rows(); ?> \times <?php echo $matrix -> columns(); ?>}$
+                                        $A = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$
                                     </p>
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
@@ -127,11 +126,11 @@
                                     <p><b><?php echo __('Decomposition.'); ?></b></p>
                                     
                                     <p>
-                                        $R = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $r)); ?>
+                                        $R = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $r)); ?>
                                     </p>
                                     
                                     <p>
-                                        $Q = $ <?php echo $app -> render('Utilities/Matrix.php', array('matrix' => $q)); ?>
+                                        $Q = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $q)); ?>
                                     </p>
                                     
                                     <p><b><?php echo __('Check.'); ?></b></p>
