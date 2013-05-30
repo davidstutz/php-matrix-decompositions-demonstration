@@ -336,6 +336,52 @@ $app->get('/applications/linear-least-squares', function() use ($app) {
 })->name('applications/linear-least-squares');
 
 /**
+ * Application Demo: Linear Least Squares.
+ */
+$app->post('/applications/linear-least-squares/demo', function() use ($app) {
+    $matrixInput = $app->request()->post('matrix');
+    $vectorInput = $app->request()->post('vector');
+
+    $matrixArray = array();
+    $i = 0;
+    foreach (explode("\n", trim($matrixInput)) as $line) {
+        $j = 0;
+        $matrixArray[$i] = array();
+        foreach (explode(" ", trim($line)) as $entry) {
+            $matrixArray[$i][$j] = (double) $entry;
+            $j++;
+        }
+        $i++;
+    }
+    
+    $vectorArray = array();
+    $i = 0;
+    foreach (explode("\n", trim($vectorInput)) as $line) {
+        $vectorArray[$i] = (double) trim($line);
+        $i++;
+    }
+    
+    // Create the matrix from the above generated array.
+    $matrix = new \Libraries\Matrix(sizeof($matrixArray), sizeof($matrixArray[0]));
+    $matrix->fromArray($matrixArray);
+    
+    // Get the vector from input.
+    $vector = new \Libraries\Vector(sizeof($vectorArray));
+    $vector->fromArray($vectorArray);
+    
+    $decomposition = new \Libraries\Decompositions\QRHouseholder($matrix);
+    
+    $app->render('Applications/LinearLeastSquares.php', array(
+        'app' => $app,
+        'matrix' => $matrix,
+        'vector' => $vector,
+        'x' => \Libraries\Vector::multiply($decomposition->getQ()->transpose(), $vector->copy()),
+        'q' => $decomposition->getQ(),
+        'r' => $decomposition->getR(),
+    ));
+})->name('applications/linear-least-squares/demo');
+
+/**
  * Credits. About me, used literatur and used software.
  */
 $app->get('/credits', function() use ($app) {

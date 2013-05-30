@@ -51,7 +51,24 @@
                     <p><b><?php echo __('Problem.'); ?></b> <?php echo __('Given $A \in \mathbb{R}^{m \times n}$ with $m \geq n$ and full rank and $b \in \mathbb{R}^m$. Find $x \in \mathbb{R}^n$ such that $\|Ax - b\|_2 = min_{y \in \mathbb{R}^n} \|Ay - b\|_2$.'); ?></p>
                     
                     <p>
-                        <?php echo __('Using the QR decomposition the problem can easily be solved including computing the error $\|Ax - b\|_2$ of the found solution $x$. First calculate a QR decomposition $A = QR$.'); ?>
+                        <?php echo __('Using the QR decomposition the problem can easily be solved including computing the error $\|Ax - b\|_2$ of the found solution $x$. First calculate a QR decomposition $A = QR$. Then:'); ?>
+                    </p>
+                    
+                    <p>
+                        $Q^TA = R = \left[\begin{array}{c} 
+                                    \bar{R} \\
+                                    \emptyset \\
+                                  \end{array} \right]$
+                        <?php echo __('with $\bar{R} \in \mathbb{R}^{n \times n}$ and upper triangular matrix and'); ?>
+                        $Q^Tb = \left[\begin{array}{c} 
+                                    \bar{b} \\
+                                    e \\
+                                  \end{array} \right]$
+                        <?php echo __('with $\bar{b} \in \mathbb{R}^{n}$.'); ?>
+                    </p>
+                    
+                    <p>
+                        <?php echo __('$\bar{R}$ has full rank and the solution $x \in \mathbb{R}^{n}$ of $\bar{R}c = \bar{b}$ is the solution of the linear least squares problem. In addition $\|e\|_2$ is the error.'); ?>
                     </p>
                     
                     <div class="tabbable">
@@ -63,7 +80,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane <?php if (!isset($matrix)): ?>active<?php endif; ?>" id="demo">
-                                <form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('applications/system-of-linear-equations/demo'); ?>">
+                                <form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('applications/linear-least-squares/demo'); ?>">
                                     <div class="control-group">
                                         <label class="control-label"><?php echo __('Matrix/Vector'); ?></label>
                                         <div class="controls">
@@ -99,22 +116,20 @@
                                     <p><b><?php echo __('Decomposition.'); ?></b></p>
                                     
                                     <p>
-                                        $L = $ <?php echo $app->render('Utilities/Matrix.php', array('vector' => $l)); ?>
+                                        $Q = $ <?php echo $app->render('Utilities/Matrix.php', array('vector' => $q)); ?>
                                     </p>
                                     
                                     <p>
-                                        $U = $ <?php echo $app->render('Utilities/Matrix.php', array('vector' => $u)); ?>
+                                        $R = $ <?php echo $app->render('Utilities/Matrix.php', array('vector' => $r)); ?>
                                     </p>
                                     
-                                    <p><b><?php echo __('Solution $x$ such that $Ax = b$.'); ?></b></p>
+                                    <p><b><?php echo __('Solution $x$.'); ?></b></p>
                                     
                                     <p><?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $\in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Check.'); ?></b></p>
                                     
-                                    <p>
-                                        $Ax = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => \Libraries\Vector::multiply($matrix, $x))); ?>
-                                    </p>
+                                    
                                 </div>
                             <?php endif; ?>
                         </div>
