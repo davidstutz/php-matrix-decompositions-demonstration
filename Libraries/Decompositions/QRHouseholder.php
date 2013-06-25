@@ -86,12 +86,33 @@ class QRHouseholder {
      * @return  matrix  Q
      */
     public function getQ() {
-        // Q is an mxm matrix if m is the maximum of the number of rows and thenumber of columns.
+        // Q is an m x m matrix if m is the maximum of the number of rows and thenumber of columns.
         $m = max($this->_matrix->columns(), $this->_matrix->rows());
         $Q = new \Libraries\Matrix($m, $m);
         $Q->setAll(0.);
         
-        // TODO: assemble Q.
+        // Begin with the identity matrix.
+        for ($i = 0; $i < min($Q->rows(), $Q->columns()); $i++) {
+            $Q->set($i, $i, 1.);
+        }
+        
+        // Got backwards through all householder transformations and apply them on
+        for ($k = $this->_matrix->columns() - 1; $k >= 0; $k--) {
+            for ($j = $k; $j < $Q->columns(); $j++) {
+                
+                // First compute w^T(j) = v^T * Q(j) where Q(j) is the j-th column of Q.
+                $w = $Q->get($k, $j)*1.;
+                for ($i = $k + 1; $i < $Q->rows(); $i++) {
+                    $w += $this->_matrix->get($i, $k)*$Q->get($i, $j);
+                }
+                
+                // Now : Q(i,j) = Q(i,j) - tau(k)*v(i)*w(j).
+                $Q->set($k, $j, $Q->get($k, $j) - $this->_tau->get($k)*1.*$w);
+                for ($i = $k + 1; $i < $Q->rows(); $i++) {
+                    $Q->set($i, $j, $Q->get($i, $j) - $this->_tau->get($k)*$this->_matrix->get($i, $k)*$w);
+                }
+            }
+        }
         
         return $Q;
     }

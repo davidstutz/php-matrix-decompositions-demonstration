@@ -56,6 +56,7 @@
                             <li><a href="http://en.wikipedia.org/wiki/Wallace_Givens" target="_blank"><?php echo __('Wikipedia: Wallace Givens'); ?></a> <span class="muted"><?php echo __(' - visited april 2013'); ?></span></li>
                             <li><a href="http://en.wikipedia.org/wiki/Cholesky_decomposition" target="_blank"><?php echo __('Wikipedia: Cholesky Decomposition'); ?></a> <span class="muted"><?php echo __(' - visited april 2013'); ?></span></li>
                             <li><a href="http://en.wikipedia.org/wiki/Analysis_of_algorithms" target="_blank"><?php echo __('Wikipedia: Analysis of Algorithms'); ?></a> <span class="muted"><?php echo __(' - visited april 2013'); ?></span></li>
+                            <li><a href="http://en.wikipedia.org/wiki/Householder_transformation" target="_blank"><?php echo __('Wikipedia: Householder Transformation'); ?></a> <span class="muted"><?php echo __(' - visited june 2013'); ?></span></li>
                             <li><?php echo __('"Introduction to Algorithms", T. Cormen, C. Leiserson, R. Rivest, C. Stein, MIT Press, Third Edition'); ?></li>
                             <li><?php echo __('"Numerik f&uuml;r Ingeneure und Naturwissenschaftler", W. Dahmen, A.Resuken, Springer Verlag, Second Edition'); ?></li>
                         </ul>

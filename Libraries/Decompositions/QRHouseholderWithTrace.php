@@ -74,14 +74,15 @@ class QRHouseholderWithTrace extends QRHouseholder {
             }
             
             // Assemble v for trace.
-            $v = new \Libraries\Vector($j + 1);
+            $v = new \Libraries\Vector($this->_matrix->rows() - $j);
             $v->set(0, 1);
             for ($i = 1; $i < $v->size(); $i++) {
-                $v->set($i, $matrix->get($i, $j));
+                $v->set($i, $this->_matrix->get($i, $j));
             }
             
             $this->_trace[$j] = array(
                 'v' => $v,
+                'matrix' => $this->_matrix->copy(),
             );
         }
     }

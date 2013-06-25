@@ -94,7 +94,44 @@
                                 </pre>
                             </div>
                             <div class="tab-pane" id="algorithm">
-                            
+                                <p>
+                                    <?php echo __('A householder transformation is a reflection about a hyperplane described using a normal vector $v$. The housholder transformation is then defined as:'); ?>
+                                </p>
+                                
+                                <p>
+                                    <?php echo __('$Q_v = I - 2 \frac{vv^T}{v^Tv}$'); ?>
+                                </p>
+                                
+                                <p>
+                                    <?php echo __('Where $I$ is the identity matrix. It is easy to see the following properties of the householder transformation $Q_v$:'); ?>
+                                </p>
+                                
+                                <p>
+                                    <ul>
+                                        <li><?php echo __('$Q_v = Q_v^T$.'); ?></li>
+                                        <li><?php echo __('$Q_v^2 = I$.'); ?></li>
+                                    </ul>
+                                </p>
+                                
+                                <p>
+                                    <?php echo __('Thus $Q_v$ is orthogonal and symmetric.'); ?>
+                                </p>
+                                
+                                <p>
+                                    TODO
+                                </p>
+                                
+                                <p>
+                                    <?php echo __('For the implementation of the above algorithm the following trick is useful. Instead of setting up $Q$ and then calculating $Q \cdot A$ it is easier to calculate $w^T = v^T \cdot A$ and then:'); ?>
+                                </p>
+                                
+                                <p>
+                                    <?php echo __('$A - \frac{2}{v^Tv} v w^T$'); ?>
+                                </p>
+                                
+                                <p>
+                                    <?php echo __('In addition $v$ can be stored below the diagonal within the matrix by normalizing $v$ such that $v_1 = 1$.'); ?>
+                                </p>
                             </div>
                             <div class="tab-pane <?php if (!isset($matrix)): ?>active<?php endif; ?>" id="demo">
                                 <form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/householder/demo'); ?>">
@@ -123,6 +160,12 @@
                                     
                                     <p><b><?php echo __('Algorithm.'); ?></b></p>
                                     
+                                    <?php foreach ($trace as $array): ?>
+                                        <p>
+                                            $\leadsto$ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $array['matrix'])); ?> <?php echo __('with'); ?> $v = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $array['v'])); ?>
+                                        </p>
+                                    <?php endforeach; ?>
+                                        
                                     <p><b><?php echo __('Decomposition.'); ?></b></p>
                                     
                                     <p>
