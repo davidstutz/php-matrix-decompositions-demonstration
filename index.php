@@ -58,29 +58,8 @@ $app->get('/', function() use ($app) {
  * Code overview.
  */
 $app->get('/code', function() use ($app) {
-    $app->render('Code/Overview.php', array('app' => $app));
+    $app->render('Code.php', array('app' => $app));
 })->name('code');
-
-/**
- * Matrix class code.
- */
-$app->get('/code/matrix', function() use ($app) {
-    $app->render('Code/Matrix.php', array('app' => $app));
-})->name('code/matrix');
-
-/**
- * Vector class code.
- */
-$app->get('/code/vector', function() use ($app) {
-    $app->render('Code/Vector.php', array('app' => $app));
-})->name('code/vector');
-
-/**
- * Test code.
- */
-$app->get('/code/tests', function() use ($app) {
-    $app->render('Code/Tests.php', array('app' => $app));
-})->name('code/tests');
 
 /**
  * Problem overview.

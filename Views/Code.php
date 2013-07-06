@@ -29,14 +29,7 @@
             <div class="row">
                 <div class="span3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li class="active">
-                            <a href="#"><?php echo __('Code Base'); ?></a>
-                            <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
-                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code/matrix'); ?>"><?php echo __('Matrix Class'); ?></a></li>
-                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code/vector'); ?>"><?php echo __('Vector Class'); ?></a></li>
-                                <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code/tests'); ?>"><?php echo __('Tests'); ?></a></li>
-                            </ul>
-                        </li>
+                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a></li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
@@ -44,12 +37,26 @@
                 </div>
                 <div class="span9">
                     <p>
-                        <?php echo __('For working with matrices and vectors using PHP the following classes will be used. I know there are already many solutions of data structures for matrices and vectors, and they will most likely be more efficient or more flexible then these, but for demonstrating common used matrix decompositions the given classes will most likely do their jobs.'); ?>
+                        <?php echo __('The algorithms and applications of the matrix decompositions are based on a Matrix and Vector class to provide basic operations like addition, multiplication, swapping rows or checking for equality.'); ?>
                     </p>
-                    
-                    <p>
-                        <?php echo __('Thus I focussed on writing readable and clean code for demonstration. Thus efficiency concerning the runtime as well as the needed memory of the written code is less important.'); ?>
-                    </p>
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#matrix" data-toggle="tab"><?php echo __('Matrix'); ?></a></li>
+                            <li><a href="#vector" data-toggle="tab"><?php echo __('Vector'); ?></a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="matrix" class="tab-pane fade in active">
+                                <pre class="prettyprint linenums">
+
+                                </pre>
+                            </div>
+                            <div id="vector" class="tab-pane fade in">
+                                <pre class="prettyprint linenums">
+
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>

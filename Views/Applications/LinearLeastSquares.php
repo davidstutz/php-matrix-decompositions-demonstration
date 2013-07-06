@@ -23,7 +23,7 @@
         <a href="https://github.com/davidstutz/matrix-decompositions"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
         <div class="container">
             <div class="page-header">
-                <h1><?php echo __('Applications'); ?></h1>
+                <h1><?php echo __('Applications'); ?> <span class="muted">//</span> <?php echo __('Linear Least Squares'); ?></h1>
             </div>
               
             <div class="row">
