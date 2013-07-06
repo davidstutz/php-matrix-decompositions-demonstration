@@ -114,11 +114,33 @@
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('Thus $Q_v$ is orthogonal and symmetric.'); ?>
+                                    <?php echo __('Thus $Q_v$ is orthogonal and symmetric. The basic idea to transform $A$ to upper triangular form is the following: Given a vector $a \in \mathbb{R}^n$ find $v \in \mathbb{R}^n$ such that'); ?>
                                 </p>
                                 
                                 <p>
-                                    TODO
+                                    $Q_v a = (I - 2 \frac{vv^T}{v^Tv}) \cdot a = 
+                                    \left[\begin{array}{c} 
+                                    \ast \\
+                                    0 \\
+                                    \vdots \\
+                                    0\ \\
+                                    \end{array} \right]
+                                    $
+                                </p>
+                                
+                                <p>
+                                    <?php echo __('The solution for this problem is given by $v = a + sign(a_1)\|a\|_2$ where $sign(a_1)$ is the sign of the first entry of $a$ and $\|\cdot\|_2$ is the 2-norm. The QR decomposition is then accomplished by eliminating all entries below the diagonal by using the appropriate householder transformation on the first column of the submatrix $A[i,m] \in \mathbb{R}^{m-i+1 \times n-i+1}$ for each $i = 1, \ldots , min(m,n) -1$.'); ?>
+                                </p>
+                                
+                                <p>
+                                    <b><?php echo __('Algorithm.'); ?></b>
+                                    <ul style="list-style-type:none;">
+                                        <li><?php echo __('For $i = 1, \ldots, n - 1$:'); ?>
+                                            <ul style="list-style-type:none;">
+                                                <li><?php echo __('Calculate $v_i = a_i + sign(a_{i,i})\|a_i\|_2$.'); ?></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </p>
                                 
                                 <p>
