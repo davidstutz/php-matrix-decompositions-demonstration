@@ -402,5 +402,29 @@ class Matrix {
 
         return $c;
     }
-
+    
+    /**
+     * Multiplay given matrix by given vector.
+     * 
+     * @param   matrix  matrix
+     * @param   vector  vector
+     * @return  vector product matrix*vector
+     */
+    public static function operate($matrix, $vector) {
+        // First check dimensions.
+        new \Libraries\Assertion($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+        new \Libraries\Assertion($vector instanceof Vector, 'Given vector not of class Vector.');
+        new \Libraries\Assertion($matrix->columns() == $vector->size(), 'Given dimensions are not compatible.');
+        
+        $result = new \Libraries\Vector($matrix->rows());
+        $result->setAll(0.);
+        
+        for ($i = 0; $i < $matrix->rows(); $i++) {
+            for ($j = 0; $j < $matrix->columns(); $j++) {
+                $result->set($i, $result->get($i) + $matrix->get($i, $j)*$vector->get($j));
+            }
+        }
+        
+        return $result;
+    }
 }

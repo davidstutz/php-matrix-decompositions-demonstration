@@ -107,29 +107,32 @@
                                 <div class="tab-pane active" id="result">
                                     <p><b><?php echo __('Given matrix.'); ?></b></p>
                                     
-                                    <p><?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$</p>
+                                    <p>$A := $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> $\in \mathbb{R}^{<?php echo $matrix->rows(); ?> \times <?php echo $matrix->columns(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Given vector.'); ?></b></p>
                                     
-                                    <p><?php echo $app->render('Utilities/Vector.php', array('vector' => $vector)); ?> $\in \mathbb{R}^{<?php echo $vector->size(); ?>}$</p>
+                                    <p>$b := $<?php echo $app->render('Utilities/Vector.php', array('vector' => $vector)); ?> $\in \mathbb{R}^{<?php echo $vector->size(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Decomposition.'); ?></b></p>
                                     
                                     <p>
-                                        $Q = $ <?php echo $app->render('Utilities/Matrix.php', array('vector' => $q)); ?>
+                                        $Q = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $q)); ?>
                                     </p>
                                     
                                     <p>
-                                        $R = $ <?php echo $app->render('Utilities/Matrix.php', array('vector' => $r)); ?>
+                                        $R = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $r)); ?>
                                     </p>
                                     
                                     <p><b><?php echo __('Solution $x$.'); ?></b></p>
                                     
-                                    <p><?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $\in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
+                                    <p>$x^\ast := $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $\in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Check.'); ?></b></p>
                                     
-                                    
+                                    <p>
+                                        <?php $error = \Libraries\Vector::add(\Libraries\Matrix::operate($matrix, $x), $vector->multiplyBy(-1.)); ?>
+                                        $Ax^\ast - b = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $error)); ?>
+                                    </p>
                                 </div>
                             <?php endif; ?>
                         </div>

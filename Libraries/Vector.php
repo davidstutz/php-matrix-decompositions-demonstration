@@ -211,16 +211,16 @@ class Vector {
     }
     
     /**
-     * Multiply the given matrices.
+     * Multiply the given matrix and vector.
      *
-     * @param matrix  left matrix
-     * @param matrix  right matrix
-     * @return  matrix product matrix $a*$b
+     * @param matrix  matrix
+     * @param vector  vector
+     * @return  vector  product matrix*vector
      */
     public static function multiply($a, $x) {
         // First check dimensions.
-        new \Libraries\Assertion($a instanceof Matrix, 'Given first matrix not of class Matrix.');
-        new \Libraries\Assertion($x instanceof Vector, 'Given second vector not of class Vector.');
+        new \Libraries\Assertion($a instanceof Matrix, 'Given matrix not of class Matrix.');
+        new \Libraries\Assertion($x instanceof Vector, 'Given vector not of class Vector.');
         new \Libraries\Assertion($a->columns() == $x->size(), 'Given dimensions are not compatible.');
 
         $c = new Vector($a->rows());
@@ -234,5 +234,40 @@ class Vector {
 
         return $c;
     }
+    
+    /**
+     * Add the two vectors.
+     * 
+     * @param   vector  first vector
+     * @param   vector second vector
+     * @return vector sum
+     */
+    public static function add($a, $b) {
+        // First check dimensions.
+        new \Libraries\Assertion($a instanceof Vector, 'Given first vector not of class Vector.');
+        new \Libraries\Assertion($b instanceof Vector, 'Given second vector not of class Vector.');
+        new \Libraries\Assertion($a->size() == $b->size(), 'Given dimensions are not compatible.');
+        
+        $c = $a->copy();
+        for ($i = 0; $i < $a->size(); $i++) {
+            $c->set($i, $a->get($i) + $b->get($i));
+        }
+        
+        return $c;
+    }
 
+    /**
+     * Multiply vector by scalar.
+     * 
+     * @param double scalar
+     * @return vector  this
+     */
+    public function multiplyBy($scalar) {
+        for ($i = 0; $i < $this->size(); $i++) {
+            $this->set($i, $this->get($i)*$scalar);
+        }
+        
+        return $this;
+    }
+    
 }

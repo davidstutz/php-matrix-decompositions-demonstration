@@ -1245,5 +1245,111 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         
         \Libraries\Matrix::add($matrixA, $matrixB);
     }
+    
+    /**
+     * Provides data for testing operate.
+     * 
+     * @return  array   data
+     */
+    public function providerOperate() {
+        return array(
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                ),
+                array(
+                    1, 1, 1
+                ),
+                array(
+                    (double)1, (double)1, (double)1
+                ),
+            ),
+            array(
+                array(
+                    array(1, 1, 1),
+                    array(1, 1, 1),
+                    array(1, 1, 1),
+                ),
+                array(
+                    1, 1, 1
+                ),
+                array(
+                    (double)3, (double)3, (double)3
+                ),
+            ),
+        );
+    }
+
+    /**
+     * Tests operate.
+     * 
+     * @test
+     * @dataProvider providerOperate
+     * @param   array   matrix
+     * @param   array   vector
+     * @param   array   result
+     */
+    public function testOperate($matrix, $vector, $result) {
+        $matrixMatrix = new \Libraries\Matrix(sizeof($matrix), sizeof($matrix[0]));
+        $vectorVector = new \Libraries\Vector(sizeof($vector));
+        
+        $matrixMatrix->fromArray($matrix);
+        $vectorVector->fromArray($vector);
+        
+        $resultVector = \Libraries\Matrix::operate($matrixMatrix, $vectorVector);
+        
+        $this->assertSame($resultVector->asArray(), $result);
+    }
+    
+     /**
+     * Provides data for testing operate exceptions.
+     * 
+     * @return  array   data
+     */
+    public function providerOperateExceptions() {
+        return array(
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                ),
+                array(
+                    1, 1, 1, 1
+                ),
+            ),
+            array(
+                array(
+                    array(1, 0, 0),
+                    array(0, 1, 0),
+                    array(0, 0, 1),
+                ),
+                array(
+                    1, 1
+                ),
+            ),
+        );
+    }
+
+    /**
+     * Tests add exceptions.
+     * 
+     * @test
+     * @dataProvider providerOperateExceptions
+     * @expectedException InvalidArgumentException
+     * @param   array   matrix
+     * @param   array   vector
+     */
+    public function testOperateExceptions($matrix, $vector) {
+        $matrixMatrix = new \Libraries\Matrix(sizeof($matrix), sizeof($matrix[0]));
+        $vectorVector = new \Libraries\Vector(sizeof($vector));
+        
+        $matrixMatrix->fromArray($matrix);
+        $vectorVector->fromArray($vector);
+        
+        \Libraries\Matrix::operate($matrixMatrix, $vectorVector);
+    }
 }
     
