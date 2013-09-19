@@ -92,7 +92,7 @@
                             <div class="tab-pane" id="code">
                                 <pre class="prettyprint linenums">
 /**
- * Helper class to provide methods concerning the lu decomposition.
+ * Calculate a QR decomposition by using givens rotations.
  *
  * @author  David Stutz
  * @license http://www.gnu.org/licenses/gpl-3.0
@@ -113,42 +113,44 @@ class QRGivens {
     public function __construct(&$matrix) {
         new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
 
-        // Check in all columns except the n-th one for entries to eliminate.
-        for ($j = 0; $j < $matrix->columns() - 1; $j++) {
-            for ($i = $j + 1; $i < $matrix->rows(); $i++) {
-                // If the entry is zero it can be skipped.
-                if ($matrix->get($i, $j) != 0) {
-                    $r = sqrt(pow($matrix->get($j, $j), 2) + pow($matrix->get($i, $j), 2));
+        $this->_matrix = $matrix->copy();
 
-                    if ($matrix->get($i, $j) < 0) {
+        // Check in all columns except the n-th one for entries to eliminate.
+        for ($j = 0; $j < $this->_matrix->columns() - 1; $j++) {
+            for ($i = $j + 1; $i < $this->_matrix->rows(); $i++) {
+                // If the entry is zero it can be skipped.
+                if ($this->_matrix->get($i, $j) != 0) {
+                    $r = sqrt(pow($this->_matrix->get($j, $j), 2) + pow($this->_matrix->get($i, $j), 2));
+
+                    if ($this->_matrix->get($i, $j) < 0) {
                         $r = -$r;
                     }
 
-                    $s = $matrix->get($i, $j) / $r;
-                    $c = $matrix->get($j, $j) / $r;
+                    $s = $this->_matrix->get($i, $j) / $r;
+                    $c = $this->_matrix->get($j, $j) / $r;
 
                     // Apply the givens rotation:
-                    for ($k = $j; $k < $matrix->columns(); $k++) {
-                        $jk = $matrix->get($j, $k);
-                        $ik = $matrix->get($i, $k);
-                        $matrix->set($j, $k, $c * $jk + $s * $ik);
-                        $matrix->set($i, $k, -$s * $jk + $c * $ik);
+                    for ($k = $j; $k < $this->_matrix->columns(); $k++) {
+                        $jk = $this->_matrix->get($j, $k);
+                        $ik = $this->_matrix->get($i, $k);
+                        $this->_matrix->set($j, $k, $c * $jk + $s * $ik);
+                        $this->_matrix->set($i, $k, -$s * $jk + $c * $ik);
                     }
 
                     // c and s can be stored in one matrix entry:
                     if ($c == 0) {
-                        $matrix->set($i, $j, 1);
+                        $this->_matrix->set($i, $j, 1);
                     }
                     else if (abs($s) < abs($c)) {
                         if ($c < 0) {
-                            $matrix->set($i, $j, -.5 * $s);
+                            $this->_matrix->set($i, $j, -.5 * $s);
                         }
                         else {
-                            $matrix->set($i, $j, .5 * $s);
+                            $this->_matrix->set($i, $j, .5 * $s);
                         }
                     }
                     else {
-                        $matrix->set($i, $j, 2. / $c);
+                        $this->_matrix->set($i, $j, 2. / $c);
                     }
                 }
             }
@@ -163,9 +165,47 @@ class QRGivens {
     public function getQ() {
         // Q is an mxm matrix if m is the maximum of the number of rows and thenumber of columns.
         $m = max($this->_matrix->columns(), $this->_matrix->rows());
-        $Q = new Matrix($m, $m);
+        $Q = new \Libraries\Matrix($m, $m);
+        $Q->setAll(0.);
         
-        // TODO: Assemble Q.
+        // Begin with the identity matrix.
+        for ($i = 0; $i < $Q->rows(); $i++) {
+            $Q->set($i, $i, 1.);
+        }
+        
+        for ($j = $this->_matrix->columns() - 1; $j >= 0 ; $j--) {
+            for ($i = $this->_matrix->rows() - 1; $i > $j; $i--) {
+                
+                // Get c and s which are stored in the i-th row, j-th column.
+                $aij = $this->_matrix->get($i, $j);
+                
+                $c = 0;
+                $s = 0;
+                if ($aij == 0) {
+                    $c = 0.;
+                    $s = 1.;
+                }
+                else if (abs($aij) < 1) {
+                    $s = 2.*abs($aij);
+                    $c = sqrt(1 - pow($s, 2));
+                    if ($aij < 0) {
+                        $c = -$c;
+                    }
+                }
+                else {
+                    $c = 2./$aij;
+                    $s = sqrt(1 - pow($c, 2));
+                }
+                
+                for ($k = 0; $k < $this->_matrix->columns(); $k++) {
+                    $jk = $Q->get($j, $k);
+                    $ik = $Q->get($i, $k);
+                    
+                    $Q->set($j, $k, $c*$jk - $s*$ik);
+                    $Q->set($i, $k, $s*$jk + $c*$ik);
+                }
+            }
+        }
         
         return $Q;
     }
@@ -187,6 +227,7 @@ class QRGivens {
         return $R->resize($n, $n);
     }
 }
+
                                 </pre>
                             </div>
                             <div class="tab-pane" id="algorithm">

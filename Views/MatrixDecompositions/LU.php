@@ -83,7 +83,7 @@
                             <div class="tab-pane" id="code">
                                 <pre class="prettyprint linenums">
 /**
- * Helper class to provide methods concerning the lu decomposition.
+ * Calculate a LU decomposition.
  *
  * @author  David Stutz
  * @license http://www.gnu.org/licenses/gpl-3.0
@@ -108,7 +108,7 @@ class LU {
      */
     public function __construct(&$matrix) {
         new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
-        new \Libraries\Assertion($matrix->isSquare(), 'Matrix is no quadratic.');
+        new \Libraries\Assertion($matrix->isSquare(), 'Matrix is not quadratic.');
 
         $this->_permutation = new \Libraries\Vector($matrix->rows());
         $this->_matrix = $matrix->copy();
@@ -124,8 +124,8 @@ class LU {
 
             $this->_permutation->set($j, $pivot);
 
-            $this->_matrix->swapColumns($j, $pivot);
-
+            $this->_matrix->swapRows($j, $pivot);
+            
             for ($i = $j + 1; $i < $this->_matrix->columns(); $i++) {
                 $this->_matrix->set($i, $j, $this->_matrix->get($i, $j) / $this->_matrix->get($j, $j));
 
@@ -134,6 +134,38 @@ class LU {
                 }
             }
         }
+    }
+
+    /**
+     * Solve system of linear equation using a right hand vector, the lu decomposition and the permutation vector of the lu decomposition.
+     *
+     * @param   vector  right hand
+     */
+    public function solve($b) {
+        new \Libraries\Assertion($this->_matrix->rows() == $b->size(), 'Right hand vector does not have correct size.');
+        
+        $x = $b->copy();
+        
+        for ($i = 0; $i < $x->size(); $i++) {
+            $x->swapEntries($i, $this->_permutation->get($i));
+        }
+
+        // First solve L*y = b.
+        for ($i = 0; $i < $this->_matrix->rows(); $i++) {
+            for ($j = $i - 1; $j >= 0; $j--) {
+                $x->set($i, $x->get($i) - $x->get($j) * $this->_matrix->get($i, $j));
+            }
+        }
+
+        // Now solve R*x =y.
+        for ($i = $this->_matrix->rows() - 1; $i >= 0; $i--) {
+            for ($j = $this->_matrix->columns() - 1; $j > $i; $j--) {
+                $x->set($i, $x->get($i) - $x->get($j) * $this->_matrix->get($i, $j));
+            }
+            $x->set($i, $x->get($i) / $this->_matrix->get($i, $i));
+        }
+
+        return $x;
     }
 
     /**

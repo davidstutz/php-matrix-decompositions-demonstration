@@ -270,4 +270,18 @@ class Vector {
         return $this;
     }
     
+    /**
+     * Get l2 norm of this vector.
+     * 
+     * @return  double 
+     */
+    public function l2() {
+        $l2 = 0.;
+        for ($i = 0; $i < $this->size(); $i++) {
+            $l2 += $this->get($i)*$this->get($i);
+        }
+        
+        return sqrt($l2);
+    }
+    
 }

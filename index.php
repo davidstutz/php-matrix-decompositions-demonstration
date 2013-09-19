@@ -350,13 +350,46 @@ $app->post('/applications/linear-least-squares/demo', function() use ($app) {
     
     $decomposition = new \Libraries\Decompositions\QRHouseholder($matrix);
     
+    $r = $decomposition->getR();
+    $r->resize($matrix->columns(), $r->columns());
+    
+    $q = $decomposition->getQ();
+    
+    $b = \Libraries\Matrix::operate($q->copy()->transpose(), $vector);
+    
+    $error = 0.;
+    if ($matrix->rows() - $matrix->columns() > 0) {
+        $b2 = new \Libraries\Vector($matrix->rows() - $matrix->columns());
+        for ($i = 0; $i < $b2->size(); $i++) {
+            $b2->set($i, $b->get($i + $matrix->columns()));
+        }
+        
+        $error = $b2->l2();
+    }
+    
+    $b1 = $b->copy();
+    $b1->resize($matrix->columns());
+    
+    $x = $b1->copy();
+    
+    // Backsubstitution to solve R x = b_1.
+    for ($i = $r->rows() - 1; $i >= 0; $i--) {
+        for ($j = $r->columns() - 1; $j > $i; $j--) {
+            $x->set($i, $x->get($i) - $x->get($j) * $r->get($i, $j));
+        }
+        $x->set($i, $x->get($i) / $r->get($i, $i));
+    }
+    
     $app->render('Applications/LinearLeastSquares.php', array(
         'app' => $app,
         'matrix' => $matrix,
         'vector' => $vector,
-        'x' => \Libraries\Vector::multiply($decomposition->getQ()->transpose(), $vector->copy()),
+        'x' => $x,
         'q' => $decomposition->getQ(),
-        'r' => $decomposition->getR(),
+        'r' => $r,
+        'b' => $b,
+        'b1' => $b1,
+        'error' => $error,
     ));
 })->name('applications/linear-least-squares/demo');
 

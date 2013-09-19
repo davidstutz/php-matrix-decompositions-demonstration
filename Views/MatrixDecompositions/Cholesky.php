@@ -76,7 +76,7 @@
                             <div class="tab-pane" id="code">
                                 <pre class="prettyprint linenums">
 /**
- * Helper class to provide methods concerning the cholesky decomposition.
+ * Calculate a cholesky decomposition.
  *
  * @author  David Stutz
  * @license http://www.gnu.org/licenses/gpl-3.0

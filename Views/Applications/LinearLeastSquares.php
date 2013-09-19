@@ -116,7 +116,11 @@
                                     <p><b><?php echo __('Decomposition.'); ?></b></p>
                                     
                                     <p>
-                                        $Q = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $q)); ?>
+                                        $Q = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $q)); ?> $\leadsto
+                                        \left[\begin{array}{c} 
+                                            \bar{b} \\
+                                            e \\
+                                        \end{array} \right] = Q^Tb = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $b)); ?>
                                     </p>
                                     
                                     <p>
@@ -125,13 +129,13 @@
                                     
                                     <p><b><?php echo __('Solution $x$.'); ?></b></p>
                                     
-                                    <p>$x^\ast := $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $\in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
+                                    <p>$x^\ast := $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = \tilde{R}^{-1} \bar{b} \in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Check.'); ?></b></p>
                                     
                                     <p>
-                                        <?php $error = \Libraries\Vector::add(\Libraries\Matrix::operate($matrix, $x), $vector->multiplyBy(-1.)); ?>
-                                        $Ax^\ast - b = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $error)); ?>
+                                        <?php $res = \Libraries\Vector::add(\Libraries\Matrix::operate($matrix, $x), $vector->multiplyBy(-1.)); ?>
+                                        $Ax^\ast - b = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $res)); ?> with $\|Ax^\ast - b\|_2 = \|e\|_2 = <?php echo $error; ?>$
                                     </p>
                                 </div>
                             <?php endif; ?>

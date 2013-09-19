@@ -3,7 +3,7 @@
 namespace Libraries\Decompositions;
 
 /**
- * Helper class to provide methods concerning the lu decomposition.
+ * Calculate a QR decomposition by using givens rotations.
  *
  * @author  David Stutz
  * @license http://www.gnu.org/licenses/gpl-3.0
