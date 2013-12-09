@@ -48,11 +48,11 @@
                     </p>
                     
                     <p>
-                        <?php echo __('Some basic characteristics of orthogonal matrices. Let $Q \in \mathbb{R}^{m \times m}$ be an orthogonal matrix.'); ?>
+                        <?php echo __('Let $Q \in \mathbb{R}^{m \times m}$ be an orthogonal matrix. Then'); ?>
                         <ul>
                             <li><?php echo __('$Q^TQ = I$, where $I \in \mathbb{R}^{m \times m}$ is the identity matrix.'); ?></li>
-                            <li><?php echo __('$Q^T$ is orthogonal.'); ?></li>
-                            <li><?php echo __('Let $\bar{Q} \in \mathbb{R}^{m \times m}$ be orthogonal, then $Q\bar{Q}$ is orthogonal.'); ?></li>
+                            <li><?php echo __('$Q^T$ is orthogonal,'); ?></li>
+                            <li><?php echo __('$Q\bar{Q}$ is orthogonal for $\bar{Q} \in \mathbb{R}^{m \times m}$ orthogonal.'); ?></li>
                         </ul>
                     </p>
                     
@@ -65,13 +65,12 @@
                         <b><?php echo __('Applications.'); ?></b>
                         <ul>
                             <li><?php echo __('The problem $Ax = b$ is reduced to solving $Rx = Q^{-1}b = Q^Tb$.'); ?></li>
-                            <li><?php echo __('The QR decompositions is widely used to solve the linear least squares problem as well as the nonlinear least squares problem.'); ?></li>
-                            <li><?php echo __('The so called "QR algorithm" uses QR decompositions to compute the eigenvalues of a matrix.'); ?></li>
+                            <li><?php echo __('The QR decomposition is widely used to solve the linear least squares problem as well as the nonlinear least squares problem.'); ?></li>
                         </ul>
                     </p>
                     
                     <p>
-                        <?php echo __('Among others there are two popular methods to compute a QR decompositions:'); ?>
+                        <?php echo __('We discuss two methods of computing a QR decompositions:'); ?>
                     </p>
                     
                     <ul class="nav nav-pills">
@@ -246,7 +245,7 @@ class QRHouseholder {
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('Thus $Q_v$ is orthogonal and symmetric. The basic idea to transform $A$ to upper triangular form is the following: Given a vector $a \in \mathbb{R}^n$ find $v \in \mathbb{R}^n$ such that'); ?>
+                                    <?php echo __('Thus, $Q_v$ is orthogonal and symmetric. To eliminate all entries of $A$ below the diagonal we consider the following task: Given a vector $a \in \mathbb{R}^n$ find $v \in \mathbb{R}^n$ such that'); ?>
                                 </p>
                                 
                                 <p>
@@ -261,7 +260,7 @@ class QRHouseholder {
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('The solution for this problem is given by $v = a + sign(a_1)\|a\|_2$ where $sign(a_1)$ is the sign of the first entry of $a$ and $\|\cdot\|_2$ is the 2-norm. The QR decomposition is then accomplished by eliminating all entries below the diagonal by using the appropriate householder transformation on the first column of the submatrix $A[i,m] \in \mathbb{R}^{m-i+1 \times n-i+1}$ for each $i = 1, \ldots , min(m,n) -1$.'); ?>
+                                    <?php echo __('The solution is given by $v = a + sign(a_1)\|a\|_2$ where $sign(a_1)$ is the sign of the first entry of $a$ and $\|\cdot\|_2$ is the 2-norm. The QR decomposition is then accomplished by eliminating all entries below the diagonal by using the appropriate householder transformation on the first column of the submatrix $A[i:m,i:n] \in \mathbb{R}^{m-i+1 \times n-i+1}$ for each $i = 1, \ldots , min(m,n) -1$.'); ?>
                                 </p>
                                 
                                 <p>
@@ -269,14 +268,16 @@ class QRHouseholder {
                                     <ul style="list-style-type:none;">
                                         <li><?php echo __('For $i = 1, \ldots, n - 1$:'); ?>
                                             <ul style="list-style-type:none;">
-                                                <li><?php echo __('Calculate $v_i = a_i + sign(a_{i,i})\|a_i\|_2$.'); ?></li>
+                                                <li><?php echo __('Consider the submatrix $\bar{A} := A[i:m,i:n]$'); ?>.</li>
+                                                <li><?php echo __('Calculate $v_i = \bar{a_i} + sign(\bar{a_{i,i}})\|\bar{a_i}\|_2$ where $\bar{a_i}$ is the $i$-th column of $\bar{A}$.'); ?></li>
+                                                <li><?php echo __('$A[i:m,i:n] := Q_v A[i:m,i:n]$.'); ?></li>
                                             </ul>
                                         </li>
                                     </ul>
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('For the implementation of the above algorithm the following trick is useful. Instead of setting up $Q$ and then calculating $Q \cdot A$ it is easier to calculate $w^T = v^T \cdot A$ and then:'); ?>
+                                    <?php echo __('For the implementation of the above algorithm the following trick is useful. Instead of setting up $Q_v$ and then calculating $Q_v \cdot A$ it is easier to calculate $w^T = v^T \cdot A$ and then:'); ?>
                                 </p>
                                 
                                 <p>

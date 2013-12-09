@@ -48,11 +48,11 @@
                     </p>
                     
                     <p>
-                        <?php echo __('Some basic characteristics of orthogonal matrices. Let $Q \in \mathbb{R}^{m \times m}$ be an orthogonal matrix.'); ?>
+                        <?php echo __('Let $Q \in \mathbb{R}^{m \times m}$ be an orthogonal matrix. Then'); ?>
                         <ul>
                             <li><?php echo __('$Q^TQ = I$, where $I \in \mathbb{R}^{m \times m}$ is the identity matrix.'); ?></li>
-                            <li><?php echo __('$Q^T$ is orthogonal.'); ?></li>
-                            <li><?php echo __('Let $\bar{Q} \in \mathbb{R}^{m \times m}$ be orthogonal, then $Q\bar{Q}$ is orthogonal.'); ?></li>
+                            <li><?php echo __('$Q^T$ is orthogonal,'); ?></li>
+                            <li><?php echo __('$Q\bar{Q}$ is orthogonal for $\bar{Q} \in \mathbb{R}^{m \times m}$ orthogonal.'); ?></li>
                         </ul>
                     </p>
                     
@@ -65,13 +65,12 @@
                         <b><?php echo __('Applications.'); ?></b>
                         <ul>
                             <li><?php echo __('The problem $Ax = b$ is reduced to solving $Rx = Q^{-1}b = Q^Tb$.'); ?></li>
-                            <li><?php echo __('The QR decompositions is widely used to solve the linear least squares problem as well as the nonlinear least squares problem.'); ?></li>
-                            <li><?php echo __('The so called "QR algorithm" uses QR decompositions to compute the eigenvalues of a matrix.'); ?></li>
+                            <li><?php echo __('The QR decomposition is widely used to solve the linear least squares problem as well as the nonlinear least squares problem.'); ?></li>
                         </ul>
                     </p>
                     
                     <p>
-                        <?php echo __('Among others there are two popular methods to compute a QR decompositions:'); ?>
+                        <?php echo __('We discuss two methods of computing a QR decompositions:'); ?>
                     </p>
                     
                     <ul class="nav nav-pills">
@@ -232,10 +231,7 @@ class QRGivens {
                             </div>
                             <div class="tab-pane" id="algorithm">
                                 <p>
-                                    <?php echo __('The algorithm is based on the so called givens rotations (named after <a target="_blank" href="http://en.wikipedia.org/wiki/Wallace_Givens">Wallace Givens</a>), which are orthogonal. Using a sequence of givens rotations the given matrix can be transformed to an upper triangular matrix.'); ?>
-                                </p>
-                                
-                                <p>
+                                    <?php echo __('The algorithm is based on the so called givens rotations which are orthogonal. Using a sequence of givens rotations the given matrix can be transformed to an upper triangular matrix.'); ?>
                                     <?php echo __('Using givens rotations we can eliminate a single entry of a vector (or column) $x \in \mathbb{R}^n$:'); ?>
                                 </p>
                                 
@@ -273,15 +269,12 @@ class QRGivens {
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('Where $r = \sqrt{x_i^2 + x_j^2}$ and $c$ and $s$ can be computed using: $c = \frac{x_i}{r}$, $s = \frac{x_j}{r}$.'); ?>
+                                    <?php echo __('where $r = \sqrt{x_i^2 + x_j^2}$ and $c$ and $s$ can be computed using: $c = \frac{x_i}{r}$, $s = \frac{x_j}{r}$.'); ?>
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('$G$ is obviously orthogonal - the columns form an orthonormal basis of $\mathbb{R}^n$. In addition note that $G$ is only affecting the $i$-th and $j$-th row when applied on a matrix.'); ?>
-                                </p>
-                                
-                                <p>
-                                    <?php echo __('So the matrix $A$ can be reduced to an upper triangular matrix by eliminating all entries below the diagonal:'); ?>
+                                    <?php echo __('$G$ is orthogonal because the columns form an orthonormal basis of $\mathbb{R}^n$. In addition note that $G$ is only affecting the $i$-th row and $j$-th row when applied on a matrix.'); ?>
+                                    <?php echo __('Thus, the matrix $A$ can be reduced to an upper triangular matrix by eliminating all entries below the diagonal:'); ?>
                                 </p>
                                 
                                 <p>
@@ -297,7 +290,7 @@ class QRGivens {
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('The algorithm goes simply through all entries below the diagonal and checks if they need to be eliminated. If so the appropriate givens rotation will be computed and applied on the matrix. Note that computing $c$ and $s$ is sufficient for applying the rotation.'); ?>
+                                    <?php echo __('The algorithm computes $c$ and $s$ for each entry below the diagonal and eliminates the entry using the corresponding givens rotation:'); ?>
                                 </p>
                                 
                                 <p>

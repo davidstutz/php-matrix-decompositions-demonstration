@@ -48,18 +48,18 @@
                     </p>
                     
                     <p>
-                        <b><?php echo __('Remark.'); ?></b> <?php echo __('If $A \in \mathbb{R}^{n \times n}$ is symmetric, positive definite then $A$ is regular and $A^{-1}$ is symmetric, positive definite, too.'); ?>
+                        <b><?php echo __('Remark.'); ?></b> <?php echo __('If $A \in \mathbb{R}^{n \times n}$ is symmetric and positive definite then $A$ is regular and $A^{-1}$ is symmetric and positive definite, as well.'); ?>
                     </p>
                     
                     <p>
-                        <?php echo __('Using the Cholesky decomposition a symmetric, positive definite matrix $A \in \mathbb{R}^{n \times n}$ can be decomposed into the product $LDL^T$ of a normed lower triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $R \in \mathbb{R}^{n \times n}$.'); ?>
+                        <?php echo __('Using the Cholesky decomposition a symmetric and positive definite matrix $A \in \mathbb{R}^{n \times n}$ can be decomposed into the product $LDL^T$ of a normed lower triangular matrix $L \in \mathbb{R}^{n \times n}$ and an upper triangular matrix $R \in \mathbb{R}^{n \times n}$.'); ?>
                     </p>
                     
                     <p>
                         <b><?php echo __('Applications.'); ?></b>
                         <ul>
                             <li><?php echo __('The problem $Ax = LDL^Tx = b$ is reduced to solving $Ly = b$ and $L^Tx = D^{-1}y$.'); ?></li>
-                            <li><?php echo __('The used algorithm can be used to check whether the given matrix $A$ is symmetric, positive definite.'); ?></li>
+                            <li><?php echo __('The used algorithm can be used to check whether the given matrix $A$ is symmetric and positive definite.'); ?></li>
                         </ul>
                     </p>
                     
@@ -218,7 +218,7 @@ class Cholesky {
                                         <li><?php echo __('For $j = 1,2, \ldots, n$:'); ?>
                                             <ul style="list-style-type:none;">
                                                 <li><?php echo __('$d := a _{j,j} - \sum _{k = 1} ^{j - 1} a _{j,k}^2 a_{k,k}$'); ?></li>
-                                                <li><?php echo __('If $diag > \epsilon \cdot a_{j,j}$:'); ?>
+                                                <li><?php echo __('If $d > \epsilon \cdot a_{j,j}$:'); ?>
                                                     <ul style="list-style-type:none;">
                                                         <li><?php echo __('$a_{j,j} := d$'); ?></li>
                                                         <li><?php echo __('For $i = j+1, \ldots, n$:'); ?>
@@ -234,17 +234,13 @@ class Cholesky {
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('For each column $j$: Computing the diagonal entry needs $j - 1$ substractions and $2(j - 1)$ multiplications. Computing the entries of L needs $(n - j)$ divisions, $(n - j) (j - 1)$ additions and $2 (n - j) (j - 1)$ multiplications:'); ?>
+                                    <?php echo __('For each column $j$: Computing the diagonal entry needs $j - 1$ substractions and $2(j - 1)$ multiplications. Computing the entries of $L$ needs $(n - j)$ divisions, $(n - j) (j - 1)$ additions and $2 (n - j) (j - 1)$ multiplications:'); ?>
                                 </p>
                                 
                                 <p><b><?php echo __('Runtime.'); ?></b></p>
                                 
                                 <p>
                                     <?php echo __('$T(n) = \sum _{j = 1} ^{n} 3 (j - 1) + (n - j) + 3 (n - j) (j - 1) = \ldots = 3 \frac{n(n - 1)}{2} + \frac{n(n + 1)}{2} + 3 \frac{n(n + 1)(2n + 1)}{6} \in \mathcal{O}(\frac{1}{3} n^3)$'); ?>
-                                </p>
-                                
-                                <p>
-                                    <b><?php echo __('Remark.'); ?></b> <?php echo __('The runtime can be reduced to $\mathcal{O}(\frac{1}{6} n^3)$ by using a slightly modified algorithm computing a decomposition $A = LL^T$.'); ?>
                                 </p>
                             
                             </div>

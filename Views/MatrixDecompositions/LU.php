@@ -246,14 +246,11 @@ class LU {
                             </div>
                             <div class="tab-pane" id="algorithm">
                                 <p>
-                                    <?php echo __('Given $A \in \mathbb{R}^{n \times n}, b \in \mathbb{R}^n$ with $det(A) \neq 0$. Let $a_{i,j}$ denote the entry of $A$ in the $i$-th row and the $j$-th column.'); ?>
+                                    <?php echo __('Let $A \in \mathbb{R}^{n \times n}$ be a square matrix with $det(A) \neq 0$ and $b \in \mathbb{R}^n$ a column vector. Let $a_{i,j}$ denote the entry of $A$ in the $i$-th row and the $j$-th column.'); ?>
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('The best known method for solving the system of linear equations given by $Ax = b$ is gaussian elimination or also known as row reduction.'); ?>
-                                </p>
-                                
-                                <p>
+                                    <?php echo __('The best known method for solving the system of linear equations given by $Ax = b$ is gaussian elimination (also known as row reduction).'); ?>
                                     <?php echo __('Gaussian elimination uses a sequence of elementary row operations to transform the matrix $A$ into an upper triangular matrix.'); ?> <?php echo __('There are three types of elementary row operations:'); ?>
                                 </p>
                                 
@@ -279,15 +276,12 @@ class LU {
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('If $a_{j,j} \neq 0$ holds in every step the result has the form $\left[\begin{array}{rr} U & b \end{array} \right]$ for an upper triangular matrix $U$. Then the algorithm computes a factorization $A = LU$ where $L$ is alower triangular matrix defined by its entries $l_{i,j}$ and $l_{i,i} = 1$. The algorithm fails if $a_{j,j} = 0$ in one of the steps.'); ?>
+                                    <?php echo __('If $a_{j,j} \neq 0$ holds in every step the result has the form $\left[\begin{array}{rr} U & b \end{array} \right]$ for an upper triangular matrix $U$. Then the algorithm computes a factorization $A = LU$ where $L$ is a lower triangular matrix defined by its entries $l_{i,j}$ with $l_{i,i} = 1$. The algorithm fails if $a_{j,j} = 0$ in one of the steps.'); ?>
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('Let assume $a_{j,j} = 0$ in the $j$-th step of the algorithm. Because swapping two rows does not change the solution of the system if applied on the right hand vector b, too, the algorithm could just swap $j$-th row with a row $k > j$ such that $a_{k,j} \neq 0$. It can be shown, that selecting the $k$-th row such that $|a_{k,j}| \geq |a_{i,j}|$ for $j < i \leq n$ will also have positive influence on the stability of the algorithm.'); ?>
-                                </p>
-                                
-                                <p>
-                                    <?php echo __('The above described mechanism is called partial pivoting.'); ?>
+                                    <?php echo __('Let assume $a_{j,j} = 0$ in the $j$-th step of the algorithm. Because swapping two rows does not change the solution of the system if applied on the right hand vector b, too, the algorithm could just swap the $j$-th row with a row $k > j$ such that $a_{k,j} \neq 0$. It can be shown, that selecting the $k$-th row such that $|a_{k,j}| \geq |a_{i,j}|$ for all $j < i \leq n$ will also have positive influence on the stability of the algorithm.'); ?>
+                                    <?php echo __('This mechanism is called partial pivoting.'); ?>
                                 </p>
                                 
                                 <p>
@@ -296,7 +290,7 @@ class LU {
                                         <li><?php echo __('For $j = 1,2, \ldots, n-1$ and if $a_{j,j} \neq 0$:'); ?>
                                             <ul style="list-style-type:none;">
                                                 <li><?php echo __('Find $k \in \{j + 1, \ldots , n\}$ such that $|a_{k,j}| \geq |a_{i,j}|$ for all $i \in \{j + 1, \ldots , n\}\backslash\{k\}$'); ?></li>
-                                                <li><?php echo __('Swap the $j$-th with the $k$-th row (pivoting)'); ?></li>
+                                                <li><?php echo __('Swap the $j$-th row with the $k$-th row (pivoting)'); ?></li>
                                                 <li><?php echo __('For $i = j+1,j+2, \ldots, n$:'); ?>
                                                     <ul style="list-style-type:none;">
                                                         <li><?php echo __('Subtract the $j$-th row of $\left[\begin{array}{rr} A & b \end{array} \right]$ from the $i$-th row multiplied by $l_{i,j} = \frac{a_{i,j}}{a_{j,j}}$'); ?></li>

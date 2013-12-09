@@ -48,11 +48,11 @@
                     </p>
                     
                     <p>
-                        <?php echo __('Some basic characteristics of orthogonal matrices. Let $Q \in \mathbb{R}^{m \times m}$ be an orthogonal matrix.'); ?>
+                        <?php echo __('Let $Q \in \mathbb{R}^{m \times m}$ be an orthogonal matrix. Then'); ?>
                         <ul>
                             <li><?php echo __('$Q^TQ = I$, where $I \in \mathbb{R}^{m \times m}$ is the identity matrix.'); ?></li>
-                            <li><?php echo __('$Q^T$ is orthogonal.'); ?></li>
-                            <li><?php echo __('Let $\bar{Q} \in \mathbb{R}^{m \times m}$ be orthogonal, then $Q\bar{Q}$ is orthogonal.'); ?></li>
+                            <li><?php echo __('$Q^T$ is orthogonal,'); ?></li>
+                            <li><?php echo __('$Q\bar{Q}$ is orthogonal for $\bar{Q} \in \mathbb{R}^{m \times m}$ orthogonal.'); ?></li>
                         </ul>
                     </p>
                     
@@ -65,13 +65,12 @@
                         <b><?php echo __('Applications.'); ?></b>
                         <ul>
                             <li><?php echo __('The problem $Ax = b$ is reduced to solving $Rx = Q^{-1}b = Q^Tb$.'); ?></li>
-                            <li><?php echo __('The QR decompositions is widely used to solve the linear least squares problem as well as the nonlinear least squares problem.'); ?></li>
-                            <li><?php echo __('The so called "QR algorithm" uses QR decompositions to compute the eigenvalues of a matrix.'); ?></li>
+                            <li><?php echo __('The QR decomposition is widely used to solve the linear least squares problem as well as the nonlinear least squares problem.'); ?></li>
                         </ul>
                     </p>
                     
                     <p>
-                        <?php echo __('Among others there are two popular methods to compute a QR decompositions:'); ?>
+                        <?php echo __('We discuss two methods of computing a QR decompositions:'); ?>
                     </p>
                     
                     <ul class="nav nav-pills">

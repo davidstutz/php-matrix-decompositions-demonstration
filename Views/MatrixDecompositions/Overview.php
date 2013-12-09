@@ -45,17 +45,11 @@
                 <div class="span9">
                     <p>
                         <?php echo __('This demonstration application discusses several common matrix decompositions. A matrix decomposition is a factorization of a given matrix $A \in \mathbb{R}^{m \times n}$ into a product of matrices.'); ?>
-                    </p>
-                    
-                    <p>
                         <?php echo __('Matrix decompositions are widely used to solve common problems in computer science as well as numerical analysis.'); ?>
                     </p>
                     
                     <p>
-                        <?php echo __('In this experiment we want to examine some numerical methods to solve this problem implemented in PHP.'); ?>
-                    </p>
-                    
-                    <p>
+                        <?php echo __('On this site we want to discuss some numerical methods for computing matrix decompositions implemented in PHP.'); ?>
                         <?php echo __('The following table gives an overview of the decompositions covered here:'); ?>
                     </p>
                     
