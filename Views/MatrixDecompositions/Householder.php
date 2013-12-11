@@ -277,7 +277,7 @@ class QRHouseholder {
                                 </p>
                                 
                                 <p>
-                                    <?php echo __('For the implementation of the above algorithm the following trick is useful. Instead of setting up $Q_v$ and then calculating $Q_v \cdot A$ it is easier to calculate $w^T = v^T \cdot A$ and then:'); ?>
+                                    <?php echo __('For the implementation of the above algorithm the following trick is useful. Instead of setting up $Q_v$ and then calculating $Q_v A$ it is easier to calculate $w^T = v^T \cdot A$ and then:'); ?>
                                 </p>
                                 
                                 <p>
@@ -287,6 +287,8 @@ class QRHouseholder {
                                 <p>
                                     <?php echo __('In addition $v$ can be stored below the diagonal within the matrix by normalizing $v$ such that $v_1 = 1$.'); ?>
                                 </p>
+                                
+                                
                             </div>
                             <div class="tab-pane <?php if (!isset($matrix)): ?>active<?php endif; ?>" id="demo">
                                 <form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions/householder/demo'); ?>">

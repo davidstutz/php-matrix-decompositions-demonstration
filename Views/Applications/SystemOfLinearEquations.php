@@ -47,7 +47,7 @@
                     </p>
                     
                     <p>
-                        <b><?php echo __('Problem.'); ?></b> <?php echo __('Given $A \in \mathbb{R}^{n \times n}$ regular and $b \in \mathbb{R}^n$. Find $x \in \mathbb{R}^n$ such that $Ax = b$.'); ?>
+                        <b><?php echo __('Problem.'); ?></b> <?php echo __('Given a regular matrix $A \in \mathbb{R}^{n \times n}$ and a column vector $b \in \mathbb{R}^n$ find $x \in \mathbb{R}^n$ such that $Ax = b$.'); ?>
                     </p>
                     
                     <p>

@@ -50,7 +50,6 @@
                         <ul>
                             <li><?php echo __('Solve systems of linear equations $Ax = b$ for $A \in \mathbb{R}^{n \times n}$, $x,b \in \mathbb{R}^n$.'); ?></li>
                             <li><?php echo __('Solve the linear least square problem using a QR decomposition or the nonlinear least square problem using iterative methods.'); ?></li>
-                            <li><?php echo __('Compute eigenvalues and eigenvectors using the vector iteration or the QR algorithm.'); ?></li>
                         </ul>
                     </p>
                 </div>

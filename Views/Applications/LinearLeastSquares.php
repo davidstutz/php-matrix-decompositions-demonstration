@@ -48,7 +48,7 @@
                     
                     <p><b><?php echo __('Remark.'); ?></b> <?php echo __('A system of linear equations is overdetermined if it has more equations than unknowns.'); ?></p>
                     
-                    <p><b><?php echo __('Problem.'); ?></b> <?php echo __('Given $A \in \mathbb{R}^{m \times n}$ with $m \geq n$ and full rank and $b \in \mathbb{R}^m$. Find $x \in \mathbb{R}^n$ such that $\|Ax - b\|_2 = min_{y \in \mathbb{R}^n} \|Ay - b\|_2$.'); ?></p>
+                    <p><b><?php echo __('Problem.'); ?></b> <?php echo __('Given $A \in \mathbb{R}^{m \times n}$ with $m \geq n$ and full rank and $b \in \mathbb{R}^m$ find $x \in \mathbb{R}^n$ such that $\|Ax - b\|_2 = min_{y \in \mathbb{R}^n} \|Ay - b\|_2$.'); ?></p>
                     
                     <p>
                         <?php echo __('Using the QR decomposition the problem can easily be solved including computing the error $\|Ax - b\|_2$ of the found solution $x$. First calculate a QR decomposition $A = QR$. Then:'); ?>
@@ -129,13 +129,13 @@
                                     
                                     <p><b><?php echo __('Solution $x$.'); ?></b></p>
                                     
-                                    <p>$x^\ast := $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = \tilde{R}^{-1} \bar{b} \in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
+                                    <p>$x := $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = \tilde{R}^{-1} \bar{b} \in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Check.'); ?></b></p>
                                     
                                     <p>
                                         <?php $res = \Libraries\Vector::add(\Libraries\Matrix::operate($matrix, $x), $vector->multiplyBy(-1.)); ?>
-                                        $Ax^\ast - b = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $res)); ?> with $\|Ax^\ast - b\|_2 = \|e\|_2 = <?php echo $error; ?>$
+                                        $Ax - b = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $res)); ?> with $\|Ax - b\|_2 = \|e\|_2 = <?php echo $error; ?>$
                                     </p>
                                 </div>
                             <?php endif; ?>
