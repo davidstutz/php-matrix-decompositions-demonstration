@@ -72,7 +72,7 @@
                             <tr>
                                 <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky'); ?></a></td>
                                 <td><?php echo __('$A = LDL^T$'); ?></td>
-                                <td><?php echo __('$A \in \mathbb{R}^{n \times n}$, $A$ symmetric, positive definit'); ?></td>
+                                <td><?php echo __('$A \in \mathbb{R}^{n \times n}$, $A$ symmetric and positive definite'); ?></td>
                                 <td><?php echo __('$\mathcal{O}(\frac{1}{6}n^3)$'); ?></td>
                             </tr>
                             <tr>

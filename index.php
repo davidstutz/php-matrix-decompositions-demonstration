@@ -122,7 +122,7 @@ $app->get('/matrix-decompositions/cholesky', function() use ($app) {
 
 /**
  * Demonstrate the cholesky deocmposition on the given matrix.
- * If the matrix is not symmetric, positive definit an error will be thrown.
+ * If the matrix is not symmetric and positive definite an error will be thrown.
  */
 $app->post('/matrix-decompositions/cholesky/demo', function() use ($app) {
     $input = $app->request()->post('matrix');

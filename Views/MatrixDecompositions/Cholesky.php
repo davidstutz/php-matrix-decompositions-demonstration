@@ -107,8 +107,8 @@ class Cholesky {
                 $d -= pow($this->_matrix->get($j, $k), 2) * $this->_matrix->get($k, $k);
             }
 
-            // Test if symmetric, positive definit can be guaranteed.
-            new \Libraries\Assertion($d > Cholesky::TOLERANCE * (double)$this->_matrix->get($j, $j), 'Symmetric, positive definit can not be guaranteed: ' . $d . ' > ' . Cholesky::TOLERANCE * (double)$this->_matrix->get($j, $j));
+            // Test if symmetric and positive definite can be guaranteed.
+            new \Libraries\Assertion($d > Cholesky::TOLERANCE * (double)$this->_matrix->get($j, $j), 'Symmetric and positive definite can not be guaranteed: ' . $d . ' > ' . Cholesky::TOLERANCE * (double)$this->_matrix->get($j, $j));
 
             $this->_matrix->set($j, $j, $d);
 
