@@ -137,15 +137,14 @@ class QRHouseholder {
      */
     public function getR() {
         $R = $this->_matrix->copy();
+        $n = min($R->rows(), $R->columns());
         
         for ($i = 0; $i < $R->rows(); $i++) {
-            for ($j = 0; $j < $i; $j++) {
+            for ($j = 0; $j < $i AND $j < $n; $j++) {
                 $R->set($i, $j, 0);
             }
         }
         
-        // Resize R to a square matrix.
-        $n = min($R->rows(), $R->columns());
-        return $R->resize($n, $n);
+        return $R;
     }
 }

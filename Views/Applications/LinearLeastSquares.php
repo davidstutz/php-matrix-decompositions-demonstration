@@ -73,12 +73,110 @@
                     
                     <div class="tabbable">
                         <ul class="nav nav-tabs">
+                            <li><a href="#example-linear-line-fitting" data-toggle="tab"><?php echo __('Linear Line Fitting'); ?></a></li>
                             <li <?php if (!isset($matrix)): ?>class="active"<?php endif; ?>><a href="#demo" data-toggle="tab"><?php echo __('Demo'); ?></a></li>
                             <?php if (isset($matrix)): ?>
                                 <li class="active"><a href="#result" data-toggle="tab"><?php echo __('Result'); ?></a></li>
                             <?php endif; ?>
                         </ul>
                         <div class="tab-content">
+                            <div id="example-linear-line-fitting" class="tab-pane">
+                                <p>
+                                    <?php echo __('As example we consider the problem of linear line fitting, that is we want to fit a linear model to a set of data in two-dimensional space. We consider the following data given:'); ?>
+                                </p>
+                                
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>$x$</th>
+                                            <th>$y = f(x)$</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>$2$</td>
+                                            <td>$13$</td>
+                                        </tr>
+                                        <tr>
+                                            <td>$3$</td>
+                                            <td>$14$</td>
+                                        </tr>
+                                        <tr>
+                                            <td>$4$</td>
+                                            <td>$14$</td>
+                                        </tr>
+                                        <tr>
+                                            <td>$5$</td>
+                                            <td>$12$</td>
+                                        </tr>
+                                        <tr>
+                                            <td>$6$</td>
+                                            <td>$10$</td>
+                                        </tr>
+                                        <tr>
+                                            <td>$8$</td>
+                                            <td>$6$</td>
+                                        </tr>
+                                        <tr>
+                                            <td>$9$</td>
+                                            <td>$4$</td>
+                                        </tr>
+                                        <tr>
+                                            <td>$10$</td>
+                                            <td>$2$</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                <p>
+                                    <?php echo __('The linear model we want to fit takes the form $y = f(x) = mx + n$. Therefore, we have $2$ unknowns we want to determine: $m$ and $n$. Note that fitting the above data is equivalent to saying we want to minimize $mx + n - y$. First, we need to rewrite this problem to match the more general definition of above. Plugging in our data we get the following system of equations:'); ?>
+                                </p>
+                                
+                                <p>
+                                    $13 = m\dot 2 + n$
+                                    <br>
+                                    $14 = m\dot 3 + n$
+                                    <br>
+                                    $14 = m\dot 4 + n$
+                                    <br>
+                                    $12 = m\dot 5 + n$
+                                    <br>
+                                    $10 = m\dot 6 + n$
+                                    <br>
+                                    $6 = m\dot 8 + n$
+                                    <br>
+                                    $4 = m\dot 9 + n$
+                                    <br>
+                                    $2 = m\dot 10 + n$
+                                </p>
+                                
+                                <p>
+                                    <?php echo __('We can rewrite this as $\|Ax - b\|_2$ with the matrix $A \in \mathbb{R}^{8 \times 2}$ and the vector $b \in \mathbb{R}^8$ as follows:'); ?>
+                                </p>
+                                
+                                <p>
+                                    $ A = \left[\begin{array}{c} 
+                                            2 & 1\\
+                                            3 & 1\\
+                                            4 & 1\\
+                                            5 & 1\\
+                                            6 & 1\\
+                                            8 & 1\\
+                                            9 & 1\\
+                                            10 & 1
+                                        \end{array} \right],
+                                        b = \left[\begin{array}{c} 
+                                            13\\
+                                            14\\
+                                            14\\
+                                            12\\
+                                            10\\
+                                            6\\
+                                            4\\
+                                            2
+                                        \end{array} \right],
+                                </p>
+                            </div>
                             <div class="tab-pane <?php if (!isset($matrix)): ?>active<?php endif; ?>" id="demo">
                                 <form class="form-horizontal" method="POST" action="/<?php echo $app->config('base') . $app->router()->urlFor('applications/linear-least-squares/demo'); ?>">
                                     <div class="control-group">
@@ -124,12 +222,12 @@
                                     </p>
                                     
                                     <p>
-                                        $R = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $r)); ?>
+                                        $\bar{R} = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $r)); ?>
                                     </p>
                                     
                                     <p><b><?php echo __('Solution $x$.'); ?></b></p>
                                     
-                                    <p>$x := $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = \tilde{R}^{-1} \bar{b} \in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
+                                    <p>$x := $ <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = \bar{R}^{-1} \bar{b} \in \mathbb{R}^{<?php echo $x->size(); ?>}$</p>
                                     
                                     <p><b><?php echo __('Check.'); ?></b></p>
                                     
