@@ -8,7 +8,7 @@ The demonstration application can be found [here](http://davidstutz.de/matrix-de
 
 The application is licensed under the GPL v3.
 
-Copyright 2013 David Stutz
+Copyright 2013 - 2014 David Stutz
 
 The application is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
