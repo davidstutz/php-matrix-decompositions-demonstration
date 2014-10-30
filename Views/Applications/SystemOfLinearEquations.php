@@ -4,7 +4,7 @@
         <title><?php echo __('Matrix Decompositions - Applications'); ?></title>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/prettify.js"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
@@ -29,7 +29,6 @@
             <div class="row">
                 <div class="span3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a></li>
                         <li>
                             <a href="/<?php echo $app->config('base') . $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a>
@@ -132,7 +131,7 @@
                                     <p><b><?php echo __('Check.'); ?></b></p>
                                     
                                     <p>
-                                        $Ax = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => \Libraries\Vector::multiply($matrix, $x))); ?>
+                                        $Ax = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => $matrix)); ?> <?php echo $app->render('Utilities/Vector.php', array('vector' => $x)); ?> $ = $ <?php echo $app->render('Utilities/Vector.php', array('vector' => Vector::multiply($matrix, $x))); ?>
                                     </p>
                                 </div>
                             <?php endif; ?>
@@ -142,7 +141,7 @@
             </div>
             <hr>
             <p>
-                &copy; 2013 David Stutz - <a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
+                &copy; 2013 David Stutz - <a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
             </p>
         </div>
     </body>

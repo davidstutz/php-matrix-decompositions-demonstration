@@ -1,0 +1,3 @@
+[submodule "Libraries/php-matrix-decompositions"]
+	path = Libraries/php-matrix-decompositions
+	url = https://github.com/davidstutz/php-matrix-decompositions.git

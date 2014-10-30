@@ -4,7 +4,7 @@
         <title><?php echo __('Matrix Decompositions - QR Decomposition - Householder Transformations'); ?></title>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/prettify.js"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
@@ -29,17 +29,16 @@
             <div class="row">
                 <div class="span3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li>
-                            <a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
+                            <a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
                             <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
-                                <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
-                                <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky Decomposition'); ?></a></li>
                                 <li class="active"><a href="#"><?php echo __('QR Decomposition'); ?></a></li>
                             </ul>
                         </li>
-                        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
-                        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
+                        <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
+                        <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
                     </ul>
                 </div>
                 <div class="span9">
@@ -74,7 +73,7 @@
                     </p>
                     
                     <ul class="nav nav-pills">
-                        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/givens'); ?>"><?php echo __('Givens rotations'); ?></a></li>
+                        <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/givens'); ?>"><?php echo __('Givens rotations'); ?></a></li>
                         <li class="active"><a href="#"><?php echo __('Householder transformations'); ?></a></li>
                     </ul>
                     
@@ -115,9 +114,9 @@ class QRHouseholder {
      * @param matrix  matrix to get the composition of
      */
     public function __construct(&$matrix) {
-        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
+        new Assertion($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
 
-        $this->_tau = new \Libraries\Vector($matrix->columns());
+        $this->_tau = new Vector($matrix->columns());
         $this->_matrix = $matrix->copy();
 
         for ($j = 0; $j < $this->_matrix->columns(); $j++) {
@@ -143,7 +142,7 @@ class QRHouseholder {
 
             $this->_tau->set($j, 2. / $scalar);
 
-            $w = new \Libraries\Vector($this->_matrix->columns());
+            $w = new Vector($this->_matrix->columns());
             $w->setAll(0.);
 
             // First calculate w = v_j^T * A.
@@ -176,7 +175,7 @@ class QRHouseholder {
     public function getQ() {
         // Q is an m x m matrix if m is the maximum of the number of rows and thenumber of columns.
         $m = max($this->_matrix->columns(), $this->_matrix->rows());
-        $Q = new \Libraries\Matrix($m, $m);
+        $Q = new Matrix($m, $m);
         $Q->setAll(0.);
         
         // Begin with the identity matrix.
@@ -336,7 +335,7 @@ class QRHouseholder {
                                     <p><b><?php echo __('Check.'); ?></b></p>
                                         
                                     <p>
-                                        $QR = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => \Libraries\Matrix::multiply($q, $r))); ?>
+                                        $QR = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => Matrix::multiply($q, $r))); ?>
                                     </p>
                                 </div>
                             <?php endif; ?>
@@ -346,7 +345,7 @@ class QRHouseholder {
             </div>
             <hr>
             <p>
-                &copy; 2013 David Stutz - <a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
+                &copy; 2013 David Stutz - <a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
             </p>
         </div>
     </body>

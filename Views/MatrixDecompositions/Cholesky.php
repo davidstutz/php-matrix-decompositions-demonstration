@@ -4,7 +4,7 @@
         <title><?php echo __('Matrix Decompositions - Cholesky Decomposition'); ?></title>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/prettify.js"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
@@ -28,17 +28,16 @@
             <div class="row">
                 <div class="span3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li>
-                            <a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
+                            <a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
                             <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
-                                <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU Decomposition'); ?></a></li>
                                 <li class="active"><a href="#"><?php echo __('Cholesky Decomposition'); ?></a></li>
-                                <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
+                                <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/qr'); ?>"><?php echo __('QR Decomposition'); ?></a></li>
                             </ul>
                         </li>
-                        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
-                        <li><a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
+                        <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
+                        <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
                     </ul>
                 </div>
                 <div class="span9">
@@ -96,8 +95,8 @@ class Cholesky {
      * @param   matrix
      */
     public function __construct(&$matrix) {
-        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
-        new \Libraries\Assertion($matrix->isSquare(), 'Given matrix is not square.');
+        new Assertion($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+        new Assertion($matrix->isSquare(), 'Given matrix is not square.');
 
         $this->_matrix = $matrix->copy();
 
@@ -108,7 +107,7 @@ class Cholesky {
             }
 
             // Test if symmetric and positive definite can be guaranteed.
-            new \Libraries\Assertion($d > Cholesky::TOLERANCE * (double)$this->_matrix->get($j, $j), 'Symmetric and positive definite can not be guaranteed: ' . $d . ' > ' . Cholesky::TOLERANCE * (double)$this->_matrix->get($j, $j));
+            new Assertion($d > Cholesky::TOLERANCE * (double)$this->_matrix->get($j, $j), 'Symmetric and positive definite can not be guaranteed: ' . $d . ' > ' . Cholesky::TOLERANCE * (double)$this->_matrix->get($j, $j));
 
             $this->_matrix->set($j, $j, $d);
 
@@ -151,7 +150,7 @@ class Cholesky {
      * @return  matrix  D
      */
     public function getD() {
-        $D = new \Libraries\Matrix($this->_matrix->rows(), $this->_matrix->columns());
+        $D = new Matrix($this->_matrix->rows(), $this->_matrix->columns());
         
         for ($i = 0; $i < $D->rows(); $i++) {
             $D->set($i, $i, $this->_matrix->get($i, $i));
@@ -283,7 +282,7 @@ class Cholesky {
                                         
                                     <p>
                                         <?php $lt = $l->copy()->transpose(); ?>
-                                        $LDL^T = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => \Libraries\Matrix::multiply($l, \Libraries\Matrix::multiply($d, $lt)))); ?>
+                                        $LDL^T = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => Matrix::multiply($l, Matrix::multiply($d, $lt)))); ?>
                                     </p>
                                 </div>
                             <?php endif; ?>
@@ -293,7 +292,7 @@ class Cholesky {
             </div>
             <hr>
             <p>
-                &copy; 2013 David Stutz - <a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
+                &copy; 2013 David Stutz - <a href="<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
             </p>
         </div>
     </body>

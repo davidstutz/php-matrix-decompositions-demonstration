@@ -4,7 +4,7 @@
         <title><?php echo __('Matrix Decompositions - LU Decomposition'); ?></title>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/prettify.js"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
@@ -29,7 +29,6 @@
             <div class="row">
                 <div class="span3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li>
                             <a href="/<?php echo $app->config('base') . $app->router()->urlFor('matrix-decompositions'); ?>"><?php echo __('Matrix Decompositions'); ?></a>
                             <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
@@ -107,10 +106,10 @@ class LU {
      * @return  vector  permutation
      */
     public function __construct(&$matrix) {
-        new \Libraries\Assertion($matrix instanceof \Libraries\Matrix, 'Given matrix not of class Matrix.');
-        new \Libraries\Assertion($matrix->isSquare(), 'Matrix is not quadratic.');
+        new Assertion($matrix instanceof Matrix, 'Given matrix not of class Matrix.');
+        new Assertion($matrix->isSquare(), 'Matrix is not quadratic.');
 
-        $this->_permutation = new \Libraries\Vector($matrix->rows());
+        $this->_permutation = new Vector($matrix->rows());
         $this->_matrix = $matrix->copy();
         
         for ($j = 0; $j < $this->_matrix->rows(); $j++) {
@@ -142,7 +141,7 @@ class LU {
      * @param   vector  right hand
      */
     public function solve($b) {
-        new \Libraries\Assertion($this->_matrix->rows() == $b->size(), 'Right hand vector does not have correct size.');
+        new Assertion($this->_matrix->rows() == $b->size(), 'Right hand vector does not have correct size.');
         
         $x = $b->copy();
         
@@ -368,7 +367,7 @@ class LU {
                                     <p><b><?php echo __('CHeck.'); ?></b></p>
                                     
                                     <p>
-                                        $LU = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => \Libraries\Matrix::multiply($l, $u))); ?>
+                                        $LU = $ <?php echo $app->render('Utilities/Matrix.php', array('matrix' => Matrix::multiply($l, $u))); ?>
                                     </p>
                                     
                                     <?php if (isset($determinant)): ?>
@@ -393,7 +392,7 @@ class LU {
             </div>
             <hr>
             <p>
-                &copy; 2013 David Stutz - <a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
+                &copy; 2013 David Stutz - <a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
             </p>
         </div>
     </body>

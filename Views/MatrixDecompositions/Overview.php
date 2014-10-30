@@ -4,7 +4,7 @@
         <title><?php echo __('Matrix Decompositions'); ?></title>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/prettify.js"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
@@ -29,7 +29,6 @@
             <div class="row">
                 <div class="span3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="/<?php echo $app->config('base') . $app->router()->urlFor('code'); ?>"><?php echo __('Code Base'); ?></a></li>
                         <li class="active">
                             <a href="#"><?php echo __('Matrix Decompositions'); ?></a>
                             <ul class="nav nav-pills nav-stacked" style="margin-left: 20px;">
@@ -64,25 +63,25 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU'); ?></a></td>
+                                <td><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/lu'); ?>"><?php echo __('LU'); ?></a></td>
                                 <td><?php echo __('$A = LU$'); ?></td>
                                 <td><?php echo __('$A \in \mathbb{R}^{n \times n}$, $A$ regular'); ?></td>
                                 <td><?php echo __('$\mathcal{O}(\frac{1}{3}n^3)$'); ?></td>
                             </tr>
                             <tr>
-                                <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky'); ?></a></td>
+                                <td><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/cholesky'); ?>"><?php echo __('Cholesky'); ?></a></td>
                                 <td><?php echo __('$A = LDL^T$'); ?></td>
                                 <td><?php echo __('$A \in \mathbb{R}^{n \times n}$, $A$ symmetric and positive definite'); ?></td>
                                 <td><?php echo __('$\mathcal{O}(\frac{1}{6}n^3)$'); ?></td>
                             </tr>
                             <tr>
-                                <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/givens'); ?>"><?php echo __('QR: Givens Rotations'); ?></a></td>
+                                <td><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/givens'); ?>"><?php echo __('QR: Givens Rotations'); ?></a></td>
                                 <td><?php echo __('$A = QR$'); ?></td>
                                 <td><?php echo __('$A \in \mathbb{R}^{m \times n}$'); ?></td>
                                 <td><?php echo __('$\mathcal{O}(\frac{4}{3}n^3)$'); ?></td>
                             </tr>
                             <tr>
-                                <td><a href="/matrix-decompositions<?php echo $app->router()->urlFor('matrix-decompositions/householder'); ?>"><?php echo __('QR: Householder Transformations'); ?></a></td>
+                                <td><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('matrix-decompositions/householder'); ?>"><?php echo __('QR: Householder Transformations'); ?></a></td>
                                 <td><?php echo __('$A = QR$'); ?></td>
                                 <td><?php echo __('$A \in \mathbb{R}^{m \times n}$'); ?></td>
                                 <td><?php echo __('$\mathcal{O}(\frac{2}{3}n^3)$'); ?></td>
@@ -93,7 +92,7 @@
             </div>
             <hr>
             <p>
-                &copy; 2013 David Stutz - <a href="/matrix-decompositions<?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
+                &copy; 2013 David Stutz - <a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
             </p>
         </div>
     </body>

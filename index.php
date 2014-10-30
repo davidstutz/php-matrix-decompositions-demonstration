@@ -11,6 +11,18 @@ require 'Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
 
+// Include Matrix Decompositions library:
+require_once 'Libraries/php-matrix-decompositions/lib/Assertion.php';
+require_once 'Libraries/php-matrix-decompositions/lib/Matrix.php';
+require_once 'Libraries/php-matrix-decompositions/lib/Vector.php';
+require_once 'Libraries/php-matrix-decompositions/lib/decompositions/Cholesky.php';
+require_once 'Libraries/php-matrix-decompositions/lib/decompositions/LU.php';
+require_once 'Libraries/php-matrix-decompositions/lib/decompositions/LUWithTrace.php';
+require_once 'Libraries/php-matrix-decompositions/lib/decompositions/QRGivens.php';
+require_once 'Libraries/php-matrix-decompositions/lib/decompositions/QRGivensWithTrace.php';
+require_once 'Libraries/php-matrix-decompositions/lib/decompositions/QRHouseholder.php';
+require_once 'Libraries/php-matrix-decompositions/lib/decompositions/QRHouseholderWithTrace.php';
+
 /**
  * Step 2: Instantiate a Slim application
  *
@@ -22,7 +34,7 @@ require 'Slim/Slim.php';
 $app = new \Slim\Slim( array(
     'templates.path' => './Views',
     'view' => new \Slim\View(),
-    'base' => 'matrix-decompositions',
+    'base' => 'php-matrix-decompositions-demonstration',
 ));
 
 \Slim\I18n::setPath('I18n');
@@ -42,28 +54,14 @@ if (!function_exists('__')) {
 }
 
 /**
- * Step 3: Define the Slim application routes
- *
- * Here we define several Slim application routes that respond
- * to appropriate HTTP request methods. In this example, the second
- * argument for `Slim::get`, `Slim::post`, `Slim::put`, and `Slim::delete`
- * is an anonymous function.
+ * Index page.
  */
-
 $app->get('/', function() use ($app) {
-    $app->redirect('/matrix-decompositions' . $app->router()->urlFor('matrix-decompositions'));
+    $app->render('MatrixDecompositions/Overview.php', array('app' => $app));
 });
 
 /**
- * Code overview.
- */
-$app->get('/code', function() use ($app) {
-    $app->render('Code.php', array('app' => $app));
-})->name('code');
-
-/**
- * Problem overview.
- * Quick introduction into the topic.
+ * Index page.
  */
 $app->get('/matrix-decompositions', function() use ($app) {
     $app->render('MatrixDecompositions/Overview.php', array('app' => $app));
@@ -97,10 +95,10 @@ $app->post('/matrix-decompositions/lu/demo', function() use ($app) {
     }
     
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
+    $matrix = new Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
 
-    $decomposition = new \Libraries\Decompositions\LUWithTrace($matrix);
+    $decomposition = new LUWithTrace($matrix);
 
     $app->render('MatrixDecompositions/LU.php', array(
         'app' => $app,
@@ -140,10 +138,10 @@ $app->post('/matrix-decompositions/cholesky/demo', function() use ($app) {
     }
 
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
+    $matrix = new Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
     
-    $decomposition = new \Libraries\Decompositions\Cholesky($matrix);
+    $decomposition = new Cholesky($matrix);
     
     $app->render('MatrixDecompositions/Cholesky.php', array(
         'app' => $app,
@@ -186,12 +184,12 @@ $app->post('/matrix-decompositions/givens/demo', function() use ($app) {
     }
 
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
+    $matrix = new Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
 
-    $decomposition = new \Libraries\Decompositions\QRGivensWithTrace($matrix);
+    $decomposition = new QRGivensWithTrace($matrix);
 
-    $q = new \Libraries\Matrix(max($matrix->rows(), $matrix->columns()), max($matrix->rows(), $matrix->columns()));
+    $q = new Matrix(max($matrix->rows(), $matrix->columns()), max($matrix->rows(), $matrix->columns()));
     $q->setAll(0);
     
     for ($i = 0; $i < $q->rows(); $i++) {
@@ -233,10 +231,10 @@ $app->post('/matrix-decompositions/householder/demo', function() use ($app) {
     }
 
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix(sizeof($array), sizeof($array[0]));
+    $matrix = new Matrix(sizeof($array), sizeof($array[0]));
     $matrix->fromArray($array);
 
-    $decomposition = new \Libraries\Decompositions\QRHouseholderWithTrace($matrix);
+    $decomposition = new QRHouseholderWithTrace($matrix);
     
     $app->render('MatrixDecompositions/Householder.php', array(
         'app' => $app,
@@ -288,14 +286,14 @@ $app->post('/applications/system-of-linear-equations/demo', function() use ($app
     }
     
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix(sizeof($matrixArray), sizeof($matrixArray[0]));
+    $matrix = new Matrix(sizeof($matrixArray), sizeof($matrixArray[0]));
     $matrix->fromArray($matrixArray);
     
     // Get the vector from input.
-    $vector = new \Libraries\Vector(sizeof($vectorArray));
+    $vector = new Vector(sizeof($vectorArray));
     $vector->fromArray($vectorArray);
     
-    $decomposition = new \Libraries\Decompositions\LU($matrix);
+    $decomposition = new LU($matrix);
     
     $app->render('Applications/SystemOfLinearEquations.php', array(
         'app' => $app,
@@ -341,25 +339,25 @@ $app->post('/applications/linear-least-squares/demo', function() use ($app) {
     }
     
     // Create the matrix from the above generated array.
-    $matrix = new \Libraries\Matrix(sizeof($matrixArray), sizeof($matrixArray[0]));
+    $matrix = new Matrix(sizeof($matrixArray), sizeof($matrixArray[0]));
     $matrix->fromArray($matrixArray);
     
     // Get the vector from input.
-    $vector = new \Libraries\Vector(sizeof($vectorArray));
+    $vector = new Vector(sizeof($vectorArray));
     $vector->fromArray($vectorArray);
     
-    $decomposition = new \Libraries\Decompositions\QRHouseholder($matrix);
+    $decomposition = new QRHouseholder($matrix);
     
     $r = $decomposition->getR();
     $r->resize($matrix->columns(), $r->columns());
     
     $q = $decomposition->getQ();
     
-    $b = \Libraries\Matrix::operate($q->copy()->transpose(), $vector);
+    $b = Matrix::operate($q->copy()->transpose(), $vector);
     
     $error = 0.;
     if ($matrix->rows() - $matrix->columns() > 0) {
-        $b2 = new \Libraries\Vector($matrix->rows() - $matrix->columns());
+        $b2 = new Vector($matrix->rows() - $matrix->columns());
         for ($i = 0; $i < $b2->size(); $i++) {
             $b2->set($i, $b->get($i + $matrix->columns()));
         }
