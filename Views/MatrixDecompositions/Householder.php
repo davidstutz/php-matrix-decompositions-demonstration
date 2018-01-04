@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?php echo __('Matrix Decompositions - QR Decomposition - Householder Transformations'); ?></title>
+        <title><?php echo __('PHP Matrix Decompositions - QR Decomposition - Householder Transformations'); ?></title>
+        <meta NAME="description" content="Matrix decompositions (matrix factorizations) implemented and demonstrated in PHP;
+            including LU, QR and Cholesky decompositions.">
+        <meta NAME="keyword" content="matrix,decomposition,php,php matrix decomposition,matrix decomposition,
+            factorization,matrix factorization,php matrix factorization,lu decomposition,lu factorization,pivoting,qr decomposition,
+            qr factorization,givens,givens rotation,householder,householder transformation,cholesky,cholesky decomposition,
+            cholesky factorization,gaussian elimination,linear equations,linear least squares">
+
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/jquery.min.js"></script>
         <script type="text/javascript" src="/<?php echo $app->config('base'); ?>/Assets/Js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
