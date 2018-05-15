@@ -107,7 +107,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
             </div>
             <hr>
             <p>
-                &copy; 2013 David Stutz - <a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="http://davidstutz.de/impressum-legal-notice/"><?php echo __('Impressum - Legal Notice'); ?></a>
+                &copy; 2013 David Stutz - <a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a> - <a href="https://davidstutz.de/impressum/">Impressum</a> - <a href="https://davidstutz.de/datenschutz/">Datenschutz</a>
             </p>
         </div>
     </body>
