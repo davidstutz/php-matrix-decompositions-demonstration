@@ -45,6 +45,7 @@
                         </li>
                         <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('applications'); ?>"><?php echo __('Applications'); ?></a></li>
                         <li><a href="/<?php echo $app->config('base'); ?><?php echo $app->router()->urlFor('credits'); ?>"><?php echo __('Credits'); ?></a></li>
+                        <li><a href="https://davidstutz.de/donate/"><?php echo __('Donate'); ?></a></li>
                     </ul>
                 </div>
                 <div class="span9">
