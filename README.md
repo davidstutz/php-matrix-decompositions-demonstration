@@ -2,10 +2,6 @@
 
 Throughout the first course of Numerical Analysis at the RWTH Aachen University I tried some matrix decompositions in PHP and based on the Slim framework I developed a small demonstration website - this project.
 
-The demonstration application can be found here: [http://davidstutz.de/matrix-decompositions/matrix-decompositions](http://davidstutz.de/matrix-decompositions/matrix-decompositions). My personal blog can be found at [http://davidstutz.de/](http://davidstutz.de/).
-
-Consider [donating](https://davidstutz.de/donate/) to support development.
-
 ## License
 
 Copyright 2013 - 2014 David Stutz
